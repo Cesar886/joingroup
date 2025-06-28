@@ -7,7 +7,7 @@
 
 .active {
   font-weight: bold;
-  border-bottom: 2px solid #1c7ed6; /* ejemplo de color activo */
+  border-bottom: 2px solid #1c7ed6; 
 }
 
 .inner {
@@ -18,7 +18,6 @@
 }
 
 .link {
-  color: #333;
   text-decoration: none;
   padding: 0.5rem;
   display: inline-block;

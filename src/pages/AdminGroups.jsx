@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, updateDoc, doc, addDoc } from 'firebase/firestore';
+import { collection, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import {
   Checkbox,
@@ -46,6 +46,14 @@ export default function AdminGroups() {
     await updateDoc(ref, { destacado: !current });
     setGroups(groups.map(g => g.id === id ? { ...g, destacado: !current } : g));
   };
+  const deleteGroup = async (id) => {
+    const confirm = window.confirm('¿Estás seguro que quieres eliminar este grupo?');
+    if (!confirm) return;
+
+    await deleteDoc(doc(db, 'groups', id));
+    setGroups(groups.filter(g => g.id !== id));
+  };
+
 
   if (!authenticated) {
     return (
@@ -65,15 +73,25 @@ export default function AdminGroups() {
       <Title order={2} mb="md">Administrar Grupos Destacados</Title>
       <Stack>
         {groups.map((group) => (
-          <Paper key={group.id} withBorder p="md" radius="md">
+        <Paper key={group.id} withBorder p="md" radius="md">
+          <Group justify="space-between">
             <Text fw={600}>{group.name}</Text>
-            <Checkbox
-              mt="xs"
-              label="Grupo destacado"
-              checked={group.destacado || false}
-              onChange={() => toggleDestacado(group.id, group.destacado)}
-            />
-          </Paper>
+            <Button
+              color="red"
+              size="xs"
+              variant="light"
+              onClick={() => deleteGroup(group.id)}
+            >
+              Eliminar
+            </Button>
+          </Group>
+          <Checkbox
+            mt="xs"
+            label="Grupo destacado"
+            checked={group.destacado || false}
+            onChange={() => toggleDestacado(group.id, group.destacado)}
+          />
+        </Paper>
         ))}
       </Stack>
     </Container>
