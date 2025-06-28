@@ -70,8 +70,14 @@ export default function TableSort() {
     const fetchData = async () => {
       const snapshot = await getDocs(collection(db, 'groups'));
       const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setData(groups);
-      setSortedData(groups);
+
+      // Ordenar: destacados arriba
+      const destacados = groups.filter(g => g.destacado);
+      const normales = groups.filter(g => !g.destacado);
+      const ordenados = [...destacados, ...normales];
+
+      setData(ordenados);
+      setSortedData(ordenados);
     };
     fetchData();
   }, []);

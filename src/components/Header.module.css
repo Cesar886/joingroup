@@ -32,3 +32,15 @@
 .linkLabel {
   margin-right: 5px;
 }
+
+.logoLink {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.logoText {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1b1e; /* color oscuro, puedes cambiarlo */
+}

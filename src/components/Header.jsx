@@ -52,12 +52,10 @@ export function Header() {
       );
     }
 
-    // Si no hay submenú, usar NavLink directo
     return (
       <NavLink
         key={link.link}
         to={link.link}
-        variant="subtle"
         className={({ isActive }) =>
           isActive ? `${classes.link} ${classes.active}` : classes.link
         }
@@ -71,10 +69,23 @@ export function Header() {
     <header className={classes.header}>
       <Container size="md">
         <div className={classes.inner}>
-          <MantineLogo size={28} />
+          <NavLink to="/" className={classes.logoLink}>
+            <Group align="center" gap="xs" style={{ textDecoration: 'none' }}>
+              <img
+                src="/JoinGroup.svg"
+                alt="Join Group Logo"
+                width={42}
+                height={42}
+                style={{ objectFit: 'contain' }}
+              />
+              <span className={classes.logoText}>JoinGroup</span>
+            </Group>
+          </NavLink>
+
           <Group gap={5} visibleFrom="sm">
             {items}
           </Group>
+
           <Burger opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
         </div>
       </Container>

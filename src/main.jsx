@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <ModalsProvider>
-        <Notifications />
+        <Notifications position="top-right" />
         <App />
       </ModalsProvider>
     </MantineProvider>
