@@ -11,6 +11,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@hcaptcha/react-hcaptcha": "^1.12.0",
     "@mantine/carousel": "^8.1.2",
     "@mantine/charts": "^8.1.2",
     "@mantine/code-highlight": "^8.1.2",
@@ -36,6 +37,7 @@
     "firebase": "^11.9.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hcaptcha": "^0.1.1",
     "react-router-dom": "^7.6.3",
     "recharts": "2"
   },

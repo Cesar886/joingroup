@@ -1,4 +1,5 @@
 import { useForm } from '@mantine/form';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import {
   TextInput,
   Textarea,
@@ -8,10 +9,12 @@ import {
   Title,
   Group,
   Stack,
+  Modal,
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useRef, useState } from 'react';
 
 export default function GroupForm() {
   const form = useForm({
@@ -41,21 +44,68 @@ export default function GroupForm() {
     },
   });
 
-  const handleSubmit = async (values) => {
+  const captchaRef = useRef();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [captchaValues, setCaptchaValues] = useState(null);
+
+  const handleOpenCaptcha = () => {
+    const isValid = form.validate();
+    if (!isValid.hasErrors) {
+      setModalOpen(true);
+    }
+  };
+
+  const handleVerify = async (token) => {
+    setCaptchaValues(token);
+    setModalOpen(false);
+
     try {
-      await addDoc(collection(db, 'groups'), values);
+      // Normalizar el link
+      const rawLink = form.values.link.trim().toLowerCase();
+      const cleanLink = rawLink.endsWith('/') ? rawLink.slice(0, -1) : rawLink;
+
+      // Verificar duplicado
+      const q = query(
+        collection(db, 'groups'),
+        where('link', '==', cleanLink)
+      );
+      const existing = await getDocs(q);
+
+      if (!existing.empty) {
+        showNotification({
+          title: 'Enlace duplicado',
+          message: 'Este grupo ya fue publicado antes 📌',
+          color: 'red',
+        });
+        return;
+      }
+
+      // Guardar grupo
+      await addDoc(collection(db, 'groups'), {
+        ...form.values,
+        link: cleanLink,
+        destacado: false,
+        visitas: 0,
+        miembros: 0,
+        createdAt: new Date(),
+      });
+
       showNotification({
         title: 'Grupo enviado',
-        message: 'Guardado en Firebase ✅',
+        message: 'Guardado correctamente. Será revisado pronto y en menos de 8 horas estará disponible.',
         color: 'green',
+        position: 'top-right',
       });
+
       form.reset();
+      setCaptchaValues(null);
     } catch (error) {
       console.error(error);
       showNotification({
         title: 'Error',
-        message: 'No se pudo guardar en Firebase.',
+        message: 'No se pudo guardar.',
         color: 'red',
+        position: 'top-right',
       });
     }
   };
@@ -63,7 +113,7 @@ export default function GroupForm() {
   return (
     <>
       <Title order={2} mb="md">Publica tu Grupo</Title>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <Stack>
           <TextInput
             label="Nombre del Grupo de Telegram"
@@ -117,39 +167,13 @@ export default function GroupForm() {
             required
             {...form.getInputProps('categories')}
             data={[
-              'Noticias',
-              'Criptomonedas',
-              'Negocios y Finanzas',
-              'Desarrollo Personal',
-              'Memes y Humor',
-              '18+',
-              'Películas y Series',
-              'Tecnología',
-              'Programación',
-              'Gaming',
-              'Ofertas y Descuentos',
-              'Emprendimiento',
-              'Libros y Lectura',
-              'Salud y Bienestar',
-              'Fitness',
-              'Música',
-              'Viajes',
-              'Idiomas',
-              'Educación',
-              'Oportunidades Laborales',
-              'Cursos y Tutoriales',
-              'Canales NSFW',
-              'Anime y Manga',
-              'Arte y Diseño',
-              'Productividad',
-              'Relaciones y Citas',
-              'Fútbol',
-              'Trading',
-              'Inversiones',
-              'Dropshipping',
-              'Telegram Bots',
-              'IA y ChatGPT',
-              'Hacking Ético',
+              'Noticias', 'Criptomonedas', 'Negocios y Finanzas', 'Desarrollo Personal',
+              'Memes y Humor', '18+', 'Películas y Series', 'Tecnología', 'Programación',
+              'Gaming', 'Ofertas y Descuentos', 'Emprendimiento', 'Libros y Lectura',
+              'Salud y Bienestar', 'Fitness', 'Música', 'Viajes', 'Idiomas', 'Educación',
+              'Oportunidades Laborales', 'Cursos y Tutoriales', 'Canales NSFW', 'Anime y Manga',
+              'Arte y Diseño', 'Productividad', 'Relaciones y Citas', 'Fútbol', 'Trading',
+              'Inversiones', 'Dropshipping', 'Telegram Bots', 'IA y ChatGPT', 'Hacking Ético',
             ]}
           />
 
@@ -159,9 +183,22 @@ export default function GroupForm() {
             {...form.getInputProps('acceptTerms', { type: 'checkbox' })}
           />
 
-          <Button type="submit" mt="md">Publicar</Button>
+          <Button onClick={handleOpenCaptcha} mt="md">Publicar</Button>
         </Stack>
       </form>
+
+      <Modal
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Verifica que no eres un bot"
+        centered
+      >
+        <HCaptcha
+          sitekey="71f4e852-9d22-4418-aef6-7c1c0a7c5b54"
+          onVerify={handleVerify}
+          ref={captchaRef}
+        />
+      </Modal>
     </>
   );
 }

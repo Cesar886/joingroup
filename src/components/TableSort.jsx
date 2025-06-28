@@ -96,7 +96,7 @@ export default function TableSort() {
   };
 
   const rows = sortedData.map((row) => (
-    <Paper withBorder radius="md" shadow="xs" p="md" mb="md" key={row.id} onClick={() => navigate(`/grupo/${row.id}`)}>
+    <Paper withBorder radius="md" shadow="xs" mb="sm" key={row.id} onClick={() => navigate(`/grupo/${row.id}`)}>
       <Table>
         <Table.Tbody>
           <Table.Tr>
@@ -116,9 +116,14 @@ export default function TableSort() {
         </Table.Tbody>
       </Table>
       <Box mt="xs" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
-        <Text size="sm" c="dimmed">
-          <strong>Descripción:</strong> {row.description}
-        </Text>
+      <Text size="sm" c="dimmed" style={{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        display: 'block'
+      }}>
+        <strong>Descripción:</strong> {row.description}
+      </Text>
       </Box>
     </Paper>
   ));
