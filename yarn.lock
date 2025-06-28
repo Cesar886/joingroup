@@ -2172,7 +2172,7 @@ get-nonce@^1.0.0:
   resolved "https://registry.yarnpkg.com/get-nonce/-/get-nonce-1.0.1.tgz#fdf3f0278073820d2ce9426c18f07481b1e0cdf3"
   integrity sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q==
 
-gh-pages@^6.3.0:
+gh-pages@^6.2.0, gh-pages@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/gh-pages/-/gh-pages-6.3.0.tgz#a5b9476dd4385ceaf85c6467b2e05397093e7613"
   integrity sha512-Ot5lU6jK0Eb+sszG8pciXdjMXdBJ5wODvgjR+imihTqsUWF2K6dJ9HST55lgqcs8wWcw6o6wAsUzfcYRhJPXbA==
@@ -3262,6 +3262,13 @@ victory-vendor@^36.6.8:
     d3-shape "^3.1.0"
     d3-time "^3.0.0"
     d3-timer "^3.0.1"
+
+vite-plugin-gh-pages@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-gh-pages/-/vite-plugin-gh-pages-1.0.1.tgz#c562bae4a6d3124f53fd041f71861abb23500a8e"
+  integrity sha512-BL83oPZINfCr/XcKXDAPtZR/zRKH4JyAdg5fHadOz2DxLnNYhHDKfWNdelHy+b4EYd/IGw7D85+p7lUuZJIVCg==
+  dependencies:
+    gh-pages "^6.2.0"
 
 vite@^7.0.0:
   version "7.0.0"
