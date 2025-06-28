@@ -1,0 +1,34 @@
+.header {
+  height: 40%;
+  margin-bottom: 1%;
+  background-color: var(--mantine-color-body);
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.active {
+  font-weight: bold;
+  border-bottom: 2px solid #1c7ed6; /* ejemplo de color activo */
+}
+
+.inner {
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  color: #333;
+  text-decoration: none;
+  padding: 0.5rem;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.link:hover {
+  color: #1c7ed6;
+}
+
+.linkLabel {
+  margin-right: 5px;
+}
