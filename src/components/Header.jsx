@@ -7,15 +7,7 @@ import classes from './Header.module.css';
 
 const links = [
     { link: '/', label: 'Inicio' },
-  { link: '/form', label: 'Publicar Grupo' },
-  {
-    link: '#1',
-    label: 'Aprender',
-    links: [
-      { link: '/docs', label: 'Documentación' },
-      { link: '/community', label: 'Comunidad' },
-    ],
-  },
+    { link: '/form', label: 'Publicar Grupo' },
 ];
 
 
