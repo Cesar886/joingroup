@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   IconChevronDown,
   IconChevronUp,
@@ -6,8 +7,10 @@ import {
   IconSelector,
 } from '@tabler/icons-react';
 import {
+  Box,
   Center,
   Group,
+  Paper,
   ScrollArea,
   Table,
   Text,
@@ -15,18 +18,17 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase'; // Asegúrate que la ruta sea correcta
-import classes from './TableSort.module.css'; // o borralo si no usás estilos
+import { db } from '../firebase';
 
 function Th({ children, reversed, sorted, onSort }) {
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
 
   return (
-    <Table.Th className={classes?.th}>
-      <UnstyledButton onClick={onSort} className={classes?.control}>
+    <Table.Th>
+      <UnstyledButton onClick={onSort} style={{ width: '100%' }}>
         <Group justify="space-between">
-          <Text fw={500} fz="sm">{children}</Text>
-          <Center className={classes?.icon}>
+          <Text fw={600} size="sm">{children}</Text>
+          <Center>
             <Icon size={16} stroke={1.5} />
           </Center>
         </Group>
@@ -38,7 +40,7 @@ function Th({ children, reversed, sorted, onSort }) {
 function filterData(data, search) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
-    ['name', 'email', 'city', 'categories'].some((key) =>
+    ['name', 'categories', 'content18'].some((key) =>
       item[key]?.toLowerCase().includes(query)
     )
   );
@@ -57,6 +59,7 @@ function sortData(data, { sortBy, reversed, search }) {
 }
 
 export default function TableSort() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState([]);
@@ -87,62 +90,49 @@ export default function TableSort() {
   };
 
   const rows = sortedData.map((row) => (
-    <>
-      <Table.Tr key={row.id}>
-        <Table.Td>{row.name}</Table.Td>
-        <Table.Td>{row.email}</Table.Td>
-        <Table.Td>{row.categories}</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td colSpan={3}>
-          <Text size="sm" c="dimmed">
-            <strong>Descripción:</strong> {row.description}<br />
-            <strong>Enlace:</strong> <a href={row.link} target="_blank" rel="noopener noreferrer">{row.link}</a><br />
-            {row.city && <><strong>Ciudad:</strong> {row.city}<br /></>}
-            <strong>Contenido +18:</strong> {row.content18 === 'Sí' ? 'Sí' : 'No'}
-          </Text>
-        </Table.Td>
-      </Table.Tr>
-    </>
+    <Paper withBorder radius="md" shadow="xs" p="md" mb="md" key={row.id} onClick={() => navigate(`/grupo/${row.id}`)}>
+      <Table>
+        <Table.Tbody>
+          <Table.Tr>
+            <Table.Td width="33%">
+              <Text fw={600}>{row.name}</Text>
+              <Text size="xs" c="dimmed">Nombre</Text>
+            </Table.Td>
+            <Table.Td width="33%">
+              <Text>{row.content18 === 'Sí' ? 'Contenido +18' : 'Apto para todo público'}</Text>
+              <Text size="xs" c="dimmed">Contenido</Text>
+            </Table.Td>
+            <Table.Td width="33%">
+              <Text>{row.categories}</Text>
+              <Text size="xs" c="dimmed">Categoría</Text>
+            </Table.Td>
+          </Table.Tr>
+        </Table.Tbody>
+      </Table>
+      <Box mt="xs" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
+        <Text size="sm" c="dimmed">
+          <strong>Descripción:</strong> {row.description}
+        </Text>
+      </Box>
+    </Paper>
   ));
 
   return (
     <ScrollArea>
       <TextInput
-        placeholder="Buscar por nombre, email, ciudad, categoría..."
+        placeholder="Buscar por nombre, categoría o contenido..."
         mb="md"
         leftSection={<IconSearch size={16} stroke={1.5} />}
         value={search}
         onChange={handleSearchChange}
       />
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
-        <Table.Thead>
-          <Table.Tr>
-            <Th sorted={sortBy === 'name'} reversed={reverseSortDirection} onSort={() => setSorting('name')}>
-              Nombre
-            </Th>
-            <Th sorted={sortBy === 'email'} reversed={reverseSortDirection} onSort={() => setSorting('email')}>
-              Email
-            </Th>
-            <Th sorted={sortBy === 'categories'} reversed={reverseSortDirection} onSort={() => setSorting('categories')}>
-              Categoría
-            </Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {rows.length > 0 ? (
-            rows
-          ) : (
-            <Table.Tr>
-              <Table.Td colSpan={3}>
-                <Text fw={500} ta="center">
-                  No se encontraron resultados.
-                </Text>
-              </Table.Td>
-            </Table.Tr>
-          )}
-        </Table.Tbody>
-      </Table>
+      {rows.length > 0 ? (
+        rows
+      ) : (
+        <Text ta="center" fw={500} c="dimmed">
+          No se encontraron resultados.
+        </Text>
+      )}
     </ScrollArea>
   );
 }

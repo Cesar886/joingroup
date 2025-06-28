@@ -1,20 +1,15 @@
 import '@mantine/core/styles.css';
 import { Container } from '@mantine/core';
 import { Header } from './components/Header';
-import TableSort from './components/TableSort';
-import GroupForm from './components/GroupForm';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes'; // Asegurate de que esta ruta sea correcta
 
 export default function App() {
   return (
     <BrowserRouter>
       <Header />
       <Container size="md" py="xl">
-        <Routes>
-          <Route path="/" element={<TableSort />} />
-          <Route path="/form" element={<GroupForm />} />
-          {/* <Route path="/list" element={<GroupList />} /> */}
-        </Routes>
+        <AppRoutes />
       </Container>
     </BrowserRouter>
   );
