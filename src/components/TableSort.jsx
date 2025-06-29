@@ -100,9 +100,6 @@ export default function TableSort() {
         const snapshot = await getDocs(collection(db, 'colections'));
         const docs = snapshot.docs.map(doc => doc.data());
         const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
-        console.log("Docs crudos:", docs);
-        console.log("Colecciones planas:", allCollections);
-
         setCollections([...new Set(allCollections)]);
       };
 

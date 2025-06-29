@@ -102,7 +102,7 @@ export default function GroupDetail() {
             <Text>{group.description}</Text>
           </Box>
 
-          <Box mt="md" bg="#f9f9f9" p="md" radius="md" style={{ borderLeft: '4px solid #f03e3e' }}>
+          <Box mt="md" bg="#f9f9f9" p="md" radius="md" style={{ borderLeft: '4px solid rgb(167, 187, 255)' }}>
             <Text size="sm" c="dimmed">
               Recuerda: evita compartir información personal en <strong>{group.name}</strong>. Nunca se sabe quién puede estar leyendo. Mantengamos <strong>{group.name}</strong> como un espacio seguro y agradable para todos.
             </Text>
