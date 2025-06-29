@@ -100,47 +100,69 @@ export default function TableSort() {
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
-  const rows = sortedData.map((row) => (
-    <Paper withBorder radius="md" shadow="xs" p="" mb="sm" key={row.slug} onClick={() => {const slug = row.slug || slugify(row.name); 
-      navigate(`/grupo/${slug}`);}}
-    >
-      <Table horizontalSpacing="md" withRowBorders={false}>
-        <Table.Tbody>
-          <Table.Tr>
-            <Table.Td colSpan={2}>
-              <Text fw={700}>
-                {row.name}
-              </Text>
-            </Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td width="23%">
-              <Text >{row.content18 === 'Sí' ? '18+' : isMobile ? 'Público' : 'Apto para todo público'}</Text>
-              <Text size="xs" c="dimmed">Contenido</Text>
-            </Table.Td>
-            <Table.Td width="43%">
-              <Text>{row.categories}</Text>
-              <Text size="xs" c="dimmed">Categoría</Text>
-            </Table.Td>
-            <Table.Td width="34%">
-              <Text>{row.visitas}</Text>
-              <Text size="xs" c="dimmed">Vistas</Text>
-            </Table.Td>
-          </Table.Tr>
-        </Table.Tbody>
-      </Table>
-      <Box p="sm" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
-      <Text size="sm" c="dimmed" style={{
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        display: 'block'
-      }}>
-        {row.description}
-      </Text>
-      </Box>
-    </Paper>
-  ));
+  const rows = sortedData.map((row, idx) => {
+    const slug = row.slug || slugify(row.name);   // ahora sí existe row aquí
+
+    return (
+      <Paper
+        withBorder
+        radius="md"
+        shadow="xs"
+        mb="sm"
+        key={`${row.id}-${slug}-${idx}`}
+        onClick={() => navigate(`/grupo/${slug}`)}
+      >
+        <Table horizontalSpacing="md" withRowBorders={false}>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td colSpan={2}>
+                <Text fw={700}>{row.name}</Text>
+              </Table.Td>
+            </Table.Tr>
+
+            <Table.Tr>
+              <Table.Td width="23%">
+                <Text>
+                  {row.content18 === 'Sí'
+                    ? '18+'
+                    : isMobile
+                    ? 'Público'
+                    : 'Apto para todo público'}
+                </Text>
+                <Text size="xs" c="dimmed">Contenido</Text>
+              </Table.Td>
+
+              <Table.Td width="43%">
+                <Text>{row.categories}</Text>
+                <Text size="xs" c="dimmed">Categoría</Text>
+              </Table.Td>
+
+              <Table.Td width="34%">
+                <Text>{row.visitas}</Text>
+                <Text size="xs" c="dimmed">Vistas</Text>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+
+        <Box p="sm" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
+          <Text
+            size="sm"
+            c="dimmed"
+            style={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              display: 'block',
+            }}
+          >
+            {row.description}
+          </Text>
+        </Box>
+      </Paper>
+    );
+  });
+
 
   return (
     <ScrollArea>

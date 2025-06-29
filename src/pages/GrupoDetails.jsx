@@ -1,87 +1,90 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { collection, query, where, getDocs, updateDoc, doc, increment } from 'firebase/firestore';
+import {
+  collection, query, where, getDocs,
+  doc, increment, limit, runTransaction, updateDoc
+} from 'firebase/firestore';
 import { db } from '../firebase';
 import {
-  Box,
-  Button,
-  Center,
-  Container,
-  Divider,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Title,
+  Box, Button, Center, Container, Divider,
+  Group, Paper, Stack, Text, Title,
 } from '@mantine/core';
-import { showNotification } from '@mantine/notifications'; // ✅ IMPORTAR ESTO
+import { showNotification } from '@mantine/notifications';
+import slugify from '../assets/slugify';     // ⬅️ el mismo helper que usas en TableSort
 
 export default function GroupDetail() {
-  const { id } = useParams();
-  const [group, setGroup] = useState(null);
+  const { id } = useParams();                // id === slug recibido en la URL
+  const [group, setGroup]   = useState(null);
+  const [loading, setLoading]   = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     const fetchGroup = async () => {
-      const q = query(collection(db, 'groups'), where('slug', '==', id));
-      const querySnapshot = await getDocs(q);
+      try {
+        setLoading(true);
+        setNotFound(false);
 
-      if (!querySnapshot.empty) {
-        const docSnap = querySnapshot.docs[0];
-        const docRef = docSnap.ref;
-        const groupData = docSnap.data();
+        // 1️⃣  Intenta encontrar por slug
+        const q = query(
+          collection(db, 'groups'),
+          where('slug', '==', id),
+          limit(1)
+        );
+        let snap = await getDocs(q);
 
-        await updateDoc(docRef, {
-          visitas: increment(1),
-        });
+        // 2️⃣  Si no hay slug en esos docs viejos, busca por nombre “slugificado”
+        if (snap.empty) {
+          const allQ = query(collection(db, 'groups'), limit(1000)); // o por páginas
+          const allSnap = await getDocs(allQ);
+          snap = allSnap.docs.filter(d => slugify(d.data().name) === id);
+        } else {
+          snap = snap.docs;
+        }
 
-        setGroup({ id: docSnap.id, ...groupData });
+        if (snap.length === 0) {
+          setNotFound(true);
+          return;
+        }
+
+        const docSnap = snap[0];
+        const docRef  = docSnap.ref;
+        const data    = docSnap.data();
+
+        // 3️⃣  Si el documento no traía slug, lo actualizamos aquí mismo
+        if (!data.slug) {
+          await updateDoc(docRef, { slug: slugify(data.name) });
+        }
+
+        /* -------------------  visitas ------------------- */
+        const visitKey   = `visitado-${id}`;
+        const yaVisitado = localStorage.getItem(visitKey);
+
+        if (!yaVisitado) {
+          await runTransaction(db, async (trx) => {
+            const fresh = await trx.get(docRef);
+            const v = fresh.data()?.visitas || 0;
+            trx.update(docRef, { visitas: v + 1 });
+          });
+          localStorage.setItem(visitKey, 'true');
+        }
+
+        setGroup({ id: docSnap.id, ...data, slug: data.slug || slugify(data.name) });
+
+      } catch (err) {
+        console.error(err);
+        setNotFound(true);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchGroup();
   }, [id]);
 
-
-  const sendTelegramMessage = async (tipo) => {
-    const chatId = '-1002622285468';
-    const token = '7551745963:AAFiTkb9UehxZMXNINihI8wSdlTMjaM6Lfk';
-    const url = window.location.href;
-
-    const message = `🚨 *Nuevo: ${tipo}*\nGrupo ID: ${id}\nURL: ${url}`;
-
-    try {
-      const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: 'Markdown',
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.ok) {
-        showNotification({
-          title: 'Reporte enviado ✅',
-          message: `Se notificó correctamente: ${tipo}`,
-          color: 'green',
-        });
-      } else {
-        throw new Error(data.description || 'Fallo al enviar');
-      }
-    } catch (error) {
-      console.error(error);
-      showNotification({
-        title: 'Error al reportar ❌',
-        message: 'No se pudo enviar el reporte.',
-        color: 'red',
-      });
-    }
-  };
-
-  if (!group) return <Center><Text>Cargando grupo...</Text></Center>;
+  /* -------------- render -------------- */
+  if (loading)   return <Center><Text>Cargando grupo...</Text></Center>;
+  if (notFound || !group)
+    return <Center><Text>Grupo no encontrado.</Text></Center>;
 
   return (
     <Container size="sm" py="xl">
@@ -101,14 +104,9 @@ export default function GroupDetail() {
 
           <Box mt="md" bg="#f9f9f9" p="md" radius="md" style={{ borderLeft: '4px solid #f03e3e' }}>
             <Text size="sm" c="dimmed">
-              Recuerda: evita compartir información personal en el grupo <strong>{group.name}</strong>. <br />
-              ¡Pásala bien y asegúrate de compartir solo contenido legal y respetuoso!
+              Recuerda: evita compartir información personal en <strong>{group.name}</strong>.
             </Text>
           </Box>
-
-          <Text size="sm" c="dimmed" mt="xs">
-            Disfruta del grupo: <strong>{group.name}</strong>.
-          </Text>
 
           <Group justify="space-between" mt="md">
             <Button
@@ -131,21 +129,44 @@ export default function GroupDetail() {
 
           <Divider my="sm" />
 
-          <Box>
-            <Button
-              component="a"
-              href={group.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              fullWidth
-              variant="filled"
-              color="blue"
-            >
-              Telegram - ACCEDER AL GRUPO
-            </Button>
-          </Box>
+          <Button
+            component="a"
+            href={group.link || '#'}
+            target="_blank"
+            rel="noopener noreferrer"
+            fullWidth
+            variant="filled"
+            color="blue"
+            disabled={!group.link}
+          >
+            {group.link ? 'Telegram - ACCEDER AL GRUPO' : 'Enlace no disponible'}
+          </Button>
         </Stack>
       </Paper>
     </Container>
   );
+
+  /* ------------------ helpers ------------------ */
+  async function sendTelegramMessage(tipo) {
+    const chatId = -1002622285468
+    const token  = "7551745963:AAFiTkb9UehxZMXNINihI8wSdlTMjaM6Lfk"
+
+    const url    = window.location.href;
+
+    const text = `🚨 *Nuevo: ${tipo}*\nGrupo: ${group?.name}\nURL: ${url}`;
+
+    try {
+      const res  = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.description);
+      showNotification({ title: 'Reporte enviado', message: '¡Gracias!', color: 'green' });
+    } catch (e) {
+      console.error(e);
+      showNotification({ title: 'Error', message: 'No se pudo enviar.', color: 'red' });
+    }
+  }
 }
