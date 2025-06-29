@@ -19,6 +19,8 @@ import {
 } from '@mantine/core';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useMediaQuery } from '@mantine/hooks';
+
 
 function Th({ children, reversed, sorted, onSort }) {
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
@@ -27,7 +29,7 @@ function Th({ children, reversed, sorted, onSort }) {
     <Table.Th>
       <UnstyledButton onClick={onSort} style={{ width: '100%' }}>
         <Group justify="space-between">
-          <Text fw={600} size="sm">{children}</Text>
+          <Text fw={600} size="xl" lh={1.2}>{children}</Text>
           <Center>
             <Icon size={16} stroke={1.5} />
           </Center>
@@ -65,6 +67,8 @@ export default function TableSort() {
   const [sortedData, setSortedData] = useState([]);
   const [sortBy, setSortBy] = useState(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,33 +100,40 @@ export default function TableSort() {
   };
 
   const rows = sortedData.map((row) => (
-    <Paper withBorder radius="md" shadow="xs" mb="sm" key={row.id} onClick={() => navigate(`/grupo/${row.id}`)}>
-      <Table>
+    <Paper withBorder radius="md" shadow="xs" p="" mb="sm" key={row.id} onClick={() => navigate(`/grupo/${row.id}`)}>
+      <Table horizontalSpacing="md" withRowBorders={false}>
         <Table.Tbody>
           <Table.Tr>
-            <Table.Td width="33%">
-              <Text fw={600}>{row.name}</Text>
-              <Text size="xs" c="dimmed">Nombre</Text>
+            <Table.Td colSpan={2}>
+              <Text fw={700}>
+                {row.name}
+              </Text>
             </Table.Td>
-            <Table.Td width="33%">
-              <Text>{row.content18 === 'Sí' ? 'Contenido +18' : 'Apto para todo público'}</Text>
+          </Table.Tr>
+          <Table.Tr>
+            <Table.Td width="23%">
+              <Text >{row.content18 === 'Sí' ? '18+' : isMobile ? 'Público' : 'Apto para todo público'}</Text>
               <Text size="xs" c="dimmed">Contenido</Text>
             </Table.Td>
-            <Table.Td width="33%">
+            <Table.Td width="43%">
               <Text>{row.categories}</Text>
               <Text size="xs" c="dimmed">Categoría</Text>
+            </Table.Td>
+            <Table.Td width="34%">
+              <Text>{row.visitas}</Text>
+              <Text size="xs" c="dimmed">Vistas</Text>
             </Table.Td>
           </Table.Tr>
         </Table.Tbody>
       </Table>
-      <Box mt="xs" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
+      <Box p="sm" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
       <Text size="sm" c="dimmed" style={{
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         display: 'block'
       }}>
-        <strong>Descripción:</strong> {row.description}
+        {row.description}
       </Text>
       </Box>
     </Paper>

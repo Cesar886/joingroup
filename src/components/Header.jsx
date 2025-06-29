@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { IconChevronDown } from '@tabler/icons-react';
-import { Burger, Center, Container, Group, Menu } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Center, Container, Group, Menu } from '@mantine/core';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './Header.module.css';
 
@@ -12,7 +11,6 @@ const links = [
 
 
 export function Header() {
-  const [opened, { toggle }] = useDisclosure(false);
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
@@ -74,11 +72,10 @@ export function Header() {
             </Group>
           </NavLink>
 
-          <Group gap={5} visibleFrom="sm">
+          <Group gap={4}>
             {items}
           </Group>
 
-          <Burger opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
         </div>
       </Container>
     </header>
