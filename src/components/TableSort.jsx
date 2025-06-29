@@ -20,6 +20,7 @@ import {
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
+import slugify from '../assets/slugify'; // Importa la función slugify
 
 
 function Th({ children, reversed, sorted, onSort }) {
@@ -100,7 +101,9 @@ export default function TableSort() {
   };
 
   const rows = sortedData.map((row) => (
-    <Paper withBorder radius="md" shadow="xs" p="" mb="sm" key={row.id} onClick={() => navigate(`/grupo/${row.id}`)}>
+    <Paper withBorder radius="md" shadow="xs" p="" mb="sm" key={row.slug} onClick={() => {const slug = row.slug || slugify(row.name); 
+      navigate(`/grupo/${slug}`);}}
+    >
       <Table horizontalSpacing="md" withRowBorders={false}>
         <Table.Tbody>
           <Table.Tr>
@@ -149,7 +152,9 @@ export default function TableSort() {
         onChange={handleSearchChange}
       />
       {rows.length > 0 ? (
-        rows
+        <>
+          {rows}
+        </>
       ) : (
         <Text ta="center" fw={500} c="dimmed">
           No se encontraron resultados.

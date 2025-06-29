@@ -1,5 +1,6 @@
 import { useForm } from '@mantine/form';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { useNavigate } from 'react-router-dom';
 import {
   TextInput,
   Textarea,
@@ -15,8 +16,10 @@ import { showNotification } from '@mantine/notifications';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useRef, useState } from 'react';
+import slugify from '../assets/slugify'
 
 export default function GroupForm() {
+  const navigate = useNavigate();
   const form = useForm({
     initialValues: {
       name: '',
@@ -38,9 +41,9 @@ export default function GroupForm() {
           ? null
           : 'El enlace debe comenzar con https://t.me/',
       description: (v) =>
-        v.trim().length >= 20
+        v.trim().length <= 60
           ? null
-          : 'La descripción debe tener al menos 20 caracteres',
+          : 'La descripción no tiene que tener mas de 60 caracteres',
     },
   });
 
@@ -80,6 +83,21 @@ export default function GroupForm() {
         return;
       }
 
+      // ¿Ya existe un grupo con el mismo slug?
+      const slug = slugify(form.values.name);
+
+      const qSlug = query(collection(db, 'groups'), where('slug', '==', slug));
+      const slugSnap = await getDocs(qSlug);
+
+      if (!slugSnap.empty) {
+        showNotification({
+          title: 'Nombre duplicado',
+          message: 'Ya existe un grupo con ese nombre 📌',
+          color: 'red',
+        });
+        return;
+      } 
+
       // Guardar grupo
       await addDoc(collection(db, 'groups'), {
         ...form.values,
@@ -88,7 +106,12 @@ export default function GroupForm() {
         visitas: 0,
         miembros: 0,
         createdAt: new Date(),
+        slug,
       });
+
+      // ✅  Redirige al detalle del grupo (usa el slug)
+      navigate(`/grupo/${slug}`);
+      
 
       showNotification({
         title: 'Grupo enviado',
@@ -150,8 +173,7 @@ export default function GroupForm() {
 
           <Textarea
             label="Descripción del grupo"
-            placeholder="⌨ Mínimo 60 caracteres"
-            minRows={4}
+            placeholder="⌨Máximo 60 caracteres"
             required
             {...form.getInputProps('description')}
           />

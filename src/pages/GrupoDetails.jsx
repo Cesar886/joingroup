@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { collection, doc, getDoc, updateDoc, increment } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc, doc, increment } from 'firebase/firestore';
 import { db } from '../firebase';
 import {
   Box,
@@ -22,18 +22,25 @@ export default function GroupDetail() {
 
   useEffect(() => {
     const fetchGroup = async () => {
-      const docRef = doc(collection(db, 'groups'), id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
+      const q = query(collection(db, 'groups'), where('slug', '==', id));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const docSnap = querySnapshot.docs[0];
+        const docRef = docSnap.ref;
+        const groupData = docSnap.data();
+
         await updateDoc(docRef, {
           visitas: increment(1),
         });
-        const updatedSnap = await getDoc(docRef);
-        setGroup(updatedSnap.data());
+
+        setGroup({ id: docSnap.id, ...groupData });
       }
     };
+
     fetchGroup();
   }, [id]);
+
 
   const sendTelegramMessage = async (tipo) => {
     const chatId = '-1002622285468';

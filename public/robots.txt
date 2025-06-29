@@ -1,0 +1,10 @@
+# public/robots.txt
+User-agent: *
+Allow: /
+
+# Evita indexar carpetas internas del build (opcional)
+Disallow: /assets/
+Disallow: /static/
+
+# Apunta a tu sitemap
+Sitemap: https://joingroups.pro/sitemap.xml
