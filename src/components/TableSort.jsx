@@ -99,7 +99,10 @@ export default function TableSort() {
       const fetchCollections = async () => {
         const snapshot = await getDocs(collection(db, 'colections'));
         const docs = snapshot.docs.map(doc => doc.data());
-        const allCollections = docs.flatMap(doc => doc.colections);
+        const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
+        console.log("Docs crudos:", docs);
+        console.log("Colecciones planas:", allCollections);
+
         setCollections([...new Set(allCollections)]);
       };
 
@@ -214,7 +217,7 @@ export default function TableSort() {
         onChange={handleSearchChange}
       />
 
-      {/* {collections.length > 0 && (
+      {collections.length > 0 && (
         <Group mb="md" spacing="xs" wrap="wrap">
           <Badge
             key="todos"
@@ -240,10 +243,26 @@ export default function TableSort() {
             </Badge>
           ))}
         </Group>
-      )} */}
+      )}
 
       {rows.length > 0 ? (
         <>
+          <Paper
+            withBorder
+            radius="md"
+            shadow="xs"
+            mt="xl"
+            p="md"
+            style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
+          >
+          <Text size="sm" color="dimmed" mb="xs">
+            ¿Tienes un grupo o canal de Telegram? <strong>En JoinGroups puedes publicarlo gratis</strong> para que más personas lo descubran fácilmente. 
+            Además, puedes <strong>explorar canales y grupos de Telegram</strong> por temática e intereses, y <strong>unirte a comunidades activas</strong> de todo tipo. 
+            ¡Comparte tu grupo, encuentra otros y haz crecer tu comunidad en Telegram con JoinGroups!
+          </Text>
+
+          </Paper>
+
           {rows}
 
           <Group mt="xl" justify="center" gap="xs">
@@ -289,14 +308,14 @@ export default function TableSort() {
             shadow="xs"
             mt="xl"
             p="md"
-            style={{ backgroundColor: '#f9f9f9' }}
+            style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
           >
             <Text size="md" fw={600} mb="sm">
               <strong>Descubre y promociona grupos de Telegram</strong> en un solo lugar.
             </Text>
             <Text size="sm" color="dimmed" mb="xs">
               ¿Tienes un grupo o canal? <strong>Publica tu grupo de Telegram</strong> gratis y haz que más personas lo encuentren.
-              También puedes <strong>explorar grupos interesantes de Telegram</strong> y <strong>unirte a comunidades</strong> según tus intereses.
+              También puedes <strong>explorar grupos interesantes de Telegram</strong> , <strong>unirte a comunidades</strong> y ver <strong>grupos de telegram</strong> según tus intereses.
               ¡Conecta, comparte y crece con nosotros!
             </Text>
             <Text size="xs" color="dimmed" style={{ fontStyle: 'italic' }}>
