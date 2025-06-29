@@ -44,7 +44,7 @@ export default function Footer() {
       <Container size="lg" className={classes.inner}>
         <Flex justify="space-between" direction={{ base: 'column', sm: 'row' }} gap="xl">
           <Stack spacing="xs" className={classes.logoWrapper}>
-            <Image src="/JoinGroup.svg" alt="Logo de JoinGroup" className={classes.logo}/>
+            <Image src="/JoinGroups.png" alt="Logo de JoinGroup" className={classes.logo}/>
             <Text size="sm" c="dimmed" className={classes.description} ta={{ base: 'center', sm: 'left' }}>
               JoinGroup es tu herramienta para administrar, automatizar y organizar grupos de Telegram de forma eficiente.
             </Text>

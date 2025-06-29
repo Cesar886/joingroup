@@ -62,7 +62,7 @@ export function Header() {
           <NavLink to="/" className={classes.logoLink}>
             <Group align="center" gap="xs" style={{ textDecoration: 'none' }}>
               <img
-                src="/JoinGroup.svg"
+                src="/JoinGroups.png"
                 alt="Join Group Logo"
                 width={42}
                 height={42}
