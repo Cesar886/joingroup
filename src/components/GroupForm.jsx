@@ -209,7 +209,7 @@ export default function GroupForm() {
               'Películas y Series',
               'Criptomonedas',
               'XXX',
-              'Hacking Ético',
+              'Hacking',
               'Memes y Humor',
               'Porno',
               'Canales NSFW',

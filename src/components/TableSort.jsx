@@ -12,6 +12,7 @@ import {
   Group,
   Paper,
   ScrollArea,
+  Badge,
   Table,
   Text,
   TextInput,
@@ -21,8 +22,7 @@ import {
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
-import slugify from '../assets/slugify'; // Importa la función slugify
-
+import slugify from '../assets/slugify';
 
 function Th({ children, reversed, sorted, onSort }) {
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
@@ -41,24 +41,29 @@ function Th({ children, reversed, sorted, onSort }) {
   );
 }
 
-function filterData(data, search) {
+function filterData(data, search, collectionFilter = null) {
   const query = search.toLowerCase().trim();
-  return data.filter((item) =>
-    ['name', 'categories', 'content18'].some((key) =>
+  return data.filter((item) => {
+    const matchesSearch = ['name', 'categories', 'content18'].some((key) =>
       item[key]?.toLowerCase().includes(query)
-    )
-  );
+    );
+
+    const matchesCollection = collectionFilter
+      ? item.categories?.toLowerCase() === collectionFilter.toLowerCase()
+      : true;
+
+    return matchesSearch && matchesCollection;
+  });
 }
 
-function sortData(data, { sortBy, reversed, search }) {
-  if (!sortBy) return filterData(data, search);
-  return filterData(
-    [...data].sort((a, b) =>
-      reversed
-        ? b[sortBy]?.localeCompare(a[sortBy])
-        : a[sortBy]?.localeCompare(b[sortBy])
-    ),
-    search
+function sortData(data, { sortBy, reversed, search, collectionFilter }) {
+  const filtered = filterData(data, search, collectionFilter);
+  if (!sortBy) return filtered;
+
+  return [...filtered].sort((a, b) =>
+    reversed
+      ? b[sortBy]?.localeCompare(a[sortBy])
+      : a[sortBy]?.localeCompare(b[sortBy])
   );
 }
 
@@ -71,15 +76,35 @@ export default function TableSort() {
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [currentPage, setCurrentPage] = useState(1);
+  const [collections, setCollections] = useState([]);
+  const [selectedCollection, setSelectedCollection] = useState(null);
 
-
+  const handleCollectionFilter = (collection) => {
+    const newValue = collection === selectedCollection ? null : collection;
+    setSelectedCollection(newValue);
+    setSortedData(sortData(data, {
+      sortBy,
+      reversed: reverseSortDirection,
+      search,
+      collectionFilter: newValue
+    }));
+    setCurrentPage(1);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       const snapshot = await getDocs(collection(db, 'groups'));
       const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      // Ordenar: destacados arriba
+      const fetchCollections = async () => {
+        const snapshot = await getDocs(collection(db, 'colections'));
+        const docs = snapshot.docs.map(doc => doc.data());
+        const allCollections = docs.flatMap(doc => doc.colections);
+        setCollections([...new Set(allCollections)]);
+      };
+
+      fetchCollections();
+
       const destacados = groups.filter(g => g.destacado);
       const normales = groups.filter(g => !g.destacado);
       const ordenados = [...destacados, ...normales];
@@ -100,17 +125,16 @@ export default function TableSort() {
   const handleSearchChange = (event) => {
     const value = event.currentTarget.value;
     setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
+    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value, collectionFilter: selectedCollection }));
   };
 
-  const groupsPerPage = 12; // Cambia esto a 20 o 25 después
+  const groupsPerPage = 12;
   const indexOfLastGroup = currentPage * groupsPerPage;
   const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
   const currentGroups = sortedData.slice(indexOfFirstGroup, indexOfLastGroup);
 
-
   const rows = currentGroups.map((row, idx) => {
-    const slug = row.slug || slugify(row.name);   // ahora sí existe row aquí
+    const slug = row.slug || slugify(row.name);
 
     return (
       <Paper
@@ -128,24 +152,21 @@ export default function TableSort() {
                 <Text fw={700}>{row.name}</Text>
               </Table.Td>
             </Table.Tr>
-
             <Table.Tr>
               <Table.Td width="23%">
                 <Text>
                   {row.content18 === 'Sí'
                     ? '18+'
                     : isMobile
-                    ? 'Público'
-                    : 'Apto para todo público'}
+                      ? 'Público'
+                      : 'Apto para todo público'}
                 </Text>
                 <Text size="xs" c="dimmed">Contenido</Text>
               </Table.Td>
-
               <Table.Td width="43%">
                 <Text>{row.categories}</Text>
                 <Text size="xs" c="dimmed">Categoría</Text>
               </Table.Td>
-
               <Table.Td width="34%">
                 <Text>{row.visitas}</Text>
                 <Text size="xs" c="dimmed">Vistas</Text>
@@ -153,7 +174,6 @@ export default function TableSort() {
             </Table.Tr>
           </Table.Tbody>
         </Table>
-
         <Box p="sm" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
           <Text
             size="sm"
@@ -172,9 +192,20 @@ export default function TableSort() {
     );
   });
 
-
   return (
     <ScrollArea>
+      {selectedCollection && (
+        <Button
+          size="xs"
+          variant="outline"
+          color="gray"
+          mb="xs"
+          onClick={() => handleCollectionFilter(selectedCollection)}
+        >
+          Quitar filtro: {selectedCollection}
+        </Button>
+      )}
+
       <TextInput
         placeholder="Buscar por nombre, categoría o contenido..."
         mb="md"
@@ -182,6 +213,35 @@ export default function TableSort() {
         value={search}
         onChange={handleSearchChange}
       />
+
+      {/* {collections.length > 0 && (
+        <Group mb="md" spacing="xs" wrap="wrap">
+          <Badge
+            key="todos"
+            variant={selectedCollection === null ? 'filled' : 'light'}
+            color={selectedCollection === null ? 'blue' : 'gray'}
+            size="md"
+            onClick={() => handleCollectionFilter(null)}
+            style={{ cursor: 'pointer' }}
+          >
+            Todos
+          </Badge>
+
+          {collections.map((col) => (
+            <Badge
+              key={col}
+              variant={selectedCollection === col ? 'filled' : 'light'}
+              color={selectedCollection === col ? 'blue' : 'gray'}
+              size="md"
+              onClick={() => handleCollectionFilter(col)}
+              style={{ cursor: 'pointer' }}
+            >
+              {col}
+            </Badge>
+          ))}
+        </Group>
+      )} */}
+
       {rows.length > 0 ? (
         <>
           {rows}
@@ -194,9 +254,8 @@ export default function TableSort() {
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
             >
-                Inicio
+              Inicio
             </Button>
-
             <Button
               variant="subtle"
               size="xs"
@@ -206,11 +265,9 @@ export default function TableSort() {
             >
               ← Anterior
             </Button>
-
             <Text size="sm" fw={500} mt={4}>
               Página <strong>{currentPage}</strong>
             </Text>
-
             <Button
               variant="subtle"
               size="xs"
@@ -226,7 +283,6 @@ export default function TableSort() {
             </Button>
           </Group>
 
-
           <Paper
             withBorder
             radius="md"
@@ -239,17 +295,17 @@ export default function TableSort() {
               <strong>Descubre y promociona grupos de Telegram</strong> en un solo lugar.
             </Text>
             <Text size="sm" color="dimmed" mb="xs">
-              ¿Tienes un grupo o canal? <strong>Publica tu grupo de Telegram</strong> gratis y haz que más personas lo encuentren. 
+              ¿Tienes un grupo o canal? <strong>Publica tu grupo de Telegram</strong> gratis y haz que más personas lo encuentren.
               También puedes <strong>explorar grupos interesantes de Telegram</strong> y <strong>unirte a comunidades</strong> según tus intereses.
               ¡Conecta, comparte y crece con nosotros!
             </Text>
-            <Text size="xs" color="dimmed" italic>
+            <Text size="xs" color="dimmed" style={{ fontStyle: 'italic' }}>
               <strong>Palabras clave:</strong> publicar grupo en Telegram, encontrar grupos de Telegram, compartir canal de Telegram, descubrir comunidades Telegram, promocionar grupo Telegram.
             </Text>
           </Paper>
         </>
       ) : (
-        <Text ta="center" fw={500} c="dimmed">
+        <Text ta="center" fw={500} c="dimmed" mt="xl">
           No se encontraron resultados.
         </Text>
       )}
