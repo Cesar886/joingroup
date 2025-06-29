@@ -15,6 +15,7 @@ import {
   Table,
   Text,
   TextInput,
+  Button,
   UnstyledButton,
 } from '@mantine/core';
 import { collection, getDocs } from 'firebase/firestore';
@@ -69,6 +70,8 @@ export default function TableSort() {
   const [sortBy, setSortBy] = useState(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const [currentPage, setCurrentPage] = useState(1);
+
 
 
   useEffect(() => {
@@ -100,7 +103,13 @@ export default function TableSort() {
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
-  const rows = sortedData.map((row, idx) => {
+  const groupsPerPage = 12; // Cambia esto a 20 o 25 después
+  const indexOfLastGroup = currentPage * groupsPerPage;
+  const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
+  const currentGroups = sortedData.slice(indexOfFirstGroup, indexOfLastGroup);
+
+
+  const rows = currentGroups.map((row, idx) => {
     const slug = row.slug || slugify(row.name);   // ahora sí existe row aquí
 
     return (
@@ -176,11 +185,53 @@ export default function TableSort() {
       {rows.length > 0 ? (
         <>
           {rows}
+
+          <Group mt="xl" justify="center" gap="xs">
+            <Button
+              variant="light"
+              size="xs"
+              radius="md"
+              onClick={() => setCurrentPage(1)}
+              disabled={currentPage === 1}
+            >
+                Inicio
+            </Button>
+
+            <Button
+              variant="subtle"
+              size="xs"
+              radius="md"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              ← Anterior
+            </Button>
+
+            <Text size="sm" fw={500} mt={4}>
+              Página <strong>{currentPage}</strong>
+            </Text>
+
+            <Button
+              variant="subtle"
+              size="xs"
+              radius="md"
+              onClick={() =>
+                setCurrentPage((prev) =>
+                  indexOfLastGroup < sortedData.length ? prev + 1 : prev
+                )
+              }
+              disabled={indexOfLastGroup >= sortedData.length}
+            >
+              Siguiente →
+            </Button>
+          </Group>
+
+
           <Paper
             withBorder
             radius="md"
             shadow="xs"
-            mt="lg"
+            mt="xl"
             p="md"
             style={{ backgroundColor: '#f9f9f9' }}
           >
