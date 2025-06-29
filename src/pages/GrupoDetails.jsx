@@ -137,10 +137,6 @@ export default function GroupDetail() {
               Telegram - ACCEDER AL GRUPO
             </Button>
           </Box>
-
-          <Text size="sm" mt="md">
-            Se han unido: <strong>{group.miembros || 0}</strong>
-          </Text>
         </Stack>
       </Paper>
     </Container>

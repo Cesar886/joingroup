@@ -1,0 +1,43 @@
+.root {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.title {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.control {
+  max-width: 200px;
+}
+
+/* Imagen móvil (por defecto) */
+.mobileImage {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* Imagen escritorio (oculta por defecto) */
+.desktopImage {
+  display: none;
+}
+
+/* A partir de 768 px: ocultar móvil, mostrar escritorio y agrandarla */
+@media (min-width: 768px) {
+  .mobileImage {
+    display: none;
+  }
+
+  .desktopImage {
+    display: block;
+    width: 115%;        /* un poco más grande */
+    max-width: none;    /* permite superar el 100 % si el grid lo permite */
+    justify-self: end;  /* alineada a la derecha de su celda */
+    border-radius: 8px;
+  }
+}
