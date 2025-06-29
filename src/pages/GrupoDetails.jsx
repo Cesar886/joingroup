@@ -57,7 +57,7 @@ export default function GroupDetail() {
 
         /* -------------------  visitas ------------------- */
         const visitKey   = `visitado-${id}`;
-        const yaVisitado = localStorage.getItem(visitKey);
+        const yaVisitado = sessionStorage.getItem(visitKey);
 
         if (!yaVisitado) {
           await runTransaction(db, async (trx) => {
@@ -65,7 +65,7 @@ export default function GroupDetail() {
             const v = fresh.data()?.visitas || 0;
             trx.update(docRef, { visitas: v + 1 });
           });
-          localStorage.setItem(visitKey, 'true');
+          sessionStorage.setItem(visitKey, 'true');
         }
 
         setGroup({ id: docSnap.id, ...data, slug: data.slug || slugify(data.name) });
@@ -104,7 +104,7 @@ export default function GroupDetail() {
 
           <Box mt="md" bg="#f9f9f9" p="md" radius="md" style={{ borderLeft: '4px solid #f03e3e' }}>
             <Text size="sm" c="dimmed">
-              Recuerda: evita compartir información personal en <strong>{group.name}</strong>.
+              Recuerda: evita compartir información personal en <strong>{group.name}</strong>. Nunca se sabe quién puede estar leyendo. Mantengamos <strong>{group.name}</strong> como un espacio seguro y agradable para todos.
             </Text>
           </Box>
 

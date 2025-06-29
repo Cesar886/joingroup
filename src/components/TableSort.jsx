@@ -176,6 +176,26 @@ export default function TableSort() {
       {rows.length > 0 ? (
         <>
           {rows}
+          <Paper
+            withBorder
+            radius="md"
+            shadow="xs"
+            mt="lg"
+            p="md"
+            style={{ backgroundColor: '#f9f9f9' }}
+          >
+            <Text size="md" fw={600} mb="sm">
+              <strong>Descubre y promociona grupos de Telegram</strong> en un solo lugar.
+            </Text>
+            <Text size="sm" color="dimmed" mb="xs">
+              ¿Tienes un grupo o canal? <strong>Publica tu grupo de Telegram</strong> gratis y haz que más personas lo encuentren. 
+              También puedes <strong>explorar grupos interesantes de Telegram</strong> y <strong>unirte a comunidades</strong> según tus intereses.
+              ¡Conecta, comparte y crece con nosotros!
+            </Text>
+            <Text size="xs" color="dimmed" italic>
+              <strong>Palabras clave:</strong> publicar grupo en Telegram, encontrar grupos de Telegram, compartir canal de Telegram, descubrir comunidades Telegram, promocionar grupo Telegram.
+            </Text>
+          </Paper>
         </>
       ) : (
         <Text ta="center" fw={500} c="dimmed">

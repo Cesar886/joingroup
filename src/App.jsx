@@ -2,7 +2,8 @@ import '@mantine/core/styles.css';
 import { Container } from '@mantine/core';
 import { Header } from './components/Header';
 import { HashRouter } from 'react-router-dom';
-import AppRoutes from './routes/AppRoutes'; // Asegurate de que esta ruta sea correcta
+import Footer from './pages/Footer';
+import AppRoutes from './routes/AppRoutes'; 
 
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
       <Container size="md" py="xl">
         <AppRoutes />
       </Container>
+      <Footer />
   </HashRouter>
   );
 }

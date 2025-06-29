@@ -41,9 +41,9 @@ export default function GroupForm() {
           ? null
           : 'El enlace debe comenzar con https://t.me/',
       description: (v) =>
-        v.trim().length <= 60
+        v.trim().length <= 320
           ? null
-          : 'La descripción no tiene que tener mas de 60 caracteres',
+          : 'Mas de 300 caracteres? Que, vas a escribir una novela aquí?',
     },
   });
 
@@ -148,6 +148,21 @@ export default function GroupForm() {
             label="Enlace de invitación"
             placeholder="https://t.me/..."
             required
+            value={form.values.link}
+            onChange={(event) => {
+              const input = event.currentTarget.value;
+
+              const prefix = 'https://t.me/';
+              const typedPrefix = input.slice(0, prefix.length).toLowerCase();
+              const rest = input.slice(prefix.length);
+
+              // Corrige automáticamente el inicio si coincide parcialmente
+              if (typedPrefix !== prefix && prefix.startsWith(typedPrefix)) {
+                form.setFieldValue('link', prefix + rest);
+              } else {
+                form.setFieldValue('link', input);
+              }
+            }}
             {...form.getInputProps('link')}
           />
 
@@ -173,7 +188,7 @@ export default function GroupForm() {
 
           <Textarea
             label="Descripción del grupo"
-            placeholder="⌨Máximo 60 caracteres"
+            placeholder="⌨Máximo minimo 20 caracteres"
             required
             {...form.getInputProps('description')}
           />
@@ -189,13 +204,28 @@ export default function GroupForm() {
             required
             {...form.getInputProps('categories')}
             data={[
-              'Noticias', 'Criptomonedas', 'Negocios y Finanzas', 'Desarrollo Personal',
-              'Memes y Humor', '18+', 'Películas y Series', 'Tecnología', 'Programación',
-              'Gaming', 'Ofertas y Descuentos', 'Emprendimiento', 'Libros y Lectura',
-              'Salud y Bienestar', 'Fitness', 'Música', 'Viajes', 'Idiomas', 'Educación',
-              'Oportunidades Laborales', 'Cursos y Tutoriales', 'Canales NSFW', 'Anime y Manga',
-              'Arte y Diseño', 'Productividad', 'Relaciones y Citas', 'Fútbol', 'Trading',
-              'Inversiones', 'Dropshipping', 'Telegram Bots', 'IA y ChatGPT', 'Hacking Ético',
+              'Hot',
+              'Anime y Manga',
+              'Películas y Series',
+              'Criptomonedas',
+              'XXX',
+              'Hacking Ético',
+              'Memes y Humor',
+              'Porno',
+              'Canales NSFW',
+              '18+',
+              'Fútbol',
+              'Tecnología',
+              'Programación',
+              'Gaming',
+              'Cursos y Tutoriales',
+              'Negocios y Finanzas',
+              'Packs',
+              'Trading',
+              'Ofertas y Descuentos',
+              'Emprendimiento',
+              'Relaciones y Citas',
+              'Telegram Bots'
             ]}
           />
 
