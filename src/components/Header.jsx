@@ -72,7 +72,7 @@ export function Header() {
 
           {/* Wrapper para navegación + idioma */}
             <Group
-              gap={5}
+              gap={6}
               justify="flex-end"
               align="center"
               wrap="nowrap"
