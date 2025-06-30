@@ -40,9 +40,9 @@ export default function GroupForm() {
       acceptTerms: false,
     },
     validate: {
-      email:  (v) => (/^\S+@\S+\.\S+$/.test(v) ? null : 'Email inválido'),
-      emailRepeat: (v, vals) => v === vals.email ? null : 'Los emails no coinciden',
-      acceptTerms: (v) => v ? null : 'Debes aceptar los términos',
+      email:  (v) => (/^\S+@\S+\.\S+$/.test(v) ? null : t('Email inválido')),
+      emailRepeat: (v, vals) => v === vals.email ? null : t('Los emails no coinciden'),
+      acceptTerms: (v) => v ? null : t('Debes aceptar los términos'),
 
       // 320 car máx. en cada idioma:
       descriptionEs: (v, values) => {
@@ -50,7 +50,7 @@ export default function GroupForm() {
         const hasEn = values.descriptionEn.trim().length >= 20 && values.descriptionEn.trim().length <= 320;
         return hasEs || hasEn
           ? null
-          : 'Debes escribir una descripción en español o en inglés (20–320 caracteres)';
+          : t('Debes escribir una descripción en español o en inglés (20–320 caracteres)');
       },
 
       descriptionEn: (v, values) => {
@@ -58,13 +58,13 @@ export default function GroupForm() {
         const hasEs = values.descriptionEs.trim().length >= 20 && values.descriptionEs.trim().length <= 320;
         return hasEn || hasEs
           ? null
-          : 'You must write a description in English or Spanish (20–320 characters)';
+          : t('You must write a description in English or Spanish (20–320 characters)');
       },
 
       link: (v) =>
         v.startsWith('https://t.me/')
           ? null
-          : 'El enlace debe comenzar con https://t.me/',
+          : t('El enlace debe comenzar con https://t.me/'),
     },
   });
 
@@ -77,8 +77,6 @@ export default function GroupForm() {
 
   const handleOpenCaptcha = () => {
     const validation = form.validate(); // ✅ Asigna correctamente
-    console.log('¿Formulario válido?', !validation.hasErrors);
-    console.log('Errores de validación:', validation.errors); // ✅ Ahora sí existe
     if (!validation.hasErrors) {
       setModalOpen(true);
     }
@@ -98,8 +96,8 @@ export default function GroupForm() {
 
       if (!existing.empty) {
         showNotification({
-          title: 'Enlace duplicado',
-          message: 'Este grupo ya fue publicado antes 📌',
+          title: t('Enlace duplicado'),
+          message: t('Este grupo ya fue publicado antes 📌'),
           color: 'red',
         });
         return;
@@ -111,8 +109,8 @@ export default function GroupForm() {
 
       if (!slugSnap.empty) {
         showNotification({
-          title: 'Nombre duplicado',
-          message: 'Ya existe un grupo con ese nombre 📌',
+          title: t('Nombre duplicado'),
+          message: t('Ya existe un grupo con ese nombre 📌'),
           color: 'red',
         });
         return;
@@ -150,14 +148,13 @@ export default function GroupForm() {
 
       form.reset();
       setCaptchaValues(null);
-      console.log('publicando...')
       navigate(`/grupo/${slug}`); // ✅ Redirige al grupo recién creado
     } catch (error) {
       console.error(error);
       setIsLoading(false); 
       showNotification({
-        title: 'Error',
-        message: 'No se pudo guardar.',
+        title: t('Error'),
+        message: t('No se pudo guardar.'),
         color: 'red',
         position: 'top-right',
       });
@@ -186,8 +183,8 @@ export default function GroupForm() {
     } catch (e) {
       console.warn('DeepL error:', e.message);
       showNotification({
-        title: 'Traducción no disponible',
-        message: 'No se pudo traducir automáticamente. Escribe la traducción manualmente.',
+        title: t('Traducción no disponible'),
+        message: t('No se pudo traducir automáticamente. Escribe la traducción manualmente.'),
         color: 'yellow',
       });
       return '';
@@ -225,25 +222,25 @@ export default function GroupForm() {
 
   return (
     <>
-      <Title order={2} mb="md">Publica tu Grupo</Title>
+      <Title order={2} mb="md">{t('Publica tu Grupo')}</Title>
         <form
           onSubmit={async (e) => {
             e.preventDefault();
             const validation = form.validate();
             if (!validation.hasErrors) {
-              await handleVerify('dev-bypass'); // ✅ ahora sí espera el proceso completo
+              setModalOpen(true); // Abre el modal con el captcha real
             }
           }}
         >
          <Stack>
           <TextInput
-            label="Nombre del Grupo de Telegram"
+            label={t("Nombre del Grupo de Telegram")}
             required
             {...form.getInputProps('name')}
           />
 
           <TextInput
-            label="Enlace de invitación"
+            label={t("Enlace de invitación")}
             placeholder="https://t.me/..."
             required
             value={form.values.link}
@@ -265,32 +262,32 @@ export default function GroupForm() {
           />
 
           <Select
-            label="¿ACEPTAS CONTENIDO SEXUAL o PARA ADULTOS?"
-            data={['Sí', 'No']}
+            label={t("¿ACEPTAS CONTENIDO SEXUAL o PARA ADULTOS?")}
+            data={[t('Sí'), t('No')]}
             required
             {...form.getInputProps('content18')}
           />
 
           <TextInput
-            label="Tu e-mail"
+            label={t("Tu e-mail")}
             placeholder="email@email.com"
             required
             {...form.getInputProps('email')}
           />
 
           <TextInput
-            label="Repite tu e-mail"
+            label={t("Repite tu e-mail")}
             required
             {...form.getInputProps('emailRepeat')}
           />
-          {/* Si la UI está en español */}
-          {baseLang === 'es' ? (
-            <Textarea
-              label="Descripción"
+
+          <Textarea
+              label="Descripción (Español)"
               placeholder="⌨ Máximo 320 caracteres"
-              required
+              required={baseLang === 'es'}
               autosize
               minRows={3}
+              style={{ display: baseLang === 'es' ? 'block' : 'none' }}
               value={form.values.descriptionEs}
               onChange={(e) => {
                 form.setFieldValue('descriptionEs', e.currentTarget.value);
@@ -298,14 +295,15 @@ export default function GroupForm() {
               }}
               error={form.errors.descriptionEs}
             />
-          ) : (
-            /* Si la UI está en inglés */
+
+            {/* Inglés siempre presente, pero oculto si no es el idioma activo */}
             <Textarea
-              label="Description"
+              label="Description (English)"
               placeholder="⌨ Maximum 320 characters"
-              required
+              required={baseLang === 'en'}
               autosize
               minRows={3}
+              style={{ display: baseLang === 'en' ? 'block' : 'none' }}
               value={form.values.descriptionEn}
               onChange={(e) => {
                 form.setFieldValue('descriptionEn', e.currentTarget.value);
@@ -313,52 +311,50 @@ export default function GroupForm() {
               }}
               error={form.errors.descriptionEn}
             />
-          )}
-
           <TextInput
-            label="Tu ciudad (opcional)"
+            label={t("Tu ciudad (opcional)")}
             {...form.getInputProps('city')}
           />
 
           <Select
-            label="Categorías"
-            placeholder="Selecciona una categoría"
+            label={t("Categorías")}
+            placeholder={t("Selecciona una categoría")}
             required
             {...form.getInputProps('categories')}
             data={[
               'Hot',
               'Anime y Manga',
-              'Películas y Series',
-              'Criptomonedas',
+              t('Películas y Series'),
+              t('Criptomonedas'),
               'XXX',
               'Hacking',
-              'Memes y Humor',
-              'Porno',
-              'Canales NSFW',
+              t('Memes y Humor'),
+              t('Porno'),
+              t('Canales NSFW'),
               '18+',
-              'Fútbol',
-              'Tecnología',
-              'Programación',
+              t('Fútbol'),
+              t('Tecnología'),
+              t('Programación'),
               'Gaming',
-              'Cursos y Tutoriales',
-              'Negocios y Finanzas',
+              t('Cursos y Tutoriales'),
+              t('Negocios y Finanzas'),
               'Packs',
               'Trading',
-              'Ofertas y Descuentos',
-              'Emprendimiento',
-              'Relaciones y Citas',
+              t('Ofertas y Descuentos'),
+              t('Emprendimiento'),
+              t('Relaciones y Citas'),
               'Telegram Bots'
             ]}
           />
 
           <Checkbox
-            label="He leído y acepto las condiciones de uso y la privacidad"
+            label={t("He leído y acepto las condiciones de uso y la privacidad")}
             required
             {...form.getInputProps('acceptTerms', { type: 'checkbox' })}
           />
 
           <Button type="submit" mt="md" loading={isLoading}>
-            Publicar
+            {t('Publicar')}
           </Button>
         </Stack>
       </form>

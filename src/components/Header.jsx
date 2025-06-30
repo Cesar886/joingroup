@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import { IconChevronDown } from '@tabler/icons-react';
 import {
   ActionIcon,
   Center,

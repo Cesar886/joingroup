@@ -12,33 +12,37 @@ import {
   Flex,
   Image,
 } from '@mantine/core';
-import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './Footer.module.css';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-const data = [
-  {
-    title: 'Sobre Nosotros',
-    links: [
-      {
-        label: 'Contáctanos por WhatsApp',
-        link: 'https://wa.me/528261308623?text=Hola,%20quiero%20más%20información',
-      },
-      { label: 'Términos y condiciones', link: '/terminos' },
-      { label: 'Política de privacidad', link: '/privacidad' },
-      { label: 'Acerca de JoinGroup', link: '/acerca' },
-    ],
-  },
-  {
-    title: 'Comunidad',
-    links: [
-      { label: 'Instagram Oficial', link: 'https://www.instagram.com/daniel110a/' },
-      { label: 'Grupo en Telegram', link: 'https://t.me/Photosoficialbot' },
-    ],
-  },
-];
+
 
 export default function Footer() {
+  const { t, i18n } = useTranslation();
+  
+  const data = [
+    {
+      title: t('Sobre Nosotros'),
+      links: [
+        {
+          label: t('Contáctanos por WhatsApp'),
+          link: 'https://wa.me/528261308623?text=Hola,%20quiero%20más%20información',
+        },
+        { label: t('Términos y condiciones'), link: '/terminos' },
+        { label: t('Política de privacidad'), link: '/privacidad' },
+        { label: t('Acerca de JoinGroup'), link: '/acerca' },
+      ],
+    },
+    {
+      title: 'Comunidad',
+      links: [
+        { label: t('Instagram Oficial'), link: 'https://www.instagram.com/daniel110a/' },
+        { label: t('Grupo en Telegram'), link: 'https://t.me/Photosoficialbot' },
+      ],
+    },
+  ];
+  
   return (
     <footer className={classes.footer}>
       <Container size="lg" className={classes.inner}>
@@ -46,7 +50,7 @@ export default function Footer() {
           <Stack spacing="xs" className={classes.logoWrapper}>
             <Image src="/JoinGroups.png" alt="Logo de JoinGroup" className={classes.logo}/>
             <Text size="sm" c="dimmed" className={classes.description} ta={{ base: 'center', sm: 'left' }}>
-              JoinGroup es tu herramienta para administrar, automatizar y organizar grupos de Telegram de forma eficiente.
+              JoinGroup {t('es tu herramienta para administrar, automatizar y organizar grupos de Telegram de forma eficiente.')}
             </Text>
           </Stack>
 
@@ -89,7 +93,7 @@ export default function Footer() {
       <Container size="lg" className={classes.afterFooter} mt="xl">
         <Flex justify="space-between" align="center" direction={{ base: 'column', sm: 'row' }} gap="sm">
           <Text c="dimmed" size="sm">
-            © {new Date().getFullYear()} joingroups.pro. Todos los derechos reservados.
+            © {new Date().getFullYear()} joingroups.pro. {t('Todos los derechos reservados.')}
           </Text>
 
           <Group gap={8} className={classes.social} wrap="nowrap">

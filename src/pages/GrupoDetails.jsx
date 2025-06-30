@@ -11,8 +11,11 @@ import {
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import slugify from '../assets/slugify';     // ⬅️ el mismo helper que usas en TableSort
+import { useTranslation } from 'react-i18next';
+
 
 export default function GroupDetail() {
+  const { t, i18n } = useTranslation();
   const { id } = useParams();                // id === slug recibido en la URL
   const [group, setGroup]   = useState(null);
   const [loading, setLoading]   = useState(true);
@@ -81,10 +84,12 @@ export default function GroupDetail() {
     fetchGroup();
   }, [id]);
 
+  const baseLang = i18n.language.split('-')[0];
+
   /* -------------- render -------------- */
-  if (loading)   return <Center><Text>Cargando grupo...</Text></Center>;
+  if (loading)   return <Center><Text>{t('Cargando grupo...')}</Text></Center>;
   if (notFound || !group)
-    return <Center><Text>Grupo no encontrado.</Text></Center>;
+    return <Center><Text>{t('Grupo no encontrado.')}</Text></Center>;
 
   return (
     <Container size="sm" py="xl">
@@ -92,23 +97,24 @@ export default function GroupDetail() {
         <Stack spacing="md">
           <Title order={2}>{group.name}</Title>
           <Text size="sm" c="dimmed">
-            El grupo tiene <strong>{group.visitas || 0} visitas</strong>
+            {t('El grupo tiene')} <strong>{group.visitas || 0} {t('visitas')}</strong>
           </Text>
 
           <Divider my="sm" />
 
           <Box>
-            <Text fw={600} mb={4}>Descripción:</Text>
-            <Text>
-              {typeof group.description === 'object'
-                ? group.description.es || group.description.en || 'Sin descripción'
-                : group.description || 'Sin descripción'}
-            </Text>
+            <Text fw={600} mb={4}>{t('Descripción:')}</Text>
+          <Text>
+            {typeof group.description === 'object'
+              ? group.description[baseLang] || group.description.es || group.description.en || t('Sin descripción')
+              : group.description || t('Sin descripción')}
+          </Text>
+
           </Box>
 
           <Box mt="md" bg="#f9f9f9" p="md" radius="md" style={{ borderLeft: '4px solid rgb(33, 85, 255)' }}>
             <Text size="sm" c="dimmed">
-              Recuerda: evita compartir información personal en <strong>{group.name}</strong>. Nunca se sabe quién puede estar leyendo. Mantengamos <strong>{group.name}</strong> como un espacio seguro y agradable para todos.
+              {t('Recuerda: evita compartir información personal en')} <strong>{group.name}</strong>. {t('Nunca se sabe quién puede estar leyendo. Mantengamos')} <strong>{group.name}</strong> {t('como un espacio seguro y agradable para todos.')}
             </Text>
           </Box>
 
@@ -117,17 +123,9 @@ export default function GroupDetail() {
               variant="light"
               color="red"
               size="xs"
-              onClick={() => sendTelegramMessage('Enlace roto')}
+              onClick={() => sendTelegramMessage('Reporte Enlace Roto')}
             >
-              Enlace roto
-            </Button>
-            <Button
-              variant="outline"
-              color="gray"
-              size="xs"
-              onClick={() => sendTelegramMessage('Reporte')}
-            >
-              Reportar
+              {t('Reportar Enlace roto')}
             </Button>
           </Group>
 
@@ -143,7 +141,7 @@ export default function GroupDetail() {
             color="blue"
             disabled={!group.link}
           >
-            {group.link ? 'Telegram - ACCEDER AL GRUPO' : 'Enlace no disponible'}
+            {group.link ? t('Telegram - ACCEDER AL GRUPO') : t('Enlace no disponible')}
           </Button>
         </Stack>
       </Paper>
@@ -167,10 +165,10 @@ export default function GroupDetail() {
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.description);
-      showNotification({ title: 'Reporte enviado', message: '¡Gracias!', color: 'green' });
+      showNotification({ title: t('Reporte enviado'), message: t('¡Gracias!'), color: 'green' });
     } catch (e) {
       console.error(e);
-      showNotification({ title: 'Error', message: 'No se pudo enviar.', color: 'red' });
+      showNotification({ title: t('Error'), message: t('No se pudo enviar.'), color: 'red' });
     }
   }
 }
