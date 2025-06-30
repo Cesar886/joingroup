@@ -176,6 +176,10 @@ export default function TableSort() {
               </Table.Td>
             </Table.Tr>
             <Table.Tr>
+              <Table.Td width="43%">
+                <Text>{t(row.categories)}</Text>
+                <Text size="xs" c="dimmed">{t('Categoría')}</Text>
+              </Table.Td>
               <Table.Td width="23%">
                 <Text>
                   {row.content18 === 'Sí'
@@ -185,10 +189,6 @@ export default function TableSort() {
                       : 'Apto para todo público'}
                 </Text>
                 <Text size="xs" c="dimmed">{t('Contenido')}</Text>
-              </Table.Td>
-              <Table.Td width="43%">
-                <Text>{t(row.categories)}</Text>
-                <Text size="xs" c="dimmed">{t('Categoría')}</Text>
               </Table.Td>
               <Table.Td width="34%">
                 <Text>{row.visitas}</Text>
