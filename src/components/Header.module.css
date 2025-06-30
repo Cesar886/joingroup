@@ -58,23 +58,37 @@
 
 /* NUEVO: Reorganizar header en móviles muy estrechos */
 @media (max-width: 500px) {
-  .inner {                   /* apila logo + navegación + botón idioma */
-    flex-direction: column;
-    align-items: flex-start;
-    height: auto;            /* permite que crezca en vertical */
+  .inner {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: auto;
     gap: 0.5rem;
+    overflow-x: auto;  /* permite que se desplace si no cabe */
   }
 
-  .logoLink {
-    margin-bottom: 0.25rem;
+  .logoText {
+    font-size: 16px;
+    white-space: nowrap;
   }
 
   .link {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.5rem;
-    color: #1a1b1e  ;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.4rem;
+    white-space: nowrap; /* evita que el texto se divida */
   }
 
-  /* Opcional: que los enlaces ocupen toda la línea para facilitar el toque */
-  /* .link { display: block; width: 100%; } */
+  .ledBorder {
+    flex-shrink: 0; /* evita que el botón animado se achique */
+  }
+
+  .logoLink {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+  .mantine-ActionIcon-root {
+    width: 30px !important;
+    height: 30px !important;
+  }
 }

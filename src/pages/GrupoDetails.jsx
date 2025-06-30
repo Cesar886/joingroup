@@ -99,7 +99,11 @@ export default function GroupDetail() {
 
           <Box>
             <Text fw={600} mb={4}>Descripción:</Text>
-            <Text>{group.description}</Text>
+            <Text>
+              {typeof group.description === 'object'
+                ? group.description.es || group.description.en || 'Sin descripción'
+                : group.description || 'Sin descripción'}
+            </Text>
           </Box>
 
           <Box mt="md" bg="#f9f9f9" p="md" radius="md" style={{ borderLeft: '4px solid rgb(33, 85, 255)' }}>

@@ -15,13 +15,14 @@ import {
 import { showNotification } from '@mantine/notifications';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import slugify from '../assets/slugify'
 import { SegmentedControl } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 
 export default function GroupForm() {
+  const [isLoading, setIsLoading] = useState(false);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
@@ -44,16 +45,22 @@ export default function GroupForm() {
       acceptTerms: (v) => v ? null : 'Debes aceptar los términos',
 
       // 320 car máx. en cada idioma:
-      descriptionEs: (v) =>
-        v.trim().length >= 20 && v.trim().length <= 320
+      descriptionEs: (v, values) => {
+        const hasEs = v.trim().length >= 20 && v.trim().length <= 320;
+        const hasEn = values.descriptionEn.trim().length >= 20 && values.descriptionEn.trim().length <= 320;
+        return hasEs || hasEn
           ? null
-          : 'La descripción en español debe tener entre 20 y 320 caracteres',
+          : 'Debes escribir una descripción en español o en inglés (20–320 caracteres)';
+      },
 
-      descriptionEn: (v) =>
-        v.trim().length >= 20 && v.trim().length <= 320
+      descriptionEn: (v, values) => {
+        const hasEn = v.trim().length >= 20 && v.trim().length <= 320;
+        const hasEs = values.descriptionEs.trim().length >= 20 && values.descriptionEs.trim().length <= 320;
+        return hasEn || hasEs
           ? null
-          : 'The English description must be between 20 and 320 characters',
-      
+          : 'You must write a description in English or Spanish (20–320 characters)';
+      },
+
       link: (v) =>
         v.startsWith('https://t.me/')
           ? null
@@ -69,8 +76,10 @@ export default function GroupForm() {
 
 
   const handleOpenCaptcha = () => {
-    const isValid = form.validate();
-    if (!isValid.hasErrors) {
+    const validation = form.validate(); // ✅ Asigna correctamente
+    console.log('¿Formulario válido?', !validation.hasErrors);
+    console.log('Errores de validación:', validation.errors); // ✅ Ahora sí existe
+    if (!validation.hasErrors) {
       setModalOpen(true);
     }
   };
@@ -78,17 +87,13 @@ export default function GroupForm() {
   const handleVerify = async (token) => {
     setCaptchaValues(token);
     setModalOpen(false);
+    setIsLoading(true); 
 
     try {
-      // Normalizar el link
       const rawLink = form.values.link.trim().toLowerCase();
       const cleanLink = rawLink.endsWith('/') ? rawLink.slice(0, -1) : rawLink;
 
-      // Verificar duplicado
-      const q = query(
-        collection(db, 'groups'),
-        where('link', '==', cleanLink)
-      );
+      const q = query(collection(db, 'groups'), where('link', '==', cleanLink));
       const existing = await getDocs(q);
 
       if (!existing.empty) {
@@ -100,9 +105,7 @@ export default function GroupForm() {
         return;
       }
 
-      // ¿Ya existe un grupo con el mismo slug?
       const slug = slugify(form.values.name);
-
       const qSlug = query(collection(db, 'groups'), where('slug', '==', slug));
       const slugSnap = await getDocs(qSlug);
 
@@ -113,16 +116,30 @@ export default function GroupForm() {
           color: 'red',
         });
         return;
-      } 
+      }
 
-      // Guardar grupo
+      let descEs = form.values.descriptionEs.trim();
+      let descEn = form.values.descriptionEn.trim();
+
+      if (!descEn && descEs.length >= 20) {
+        descEn = await translateText(descEs, 'ES', 'EN');
+      }
+      if (!descEs && descEn.length >= 20) {
+        descEs = await translateText(descEn, 'EN', 'ES');
+      }
+
+      const {
+        descriptionEs,
+        descriptionEn,
+        ...cleanValues
+      } = form.values;
+
       await addDoc(collection(db, 'groups'), {
-        ...form.values,          // ⚠️  ya no incluye las descripciones sueltas
+        ...cleanValues, // sin descriptionEs ni descriptionEn
         description: {
-          es: form.values.descriptionEs.trim(),
-          en: form.values.descriptionEn.trim(),
+          es: descEs,
+          en: descEn,
         },
-        // lo demás igual:
         link: cleanLink,
         destacado: false,
         visitas: 0,
@@ -131,22 +148,13 @@ export default function GroupForm() {
         slug,
       });
 
-
-      // ✅  Redirige al detalle del grupo (usa el slug)
-      navigate(`/grupo/${slug}`);
-      
-
-      showNotification({
-        title: 'Grupo enviado',
-        message: 'Guardado correctamente. Será revisado pronto y en menos de 8 horas estará disponible.',
-        color: 'green',
-        position: 'top-right',
-      });
-
       form.reset();
       setCaptchaValues(null);
+      console.log('publicando...')
+      navigate(`/grupo/${slug}`); // ✅ Redirige al grupo recién creado
     } catch (error) {
       console.error(error);
+      setIsLoading(false); 
       showNotification({
         title: 'Error',
         message: 'No se pudo guardar.',
@@ -156,23 +164,38 @@ export default function GroupForm() {
     }
   };
 
-  async function translateText(text, sourceLang, targetLang) {
-    const res = await fetch('https://libretranslate.de/translate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        q: text,
-        source: sourceLang,
-        target: targetLang,
-        format: 'text',
-      }),
-    });
 
-    const data = await res.json();
-      return data.translatedText;
+  const DEEPL_PROXY_URL = 'http://137.184.102.7:3030/translate'; // sin HTTPS si no tienes SSL
+
+
+  async function translateText(text, source, target) {
+    try {
+      const res = await fetch(DEEPL_PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, source, target }),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`HTTP ${res.status}: ${err}`);
+      }
+
+      const data = await res.json();
+      return data.translated;  // Aquí está el cambio importante
+    } catch (e) {
+      console.warn('DeepL error:', e.message);
+      showNotification({
+        title: 'Traducción no disponible',
+        message: 'No se pudo traducir automáticamente. Escribe la traducción manualmente.',
+        color: 'yellow',
+      });
+      return '';
     }
+  }
 
-    function useDebouncedCallback(callback, delay = 800) {
+
+  function useDebouncedCallback(callback, delay = 800) {
     const timeout = useRef(null);
 
     return (...args) => {
@@ -180,19 +203,20 @@ export default function GroupForm() {
       timeout.current = setTimeout(() => callback(...args), delay);
     };
   }
+  
 
   const debouncedTranslate = useDebouncedCallback(async () => {
     const { descriptionEs, descriptionEn } = form.values;
 
     // Si la UI está en español y falta el inglés…
     if (baseLang === 'es' && descriptionEs.trim().length >= 20 && !descriptionEn.trim()) {
-      const translated = await translateText(descriptionEs, 'es', 'en');
+      const translated = await translateText(descriptionEs, 'ES', 'EN');
       form.setFieldValue('descriptionEn', translated);
     }
 
     // Si la UI está en inglés y falta el español…
     if (baseLang === 'en' && descriptionEn.trim().length >= 20 && !descriptionEs.trim()) {
-      const translated = await translateText(descriptionEn, 'en', 'es');
+      const translated = await translateText(descriptionEn, 'EN', 'ES');
       form.setFieldValue('descriptionEs', translated);
     }
   }, 900);          // 900 ms tras la última tecla
@@ -202,8 +226,16 @@ export default function GroupForm() {
   return (
     <>
       <Title order={2} mb="md">Publica tu Grupo</Title>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <Stack>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const validation = form.validate();
+            if (!validation.hasErrors) {
+              await handleVerify('dev-bypass'); // ✅ ahora sí espera el proceso completo
+            }
+          }}
+        >
+         <Stack>
           <TextInput
             label="Nombre del Grupo de Telegram"
             required
@@ -325,7 +357,9 @@ export default function GroupForm() {
             {...form.getInputProps('acceptTerms', { type: 'checkbox' })}
           />
 
-          <Button onClick={handleOpenCaptcha} mt="md">Publicar</Button>
+          <Button type="submit" mt="md" loading={isLoading}>
+            Publicar
+          </Button>
         </Stack>
       </form>
 

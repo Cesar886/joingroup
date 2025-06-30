@@ -71,13 +71,14 @@ export function Header() {
           </NavLink>
 
           {/* Wrapper para navegación + idioma */}
-          <Group
-            gap="xs"
-            justify="flex-end"
-            align="center"
-            wrap="wrap"
-            style={{ flex: 1 }}
-          >
+            <Group
+              gap={5}
+              justify="flex-end"
+              align="center"
+              wrap="nowrap"
+              style={{ flex: 1, overflowX: 'auto' }}
+            >
+
             {items}
 
             <Tooltip label={tooltipText} withArrow>
