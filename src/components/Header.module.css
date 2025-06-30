@@ -1,7 +1,7 @@
 .header {
-  position: sticky; /* o fixed si lo prefieres fijo completamente */
+  position: sticky;          /* o fixed si lo prefieres fijo completamente */
   top: 0;
-  z-index: 1000; /* para que esté encima del contenido */
+  z-index: 1000;             /* para que esté encima del contenido */
   background-color: var(--mantine-color-body);
   border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -17,14 +17,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;                /* nuevo: espacio consistente entre logo y navegación */
 }
 
 .link {
   text-decoration: none;
   padding: 0.5rem;
   display: inline-block;
-  transition: all 0.2s;
-  color: #1a1b1e; /* color gris oscuro, puedes cambiarlo */
+  transition: color 0.2s;
+  color: #1a1b1e;
 }
 
 .link:hover {
@@ -42,15 +43,38 @@
 }
 
 .logoText {
-  font-size: 24px;      /* más grande en PC */
-  font-weight: 600;     /* más grueso en PC */
+  font-size: 24px;
+  font-weight: 600;
   color: #1a1b1e;
 }
 
+/* ----------  AJUSTES MÓVILES  ---------- */
 @media (max-width: 768px) {
   .logoText {
-    font-size: 16px;     /* más pequeño en móviles */
-    font-weight: 600;    /* un poco menos grueso */
-    color: #1a1b1e;      /* opcional: color más llamativo en móvil */
+    font-size: 16px;
+    font-weight: 600;
   }
+}
+
+/* NUEVO: Reorganizar header en móviles muy estrechos */
+@media (max-width: 500px) {
+  .inner {                   /* apila logo + navegación + botón idioma */
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;            /* permite que crezca en vertical */
+    gap: 0.5rem;
+  }
+
+  .logoLink {
+    margin-bottom: 0.25rem;
+  }
+
+  .link {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.5rem;
+    color: #1a1b1e  ;
+  }
+
+  /* Opcional: que los enlaces ocupen toda la línea para facilitar el toque */
+  /* .link { display: block; width: 100%; } */
 }

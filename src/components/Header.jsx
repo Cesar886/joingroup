@@ -1,55 +1,32 @@
 import { NavLink } from 'react-router-dom';
 import { IconChevronDown } from '@tabler/icons-react';
-import { Center, Container, Group, Menu } from '@mantine/core';
+import {
+  ActionIcon,
+  Center,
+  Container,
+  Group,
+  Menu,
+  Tooltip,
+  rem,
+} from '@mantine/core';
 import classes from './Header.module.css';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-
-
-
 export function Header() {
   const { t, i18n } = useTranslation();
+  const currentLang = i18n.language.startsWith('en') ? 'en' : 'es';
+  const nextLang = currentLang === 'es' ? 'en' : 'es';
+
+  const flagEmoji = nextLang === 'es' ? '🇺🇸' : '🇲🇽';
+  const tooltipText = nextLang === 'es' ? 'Cambiar a español' : 'Switch to English';
+
   const links = [
-    { link: '/', label: t('Inicio (header)') },
+    { link: '/', label: t('Inicio') },
     { link: '/form', label: t('Publica Tu Grupo'), highlight: true },
   ];
 
   const items = links.map((link) => {
-    const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>
-        <NavLink
-          to={item.link}
-          className={({ isActive }) =>
-            isActive ? `${classes.link} ${classes.active}` : classes.link
-          }
-        >
-          {item.label}
-        </NavLink>
-      </Menu.Item>
-    ));
-
-    if (menuItems) {
-      return (
-        <Menu
-          key={link.label}
-          trigger="hover"
-          transitionProps={{ exitDuration: 0 }}
-          withinPortal
-        >
-          <Menu.Target>
-            <span className={classes.link}>
-              <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
-                <IconChevronDown size={14} stroke={1.5} />
-              </Center>
-            </span>
-          </Menu.Target>
-          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
-        </Menu>
-      );
-    }
-
     const navLink = (
       <NavLink
         key={link.link}
@@ -62,7 +39,6 @@ export function Header() {
       </NavLink>
     );
 
-    // Agregar animación solo al botón destacado
     return link.highlight ? (
       <motion.div
         key={link.link}
@@ -75,7 +51,6 @@ export function Header() {
     ) : (
       navLink
     );
-
   });
 
   return (
@@ -83,7 +58,7 @@ export function Header() {
       <Container size="md">
         <div className={classes.inner}>
           <NavLink to="/" className={classes.logoLink}>
-            <Group align="center" gap="xs" style={{ textDecoration: 'none' }}>
+            <Group align="center" gap="xs" wrap="nowrap">
               <img
                 src="/JoinGroups.png"
                 alt="Join Group Logo"
@@ -95,9 +70,28 @@ export function Header() {
             </Group>
           </NavLink>
 
-          <Group gap={4}>{items}</Group>
-          <button onClick={() => i18n.changeLanguage('en')}>English</button>
-          <button onClick={() => i18n.changeLanguage('es')}>Español</button>
+          {/* Wrapper para navegación + idioma */}
+          <Group
+            gap="xs"
+            justify="flex-end"
+            align="center"
+            wrap="wrap"
+            style={{ flex: 1 }}
+          >
+            {items}
+
+            <Tooltip label={tooltipText} withArrow>
+              <ActionIcon
+                size="lg"
+                radius="xl"
+                variant="subtle"
+                onClick={() => i18n.changeLanguage(nextLang)}
+                style={{ fontSize: rem(24) }}
+              >
+                {flagEmoji}
+              </ActionIcon>
+            </Tooltip>
+          </Group>
         </div>
       </Container>
     </header>

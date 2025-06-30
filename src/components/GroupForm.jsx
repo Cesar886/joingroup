@@ -15,11 +15,16 @@ import {
 import { showNotification } from '@mantine/notifications';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import slugify from '../assets/slugify'
+import { SegmentedControl } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+
 
 export default function GroupForm() {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
   const form = useForm({
     initialValues: {
       name: '',
@@ -60,6 +65,8 @@ export default function GroupForm() {
   const captchaRef = useRef();
   const [modalOpen, setModalOpen] = useState(false);
   const [captchaValues, setCaptchaValues] = useState(null);
+  const [activeLang] = useState(baseLang);
+
 
   const handleOpenCaptcha = () => {
     const isValid = form.validate();
@@ -149,6 +156,49 @@ export default function GroupForm() {
     }
   };
 
+  async function translateText(text, sourceLang, targetLang) {
+    const res = await fetch('https://libretranslate.de/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        q: text,
+        source: sourceLang,
+        target: targetLang,
+        format: 'text',
+      }),
+    });
+
+    const data = await res.json();
+      return data.translatedText;
+    }
+
+    function useDebouncedCallback(callback, delay = 800) {
+    const timeout = useRef(null);
+
+    return (...args) => {
+      clearTimeout(timeout.current);
+      timeout.current = setTimeout(() => callback(...args), delay);
+    };
+  }
+
+  const debouncedTranslate = useDebouncedCallback(async () => {
+    const { descriptionEs, descriptionEn } = form.values;
+
+    // Si la UI está en español y falta el inglés…
+    if (baseLang === 'es' && descriptionEs.trim().length >= 20 && !descriptionEn.trim()) {
+      const translated = await translateText(descriptionEs, 'es', 'en');
+      form.setFieldValue('descriptionEn', translated);
+    }
+
+    // Si la UI está en inglés y falta el español…
+    if (baseLang === 'en' && descriptionEn.trim().length >= 20 && !descriptionEs.trim()) {
+      const translated = await translateText(descriptionEn, 'en', 'es');
+      form.setFieldValue('descriptionEs', translated);
+    }
+  }, 900);          // 900 ms tras la última tecla
+
+
+
   return (
     <>
       <Title order={2} mb="md">Publica tu Grupo</Title>
@@ -201,25 +251,37 @@ export default function GroupForm() {
             required
             {...form.getInputProps('emailRepeat')}
           />
-
-          <Textarea
-            label="Descripción en español"
-            placeholder="⌨ Máximo 320 caracteres"
-            required
-            autosize
-            minRows={3}
-            {...form.getInputProps('descriptionEs')}
-          />
-
-          <Textarea
-            label="Description in English"
-            placeholder="⌨ Maximum 320 characters"
-            required
-            autosize
-            minRows={3}
-            {...form.getInputProps('descriptionEn')}
-          />
-
+          {/* Si la UI está en español */}
+          {baseLang === 'es' ? (
+            <Textarea
+              label="Descripción"
+              placeholder="⌨ Máximo 320 caracteres"
+              required
+              autosize
+              minRows={3}
+              value={form.values.descriptionEs}
+              onChange={(e) => {
+                form.setFieldValue('descriptionEs', e.currentTarget.value);
+                debouncedTranslate();
+              }}
+              error={form.errors.descriptionEs}
+            />
+          ) : (
+            /* Si la UI está en inglés */
+            <Textarea
+              label="Description"
+              placeholder="⌨ Maximum 320 characters"
+              required
+              autosize
+              minRows={3}
+              value={form.values.descriptionEn}
+              onChange={(e) => {
+                form.setFieldValue('descriptionEn', e.currentTarget.value);
+                debouncedTranslate();
+              }}
+              error={form.errors.descriptionEn}
+            />
+          )}
 
           <TextInput
             label="Tu ciudad (opcional)"
