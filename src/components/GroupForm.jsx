@@ -11,6 +11,7 @@ import {
   Group,
   Stack,
   Modal,
+  Collapse,
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { collection, addDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
@@ -207,47 +208,46 @@ export default function GroupForm() {
         const source = descEs ? 'es' : 'en';
         const target = descEs ? 'en' : 'es';
 
-        let attempts = 0;
-        let consecutiveFailures = 0;
-        const maxAttempts = 30;
-        const maxConsecutiveFailures = 10;
-        const retryIntervalMs = 5000;
+      let attempts = 0;
+      const maxAttempts = 20;
+      const retryDelayMs = 3000;
 
-        const intervalId = setInterval(async () => {
+      async function tryTranslationLoop() {
+        while (attempts < maxAttempts) {
           attempts++;
 
+          if (!translator || !isTranslatorReady) {
+            console.warn(`⏳ Traductor aún no está listo (intento ${attempts})`);
+            await new Promise((res) => setTimeout(res, retryDelayMs));
+            continue;
+          }
+
           try {
-            if (!translator || !isTranslatorReady) {
-              console.warn("⏸ Traductor ya no disponible");
-              clearInterval(intervalId);
-              return;
-            }
-
             const translated = await translateText(text, source, target);
-
 
             if (translated && translated.length >= 20) {
               await updateDoc(docRef, {
                 [`description.${target.toLowerCase()}`]: translated,
                 translationPending: false,
               });
-              console.log(`✅ Traducción exitosa en intento ${attempts}`);
-              clearInterval(intervalId); // ✅ Detenemos
-              return;
+              console.log(`✅ Traducción completada en intento ${attempts}`);
+              break;
+            } else {
+              console.warn(`⚠ Traducción vacía o corta (intento ${attempts})`);
             }
-
-            console.warn(`⚠ Traducción vacía o muy corta. Intento ${attempts}`);
-            consecutiveFailures++;
           } catch (e) {
-            consecutiveFailures++;
-            console.error(`❌ Fallo al traducir (intento ${attempts}):`, e.message);
+            console.error(`❌ Fallo en intento ${attempts}:`, e.message);
           }
 
-          if (attempts >= maxAttempts || consecutiveFailures >= maxConsecutiveFailures) {
-            console.warn('⛔ Se alcanzó el máximo de intentos o errores consecutivos');
-            clearInterval(intervalId);
-          }
-        }, retryIntervalMs);
+          await new Promise((res) => setTimeout(res, retryDelayMs));
+        }
+
+        if (attempts >= maxAttempts) {
+          console.warn('⛔ Traducción automática fallida después de 20 intentos');
+        }
+      }
+
+      tryTranslationLoop();
 
       }
     } catch (error) {
@@ -277,18 +277,17 @@ export default function GroupForm() {
   const debouncedTranslate = useDebouncedCallback(async () => {
     const { descriptionEs, descriptionEn } = form.values;
 
-    // Si la UI está en español y falta el inglés…
     if (baseLang === 'es' && descriptionEs.trim().length >= 20 && !descriptionEn.trim()) {
       const translated = await translateText(descriptionEs, 'es', 'en');
-      form.setFieldValue('descriptionEn', translated);
+      if (translated) form.setFieldValue('descriptionEn', translated);
     }
 
-    // Si la UI está en inglés y falta el español…
     if (baseLang === 'en' && descriptionEn.trim().length >= 20 && !descriptionEs.trim()) {
       const translated = await translateText(descriptionEn, 'en', 'es');
-      form.setFieldValue('descriptionEs', translated);
+      if (translated) form.setFieldValue('descriptionEs', translated);
     }
-  }, 900);          // 900 ms tras la última tecla
+  }, 900);
+         // 900 ms tras la última tecla
 
 
 
@@ -353,36 +352,43 @@ export default function GroupForm() {
             {...form.getInputProps('emailRepeat')}
           />
 
-          <Textarea
+          {/* Español visible solo si UI en español */}
+          <Collapse in={baseLang === 'es'}>
+            <Textarea
               label="Descripción (Español)"
               placeholder="⌨ Máximo 320 caracteres"
               required={baseLang === 'es'}
               autosize
               minRows={3}
-              style={{ display: baseLang === 'es' ? 'block' : 'none' }}
               value={form.values.descriptionEs}
               onChange={(e) => {
                 form.setFieldValue('descriptionEs', e.currentTarget.value);
                 debouncedTranslate();
               }}
               error={form.errors.descriptionEs}
+              mt="sm"
             />
+          </Collapse>
 
-            {/* Inglés siempre presente, pero oculto si no es el idioma activo */}
+          {/* Inglés visible solo si UI en inglés */}
+          <Collapse in={baseLang === 'en'}>
             <Textarea
               label="Description (English)"
               placeholder="⌨ Maximum 320 characters"
               required={baseLang === 'en'}
               autosize
               minRows={3}
-              style={{ display: baseLang === 'en' ? 'block' : 'none' }}
               value={form.values.descriptionEn}
               onChange={(e) => {
                 form.setFieldValue('descriptionEn', e.currentTarget.value);
                 debouncedTranslate();
               }}
               error={form.errors.descriptionEn}
+              mt="sm"
             />
+          </Collapse>
+
+
           <TextInput
             label={t("Tu ciudad (opcional)")}
             {...form.getInputProps('city')}
