@@ -1,8 +1,10 @@
 .header {
-  height: 40%;
-  margin-bottom: 1%;
+  position: sticky; /* o fixed si lo prefieres fijo completamente */
+  top: 0;
+  z-index: 1000; /* para que esté encima del contenido */
   background-color: var(--mantine-color-body);
   border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .active {
@@ -40,7 +42,15 @@
 }
 
 .logoText {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1b1e; /* color oscuro, puedes cambiarlo */
+  font-size: 24px;      /* más grande en PC */
+  font-weight: 600;     /* más grueso en PC */
+  color: #1a1b1e;
+}
+
+@media (max-width: 768px) {
+  .logoText {
+    font-size: 16px;     /* más pequeño en móviles */
+    font-weight: 600;    /* un poco menos grueso */
+    color: #1a1b1e;      /* opcional: color más llamativo en móvil */
+  }
 }

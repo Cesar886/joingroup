@@ -26,26 +26,36 @@ export default function GroupForm() {
       link: '',
       email: '',
       emailRepeat: '',
-      description: '',
+      descriptionEs: '',   // 🆕
+      descriptionEn: '',   // 🆕
       city: '',
       content18: '',
       categories: '',
       acceptTerms: false,
     },
     validate: {
-      email: (v) => (/^\S+@\S+\.\S+$/.test(v) ? null : 'Email inválido'),
+      email:  (v) => (/^\S+@\S+\.\S+$/.test(v) ? null : 'Email inválido'),
       emailRepeat: (v, vals) => v === vals.email ? null : 'Los emails no coinciden',
       acceptTerms: (v) => v ? null : 'Debes aceptar los términos',
+
+      // 320 car máx. en cada idioma:
+      descriptionEs: (v) =>
+        v.trim().length >= 20 && v.trim().length <= 320
+          ? null
+          : 'La descripción en español debe tener entre 20 y 320 caracteres',
+
+      descriptionEn: (v) =>
+        v.trim().length >= 20 && v.trim().length <= 320
+          ? null
+          : 'The English description must be between 20 and 320 characters',
+      
       link: (v) =>
         v.startsWith('https://t.me/')
           ? null
           : 'El enlace debe comenzar con https://t.me/',
-      description: (v) =>
-        v.trim().length <= 320
-          ? null
-          : 'Mas de 300 caracteres? Que, vas a escribir una novela aquí?',
     },
   });
+
 
   const captchaRef = useRef();
   const [modalOpen, setModalOpen] = useState(false);
@@ -100,7 +110,12 @@ export default function GroupForm() {
 
       // Guardar grupo
       await addDoc(collection(db, 'groups'), {
-        ...form.values,
+        ...form.values,          // ⚠️  ya no incluye las descripciones sueltas
+        description: {
+          es: form.values.descriptionEs.trim(),
+          en: form.values.descriptionEn.trim(),
+        },
+        // lo demás igual:
         link: cleanLink,
         destacado: false,
         visitas: 0,
@@ -108,6 +123,7 @@ export default function GroupForm() {
         createdAt: new Date(),
         slug,
       });
+
 
       // ✅  Redirige al detalle del grupo (usa el slug)
       navigate(`/grupo/${slug}`);
@@ -187,11 +203,23 @@ export default function GroupForm() {
           />
 
           <Textarea
-            label="Descripción del grupo"
-            placeholder="⌨Máximo minimo 20 caracteres"
+            label="Descripción en español"
+            placeholder="⌨ Máximo 320 caracteres"
             required
-            {...form.getInputProps('description')}
+            autosize
+            minRows={3}
+            {...form.getInputProps('descriptionEs')}
           />
+
+          <Textarea
+            label="Description in English"
+            placeholder="⌨ Maximum 320 characters"
+            required
+            autosize
+            minRows={3}
+            {...form.getInputProps('descriptionEn')}
+          />
+
 
           <TextInput
             label="Tu ciudad (opcional)"

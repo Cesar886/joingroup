@@ -9,6 +9,9 @@ import Terminos from '../pages/Terminos';
 import Privacidad from '../pages/Privacidad';
 import Acerca from '../pages/Acerca';
 
+import HowToCreateTelegramGroup from '../pages/HowToCreateTelegramGroup';
+import InstruccionesCrearGrupoTelegram from '../pages/InstruccionesCrearGrupoTelegram';
+
 
 export default function AppRoutes() {
   return (
@@ -21,6 +24,11 @@ export default function AppRoutes() {
       <Route path="/terminos" element={<Terminos />} />
       <Route path="/privacidad" element={<Privacidad />} />
       <Route path="/acerca" element={<Acerca />} />
+
+      <Route path="/how-to-create-telegram-group" element={<HowToCreateTelegramGroup />} />
+      <Route path="/instrucciones-crear-grupo-telegram" element={<InstruccionesCrearGrupoTelegram />} />
+
+      {/* Catch-all route for 404 Not Found */}
 
       <Route path="*" element={<NotFoundImage />} />
 

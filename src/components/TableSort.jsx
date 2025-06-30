@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   IconChevronDown,
   IconChevronUp,
@@ -24,9 +24,13 @@ import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
 import slugify from '../assets/slugify';
 
+import { useTranslation } from 'react-i18next';
+
+
+
 function Th({ children, reversed, sorted, onSort }) {
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
-
+  
   return (
     <Table.Th>
       <UnstyledButton onClick={onSort} style={{ width: '100%' }}>
@@ -46,28 +50,29 @@ function filterData(data, search, collectionFilter = null) {
   return data.filter((item) => {
     const matchesSearch = ['name', 'categories', 'content18'].some((key) =>
       item[key]?.toLowerCase().includes(query)
-    );
-
-    const matchesCollection = collectionFilter
-      ? item.categories?.toLowerCase() === collectionFilter.toLowerCase()
-      : true;
-
-    return matchesSearch && matchesCollection;
-  });
+  );
+  
+  const matchesCollection = collectionFilter
+  ? item.categories?.toLowerCase() === collectionFilter.toLowerCase()
+  : true;
+  
+  return matchesSearch && matchesCollection;
+});
 }
 
 function sortData(data, { sortBy, reversed, search, collectionFilter }) {
   const filtered = filterData(data, search, collectionFilter);
   if (!sortBy) return filtered;
-
+  
   return [...filtered].sort((a, b) =>
     reversed
-      ? b[sortBy]?.localeCompare(a[sortBy])
-      : a[sortBy]?.localeCompare(b[sortBy])
-  );
+  ? b[sortBy]?.localeCompare(a[sortBy])
+  : a[sortBy]?.localeCompare(b[sortBy])
+);
 }
 
 export default function TableSort() {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
@@ -133,8 +138,24 @@ export default function TableSort() {
   const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
   const currentGroups = sortedData.slice(indexOfFirstGroup, indexOfLastGroup);
 
+  // 1️⃣  Calcula el idioma base una sola vez:
+  const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
+  
+
+  // …
+
   const rows = currentGroups.map((row, idx) => {
     const slug = row.slug || slugify(row.name);
+
+    // 2️⃣  Elige la descripción correcta para este row:
+    const descriptionText =
+      typeof row.description === 'object'
+        ? row.description[baseLang]           // intento 1: "en"
+          || row.description[i18n.language]   // intento 2: "en-US"
+          || row.description['es']            // intento 3: español por defecto
+        : row.description;
+        
+
 
     return (
       <Paper
@@ -161,31 +182,22 @@ export default function TableSort() {
                       ? 'Público'
                       : 'Apto para todo público'}
                 </Text>
-                <Text size="xs" c="dimmed">Contenido</Text>
+                <Text size="xs" c="dimmed">{t('Contenido')}</Text>
               </Table.Td>
               <Table.Td width="43%">
-                <Text>{row.categories}</Text>
-                <Text size="xs" c="dimmed">Categoría</Text>
+                <Text>{t(row.categories)}</Text>
+                <Text size="xs" c="dimmed">{t('Categoría')}</Text>
               </Table.Td>
               <Table.Td width="34%">
                 <Text>{row.visitas}</Text>
-                <Text size="xs" c="dimmed">Vistas</Text>
+                <Text size="xs" c="dimmed">{t('Vistas')}</Text>
               </Table.Td>
             </Table.Tr>
           </Table.Tbody>
         </Table>
         <Box p="sm" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
-          <Text
-            size="sm"
-            c="dimmed"
-            style={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              display: 'block',
-            }}
-          >
-            {row.description}
+          <Text>
+            {descriptionText}
           </Text>
         </Box>
       </Paper>
@@ -196,18 +208,17 @@ export default function TableSort() {
     <ScrollArea>
       {selectedCollection && (
         <Button
-          size="xs"
           variant="outline"
           color="gray"
           mb="xs"
           onClick={() => handleCollectionFilter(selectedCollection)}
         >
-          Quitar filtro: {selectedCollection}
+          {t('Quitar filtro')}: {selectedCollection}
         </Button>
       )}
 
       <TextInput
-        placeholder="Buscar por nombre, categoría o contenido..."
+        placeholder={t('Buscar por nombre, categoría o contenido...')}
         mb="md"
         leftSection={<IconSearch size={16} stroke={1.5} />}
         value={search}
@@ -224,7 +235,7 @@ export default function TableSort() {
             onClick={() => handleCollectionFilter(null)}
             style={{ cursor: 'pointer' }}
           >
-            Todos
+            {t('Todos')}
           </Badge>
 
           {collections.map((col) => (
@@ -253,10 +264,11 @@ export default function TableSort() {
             style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
           >
           <Text size="sm" color="dimmed" mb="xs">
-            ¿Tienes un grupo o canal de Telegram? <strong>En JoinGroups puedes publicarlo gratis</strong> para que más personas lo descubran fácilmente. 
-            Además, puedes <strong>explorar canales y grupos de Telegram</strong> por temática e intereses, y <strong>unirte a comunidades activas</strong> de todo tipo. 
-            ¡Comparte tu grupo, encuentra otros y haz crecer tu comunidad en Telegram con JoinGroups!
+            {t('¿Tienes un grupo o canal de Telegram?')} <strong>{t('En JoinGroups puedes publicarlo gratis')}</strong> {t('para que más personas lo descubran fácilmente.')}
+            {t('Además, puedes')} <strong>{t('explorar canales y grupos de Telegram')}</strong> {t('por temática e intereses, y')} <strong>{t('unirte a comunidades activas')}</strong> {t('de todo tipo.')}
+            {t('¡Comparte tu grupo, encuentra otros y haz crecer tu comunidad en Telegram con JoinGroups!')}
           </Text>
+
 
           </Paper>
 
@@ -270,7 +282,7 @@ export default function TableSort() {
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
             >
-              Inicio
+              {t('Inicio (paginación)')}
             </Button>
             <Button
               variant="subtle"
@@ -279,10 +291,10 @@ export default function TableSort() {
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
             >
-              ← Anterior
+              ← {t('Anterior')}
             </Button>
             <Text size="sm" fw={500} mt={4}>
-              Página <strong>{currentPage}</strong>
+              {t('Página')} <strong>{currentPage}</strong>
             </Text>
             <Button
               variant="subtle"
@@ -295,7 +307,7 @@ export default function TableSort() {
               }
               disabled={indexOfLastGroup >= sortedData.length}
             >
-              Siguiente →
+              {t('Siguiente')} →
             </Button>
           </Group>
 
@@ -307,22 +319,26 @@ export default function TableSort() {
             p="md"
             style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
           >
-            <Text size="md" fw={600} mb="sm">
-              <strong>Descubre y promociona grupos de Telegram</strong> en un solo lugar.
-            </Text>
-            <Text size="sm" color="dimmed" mb="xs">
-              ¿Tienes un grupo o canal? <strong>Publica tu grupo de Telegram</strong> gratis y haz que más personas lo encuentren.
-              También puedes <strong>explorar grupos interesantes de Telegram</strong> , <strong>unirte a comunidades</strong> y ver <strong>grupos de telegram</strong> según tus intereses.
-              ¡Conecta, comparte y crece con nosotros!
-            </Text>
-            <Text size="xs" color="dimmed" style={{ fontStyle: 'italic' }}>
-              <strong>Palabras clave:</strong> publicar grupo en Telegram, encontrar grupos de Telegram, compartir canal de Telegram, descubrir comunidades Telegram, promocionar grupo Telegram.
-            </Text>
+          <Text size="md" fw={600} mb="sm">
+            {t('¿Quieres que tu grupo de Telegram crezca y llegue a más personas?')}
+          </Text>
+
+          <Text size="sm" color="dimmed" mb="xs">
+            {t('Publica tu grupo gratuitamente en')} <Link to="/" style={{ color: '#228be6', textDecoration: 'underline' }}>JoinGroups</Link> {t('y conecta con una comunidad activa que comparte tus intereses.')}
+            {t('Si aún no sabes cómo crear un grupo, puedes aprender fácilmente')} {' '}
+            <Link to="/instrucciones-crear-grupo-telegram" style={{ color: '#228be6', textDecoration: 'underline' }}>
+              {t('aquí cómo crear tu grupo de Telegram')}
+            </Link>.
+          </Text>
+
+          <Text size="xs" color="dimmed" style={{ fontStyle: 'italic' }}>
+            {t('Únete a miles de usuarios que ya están haciendo crecer sus comunidades en Telegram.')}
+          </Text>
           </Paper>
         </>
       ) : (
         <Text ta="center" fw={500} c="dimmed" mt="xl">
-          No se encontraron resultados.
+          {t('No se encontraron resultados.')}
         </Text>
       )}
     </ScrollArea>

@@ -1,16 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import { IconChevronDown } from '@tabler/icons-react';
 import { Center, Container, Group, Menu } from '@mantine/core';
-import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './Header.module.css';
+import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
-const links = [
-    { link: '/', label: 'Inicio' },
-    { link: '/form', label: 'Publicar Grupo' },
-];
+
 
 
 export function Header() {
+  const { t, i18n } = useTranslation();
+  const links = [
+    { link: '/', label: t('Inicio (header)') },
+    { link: '/form', label: t('Publica Tu Grupo'), highlight: true },
+  ];
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
@@ -28,7 +31,12 @@ export function Header() {
 
     if (menuItems) {
       return (
-        <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
+        <Menu
+          key={link.label}
+          trigger="hover"
+          transitionProps={{ exitDuration: 0 }}
+          withinPortal
+        >
           <Menu.Target>
             <span className={classes.link}>
               <Center>
@@ -42,7 +50,7 @@ export function Header() {
       );
     }
 
-    return (
+    const navLink = (
       <NavLink
         key={link.link}
         to={link.link}
@@ -53,6 +61,21 @@ export function Header() {
         {link.label}
       </NavLink>
     );
+
+    // Agregar animación solo al botón destacado
+    return link.highlight ? (
+      <motion.div
+        key={link.link}
+        animate={{ scale: [1, 1.05, 1] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+        className={classes.ledBorder}
+      >
+        {navLink}
+      </motion.div>
+    ) : (
+      navLink
+    );
+
   });
 
   return (
@@ -72,10 +95,9 @@ export function Header() {
             </Group>
           </NavLink>
 
-          <Group gap={4}>
-            {items}
-          </Group>
-
+          <Group gap={4}>{items}</Group>
+          <button onClick={() => i18n.changeLanguage('en')}>English</button>
+          <button onClick={() => i18n.changeLanguage('es')}>Español</button>
         </div>
       </Container>
     </header>
