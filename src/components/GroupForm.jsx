@@ -150,7 +150,9 @@ export default function GroupForm() {
         const target = descEs ? 'EN' : 'ES';
 
         let attempts = 0;
+        let consecutiveFailures = 0;
         const maxAttempts = 80;
+        const maxConsecutiveFailures = 10;
         const retryIntervalMs = 5000;
 
         const intervalId = setInterval(async () => {
@@ -158,25 +160,30 @@ export default function GroupForm() {
 
           try {
             const translated = await translateText(text, source, target);
+
             if (translated && translated.length >= 20) {
               await updateDoc(docRef, {
                 [`description.${target.toLowerCase()}`]: translated,
                 translationPending: false,
               });
               console.log(`✅ Traducción exitosa en intento ${attempts}`);
-              clearInterval(intervalId); // ✅ Cancelamos el ciclo
-            } else {
-              console.warn(`⚠ Traducción vacía o muy corta. Intento ${attempts}`);
+              clearInterval(intervalId); // ✅ Detenemos
+              return;
             }
+
+            console.warn(`⚠ Traducción vacía o muy corta. Intento ${attempts}`);
+            consecutiveFailures++;
           } catch (e) {
+            consecutiveFailures++;
             console.error(`❌ Fallo al traducir (intento ${attempts}):`, e.message);
           }
 
-          if (attempts >= maxAttempts) {
-            console.warn('⛔ Se alcanzó el número máximo de intentos de traducción');
+          if (attempts >= maxAttempts || consecutiveFailures >= maxConsecutiveFailures) {
+            console.warn('⛔ Se alcanzó el máximo de intentos o errores consecutivos');
             clearInterval(intervalId);
           }
         }, retryIntervalMs);
+
       }
     } catch (error) {
       console.error(error);
