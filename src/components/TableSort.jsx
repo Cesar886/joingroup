@@ -195,11 +195,18 @@ export default function TableSort() {
             </Table.Tr>
           </Table.Tbody>
         </Table>
-        <Box p="sm" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
-          <Text>
-            {descriptionText}
-          </Text>
-        </Box>
+      <Box p="sm" style={{ borderTop: '1px solid #eee', paddingTop: 10 }}>
+        <Text
+          lineClamp={1}
+          style={{
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {descriptionText}
+        </Text>
+      </Box>
       </Paper>
     );
   });
