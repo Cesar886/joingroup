@@ -151,7 +151,7 @@ export default function GroupForm() {
 
         let attempts = 0;
         let consecutiveFailures = 0;
-        const maxAttempts = 80;
+        const maxAttempts = 30;
         const maxConsecutiveFailures = 10;
         const retryIntervalMs = 5000;
 
