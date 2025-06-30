@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@browsermt/bergamot-translator": "^0.4.9",
     "@hcaptcha/react-hcaptcha": "^1.12.0",
     "@mantine/carousel": "^8.1.2",
     "@mantine/charts": "^8.1.2",

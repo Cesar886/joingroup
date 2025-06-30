@@ -168,6 +168,11 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.27.1"
 
+"@browsermt/bergamot-translator@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/@browsermt/bergamot-translator/-/bergamot-translator-0.4.9.tgz#224cd32c6e89c92a0d4945dc0fceb4400dcb2ae4"
+  integrity sha512-bNuuCwM/JnsIYQCKXcYKFT4Qc5vLMoB8Nbvz8ReIgs7xzebK8Sa+R8iEK8mLvNBe/WaZ6zrPaUQilLsRT/ea8Q==
+
 "@esbuild/aix-ppc64@0.25.5":
   version "0.25.5"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.25.5.tgz#4e0f91776c2b340e75558f60552195f6fad09f18"

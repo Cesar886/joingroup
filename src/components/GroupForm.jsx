@@ -15,9 +15,11 @@ import {
 import { showNotification } from '@mantine/notifications';
 import { collection, addDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import slugify from '../assets/slugify'
 import { useTranslation } from 'react-i18next';
+import { LatencyOptimisedTranslator } from "@browsermt/bergamot-translator/translator.js";
+
 
 
 export default function GroupForm() {
@@ -72,6 +74,62 @@ export default function GroupForm() {
   const [modalOpen, setModalOpen] = useState(false);
   const [captchaValues, setCaptchaValues] = useState(null);
   const [activeLang] = useState(baseLang);
+  const [translator, setTranslator] = useState(null);
+  const [isTranslatorReady, setIsTranslatorReady] = useState(false);
+  
+  useEffect(() => {
+    let translatorInstance = null;
+    let cancelled = false;
+
+    async function initTranslator() {
+      translatorInstance = new LatencyOptimisedTranslator();
+
+      try {
+        await translatorInstance.translate({ from: "en", to: "es", text: "Loading...", html: false });
+
+        if (!cancelled) {
+          setTranslator(translatorInstance);
+          setIsTranslatorReady(true);
+        } else {
+          // Cleanup si se canceló antes de estar listo
+          translatorInstance.delete();
+        }
+      } catch (e) {
+        console.warn("❌ Error al cargar el traductor:", e.message);
+      }
+    }
+
+    initTranslator();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+
+
+  
+  async function translateText(text, source, target) {
+    if (!translator || !isTranslatorReady) {
+      console.warn('Traductor aún no está listo o fue eliminado');
+      return '';
+    }
+
+    try {
+      const result = await translator.translate({
+        from: source,
+        to: target,
+        text,
+        html: false,
+      });
+
+      return result?.target?.text || '';
+    } catch (e) {
+      console.warn('❌ Traducción offline falló:', e.message);
+      return '';
+    }
+  }
+
 
 
   const handleOpenCaptcha = () => {
@@ -146,8 +204,8 @@ export default function GroupForm() {
       // 👇 Traducción automática post-envío
       if (!descEs || !descEn) {
         const text = descEs || descEn;
-        const source = descEs ? 'ES' : 'EN';
-        const target = descEs ? 'EN' : 'ES';
+        const source = descEs ? 'es' : 'en';
+        const target = descEs ? 'en' : 'es';
 
         let attempts = 0;
         let consecutiveFailures = 0;
@@ -159,7 +217,14 @@ export default function GroupForm() {
           attempts++;
 
           try {
+            if (!translator || !isTranslatorReady) {
+              console.warn("⏸ Traductor ya no disponible");
+              clearInterval(intervalId);
+              return;
+            }
+
             const translated = await translateText(text, source, target);
+
 
             if (translated && translated.length >= 20) {
               await updateDoc(docRef, {
@@ -199,36 +264,6 @@ export default function GroupForm() {
 
 
 
-  const DEEPL_PROXY_URL = 'http://137.184.102.7:3030/translate'; // sin HTTPS si no tienes SSL
-
-
-  async function translateText(text, source, target) {
-    try {
-      const res = await fetch(DEEPL_PROXY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, source, target }),
-      });
-
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(`HTTP ${res.status}: ${err}`);
-      }
-
-      const data = await res.json();
-      return data.translated;  // Aquí está el cambio importante
-    } catch (e) {
-      console.warn('DeepL error:', e.message);
-      showNotification({
-        title: t('Traducción no disponible'),
-        message: t('No se pudo traducir automáticamente. Escribe la traducción manualmente.'),
-        color: 'yellow',
-      });
-      return '';
-    }
-  }
-
-
   function useDebouncedCallback(callback, delay = 800) {
     const timeout = useRef(null);
 
@@ -244,13 +279,13 @@ export default function GroupForm() {
 
     // Si la UI está en español y falta el inglés…
     if (baseLang === 'es' && descriptionEs.trim().length >= 20 && !descriptionEn.trim()) {
-      const translated = await translateText(descriptionEs, 'ES', 'EN');
+      const translated = await translateText(descriptionEs, 'es', 'en');
       form.setFieldValue('descriptionEn', translated);
     }
 
     // Si la UI está en inglés y falta el español…
     if (baseLang === 'en' && descriptionEn.trim().length >= 20 && !descriptionEs.trim()) {
-      const translated = await translateText(descriptionEn, 'EN', 'ES');
+      const translated = await translateText(descriptionEn, 'en', 'es');
       form.setFieldValue('descriptionEs', translated);
     }
   }, 900);          // 900 ms tras la última tecla
