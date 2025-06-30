@@ -13,11 +13,10 @@ import {
   Modal,
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useRef, useState } from 'react';
 import slugify from '../assets/slugify'
-import { SegmentedControl } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 
@@ -119,24 +118,17 @@ export default function GroupForm() {
       let descEs = form.values.descriptionEs.trim();
       let descEn = form.values.descriptionEn.trim();
 
-      if (!descEn && descEs.length >= 20) {
-        descEn = await translateText(descEs, 'ES', 'EN');
-      }
-      if (!descEs && descEn.length >= 20) {
-        descEs = await translateText(descEn, 'EN', 'ES');
-      }
-
       const {
         descriptionEs,
         descriptionEn,
         ...cleanValues
       } = form.values;
 
-      await addDoc(collection(db, 'groups'), {
-        ...cleanValues, // sin descriptionEs ni descriptionEn
+      const docRef = await addDoc(collection(db, 'groups'), {
+        ...cleanValues,
         description: {
-          es: descEs,
-          en: descEn,
+          es: descEs || '',
+          en: descEn || '',
         },
         link: cleanLink,
         destacado: false,
@@ -144,11 +136,48 @@ export default function GroupForm() {
         miembros: 0,
         createdAt: new Date(),
         slug,
+        translationPending: !descEs || !descEn,
       });
 
       form.reset();
       setCaptchaValues(null);
-      navigate(`/grupo/${slug}`); // ✅ Redirige al grupo recién creado
+      navigate(`/grupo/${slug}`);
+
+      // 👇 Traducción automática post-envío
+      if (!descEs || !descEn) {
+        const text = descEs || descEn;
+        const source = descEs ? 'ES' : 'EN';
+        const target = descEs ? 'EN' : 'ES';
+
+        let attempts = 0;
+        const maxAttempts = 80;
+        const retryIntervalMs = 5000;
+
+        const intervalId = setInterval(async () => {
+          attempts++;
+
+          try {
+            const translated = await translateText(text, source, target);
+            if (translated && translated.length >= 20) {
+              await updateDoc(docRef, {
+                [`description.${target.toLowerCase()}`]: translated,
+                translationPending: false,
+              });
+              console.log(`✅ Traducción exitosa en intento ${attempts}`);
+              clearInterval(intervalId); // ✅ Cancelamos el ciclo
+            } else {
+              console.warn(`⚠ Traducción vacía o muy corta. Intento ${attempts}`);
+            }
+          } catch (e) {
+            console.error(`❌ Fallo al traducir (intento ${attempts}):`, e.message);
+          }
+
+          if (attempts >= maxAttempts) {
+            console.warn('⛔ Se alcanzó el número máximo de intentos de traducción');
+            clearInterval(intervalId);
+          }
+        }, retryIntervalMs);
+      }
     } catch (error) {
       console.error(error);
       setIsLoading(false); 
@@ -160,6 +189,7 @@ export default function GroupForm() {
       });
     }
   };
+
 
 
   const DEEPL_PROXY_URL = 'http://137.184.102.7:3030/translate'; // sin HTTPS si no tienes SSL
