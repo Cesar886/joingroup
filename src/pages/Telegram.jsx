@@ -401,7 +401,7 @@ export default function Telegram() {
             {isMobile ? (
               <>
                 <Title order={4} mb="xs">
-                  📣 ¡Promociona tu Grupo de Telegram en JoinGroups!
+                  📣 {t('¡Promociona tu Grupo de Telegram en JoinGroups!')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
                   📱 {t('¿Tienes un grupo de Telegram?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
@@ -410,7 +410,7 @@ export default function Telegram() {
             ) : (
               <>
                 <Title order={3} mb="xs">
-                  📣 ¡Promociona tu Grupo de Telegram en JoinGroups!
+                  📣 {t('¡Promociona tu Grupo de Telegram en JoinGroups!')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
                   📱 {t('¿Tienes un grupo de Telegram y quieres hacerlo crecer?')} <strong>{t('En JoinGroups puedes publicar tu grupo gratis')}</strong> {t('y empezar a recibir nuevos miembros interesados.')}<br />

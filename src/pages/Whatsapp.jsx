@@ -400,7 +400,7 @@ export default function Whatsapp() {
             {isMobile ? (
               <>
                 <Title order={4} mb="xs">
-                  📣 ¡Promociona tu Grupo de WhatsApp en JoinGroups!
+                  📣 {t('¡Promociona tu Grupo de WhatsApp en JoinGroups!')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
                   📱 {t('¿Tienes un grupo de WhatsApp?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
@@ -409,7 +409,7 @@ export default function Whatsapp() {
             ) : (
               <>
                 <Title order={3} mb="xs">
-                  📣 ¡Promociona tu Grupo de WhatsApp en JoinGroups!
+                  📣 {t('¡Promociona tu Grupo de WhatsApp en JoinGroups!')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
                   📱 {t('¿Tienes un grupo de WhatsApp y quieres hacerlo crecer?')} <strong>{t('En JoinGroups puedes publicar tu grupo gratis')}</strong> {t('y empezar a recibir nuevos miembros interesados.')}<br />
