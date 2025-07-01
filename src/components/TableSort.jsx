@@ -176,11 +176,11 @@ export default function TableSort() {
               </Table.Td>
             </Table.Tr>
             <Table.Tr>
-              <Table.Td width="43%">
+              <Table.Td width="33%">
                 <Text>{t(row.categories)}</Text>
                 <Text size="xs" c="dimmed">{t('Categoría')}</Text>
               </Table.Td>
-              <Table.Td width="23%">
+              <Table.Td width="33%">
                 <Text>
                   {row.content18 === 'Sí'
                     ? '18+'
@@ -190,7 +190,7 @@ export default function TableSort() {
                 </Text>
                 <Text size="xs" c="dimmed">{t('Contenido')}</Text>
               </Table.Td>
-              <Table.Td width="34%">
+              <Table.Td width="33%">
                 <Text>{row.visitas}</Text>
                 <Text size="xs" c="dimmed">{t('Vistas')}</Text>
               </Table.Td>

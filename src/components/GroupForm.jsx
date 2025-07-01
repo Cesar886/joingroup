@@ -1,4 +1,3 @@
-import { useForm } from '@mantine/form';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -11,15 +10,14 @@ import {
   Group,
   Stack,
   Modal,
-  Collapse,
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { collection, addDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import slugify from '../assets/slugify'
 import { useTranslation } from 'react-i18next';
-import { LatencyOptimisedTranslator } from "@browsermt/bergamot-translator/translator.js";
+import { useForm } from '@mantine/form';
 
 
 
@@ -75,62 +73,6 @@ export default function GroupForm() {
   const [modalOpen, setModalOpen] = useState(false);
   const [captchaValues, setCaptchaValues] = useState(null);
   const [activeLang] = useState(baseLang);
-  const [translator, setTranslator] = useState(null);
-  const [isTranslatorReady, setIsTranslatorReady] = useState(false);
-  
-  useEffect(() => {
-    let translatorInstance = null;
-    let cancelled = false;
-
-    async function initTranslator() {
-      translatorInstance = new LatencyOptimisedTranslator();
-
-      try {
-        await translatorInstance.translate({ from: "en", to: "es", text: "Loading...", html: false });
-
-        if (!cancelled) {
-          setTranslator(translatorInstance);
-          setIsTranslatorReady(true);
-        } else {
-          // Cleanup si se canceló antes de estar listo
-          translatorInstance.delete();
-        }
-      } catch (e) {
-        console.warn("❌ Error al cargar el traductor:", e.message);
-      }
-    }
-
-    initTranslator();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-
-
-  
-  async function translateText(text, source, target) {
-    if (!translator || !isTranslatorReady) {
-      console.warn('Traductor aún no está listo o fue eliminado');
-      return '';
-    }
-
-    try {
-      const result = await translator.translate({
-        from: source,
-        to: target,
-        text,
-        html: false,
-      });
-
-      return result?.target?.text || '';
-    } catch (e) {
-      console.warn('❌ Traducción offline falló:', e.message);
-      return '';
-    }
-  }
-
 
 
   const handleOpenCaptcha = () => {
@@ -202,25 +144,21 @@ export default function GroupForm() {
       setCaptchaValues(null);
       navigate(`/grupo/${slug}`);
 
+
       // 👇 Traducción automática post-envío
       if (!descEs || !descEn) {
         const text = descEs || descEn;
-        const source = descEs ? 'es' : 'en';
-        const target = descEs ? 'en' : 'es';
+        const source = descEs ? 'ES' : 'EN';
+        const target = descEs ? 'EN' : 'ES';
 
-      let attempts = 0;
-      const maxAttempts = 20;
-      const retryDelayMs = 3000;
+        let attempts = 0;
+        let consecutiveFailures = 0;
+        const maxAttempts = 80;
+        const maxConsecutiveFailures = 10;
+        const retryIntervalMs = 5000;
 
-      async function tryTranslationLoop() {
-        while (attempts < maxAttempts) {
+        const intervalId = setInterval(async () => {
           attempts++;
-
-          if (!translator || !isTranslatorReady) {
-            console.warn(`⏳ Traductor aún no está listo (intento ${attempts})`);
-            await new Promise((res) => setTimeout(res, retryDelayMs));
-            continue;
-          }
 
           try {
             const translated = await translateText(text, source, target);
@@ -230,24 +168,23 @@ export default function GroupForm() {
                 [`description.${target.toLowerCase()}`]: translated,
                 translationPending: false,
               });
-              console.log(`✅ Traducción completada en intento ${attempts}`);
-              break;
-            } else {
-              console.warn(`⚠ Traducción vacía o corta (intento ${attempts})`);
+              console.log(`✅ Traducción exitosa en intento ${attempts}`);
+              clearInterval(intervalId); // ✅ Detenemos
+              return;
             }
+
+            console.warn(`⚠ Traducción vacía o muy corta. Intento ${attempts}`);
+            consecutiveFailures++;
           } catch (e) {
-            console.error(`❌ Fallo en intento ${attempts}:`, e.message);
+            consecutiveFailures++;
+            console.error(`❌ Fallo al traducir (intento ${attempts}):`, e.message);
           }
 
-          await new Promise((res) => setTimeout(res, retryDelayMs));
-        }
-
-        if (attempts >= maxAttempts) {
-          console.warn('⛔ Traducción automática fallida después de 20 intentos');
-        }
-      }
-
-      tryTranslationLoop();
+          if (attempts >= maxAttempts || consecutiveFailures >= maxConsecutiveFailures) {
+            console.warn('⛔ Se alcanzó el máximo de intentos o errores consecutivos');
+            clearInterval(intervalId);
+          }
+        }, retryIntervalMs);
 
       }
     } catch (error) {
@@ -264,6 +201,37 @@ export default function GroupForm() {
 
 
 
+  const DEEPL_PROXY_URL = 'https://daniel-rdz.tech/translate'; // Con Https://daniel-rdz.tech/translate
+
+
+  async function translateText(text, source, target) {
+    try {
+      const res = await fetch(DEEPL_PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, source, target }),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`HTTP ${res.status}: ${err}`);
+      }
+
+
+      const data = await res.json();
+      return data.translated;  // Aquí está el cambio importante
+    } catch (e) {
+      console.warn('DeepL error:', e.message);
+      showNotification({
+        title: t('Traducción no disponible'),
+        message: t('No se pudo traducir automáticamente. Escribe la traducción manualmente.'),
+        color: 'yellow',
+      });
+      return '';
+    }
+  }
+
+
   function useDebouncedCallback(callback, delay = 800) {
     const timeout = useRef(null);
 
@@ -277,17 +245,18 @@ export default function GroupForm() {
   const debouncedTranslate = useDebouncedCallback(async () => {
     const { descriptionEs, descriptionEn } = form.values;
 
+    // Si la UI está en español y falta el inglés…
     if (baseLang === 'es' && descriptionEs.trim().length >= 20 && !descriptionEn.trim()) {
-      const translated = await translateText(descriptionEs, 'es', 'en');
-      if (translated) form.setFieldValue('descriptionEn', translated);
+      const translated = await translateText(descriptionEs, 'ES', 'EN');
+      form.setFieldValue('descriptionEn', translated);
     }
 
+    // Si la UI está en inglés y falta el español…
     if (baseLang === 'en' && descriptionEn.trim().length >= 20 && !descriptionEs.trim()) {
-      const translated = await translateText(descriptionEn, 'en', 'es');
-      if (translated) form.setFieldValue('descriptionEs', translated);
+      const translated = await translateText(descriptionEn, 'EN', 'ES');
+      form.setFieldValue('descriptionEs', translated);
     }
-  }, 900);
-         // 900 ms tras la última tecla
+  }, 900);          // 900 ms tras la última tecla
 
 
 
@@ -352,43 +321,36 @@ export default function GroupForm() {
             {...form.getInputProps('emailRepeat')}
           />
 
-          {/* Español visible solo si UI en español */}
-          <Collapse in={baseLang === 'es'}>
-            <Textarea
+          <Textarea
               label="Descripción (Español)"
               placeholder="⌨ Máximo 320 caracteres"
               required={baseLang === 'es'}
               autosize
               minRows={3}
+              style={{ display: baseLang === 'es' ? 'block' : 'none' }}
               value={form.values.descriptionEs}
               onChange={(e) => {
                 form.setFieldValue('descriptionEs', e.currentTarget.value);
                 debouncedTranslate();
               }}
               error={form.errors.descriptionEs}
-              mt="sm"
             />
-          </Collapse>
 
-          {/* Inglés visible solo si UI en inglés */}
-          <Collapse in={baseLang === 'en'}>
+            {/* Inglés siempre presente, pero oculto si no es el idioma activo */}
             <Textarea
               label="Description (English)"
               placeholder="⌨ Maximum 320 characters"
               required={baseLang === 'en'}
               autosize
               minRows={3}
+              style={{ display: baseLang === 'en' ? 'block' : 'none' }}
               value={form.values.descriptionEn}
               onChange={(e) => {
                 form.setFieldValue('descriptionEn', e.currentTarget.value);
                 debouncedTranslate();
               }}
               error={form.errors.descriptionEn}
-              mt="sm"
             />
-          </Collapse>
-
-
           <TextInput
             label={t("Tu ciudad (opcional)")}
             {...form.getInputProps('city')}
@@ -452,3 +414,5 @@ export default function GroupForm() {
     </>
   );
 }
+
+
