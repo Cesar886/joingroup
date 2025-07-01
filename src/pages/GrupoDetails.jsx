@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function GroupDetail() {
   const { t, i18n } = useTranslation();
-  const { id } = useParams();                // id === slug recibido en la URL
+  const { id, tipo } = useParams();                // id === slug recibido en la URL
   const [group, setGroup]   = useState(null);
   const [loading, setLoading]   = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -141,7 +141,10 @@ export default function GroupDetail() {
             color="blue"
             disabled={!group.link}
           >
-            {group.link ? t('Telegram - ACCEDER AL GRUPO') : t('Enlace no disponible')}
+            {group.link
+              ? t(`${(tipo || group?.tipo || 'telegram')[0].toUpperCase() + (tipo || group?.tipo || 'telegram').slice(1)} - ACCEDER AL GRUPO`)
+              : t('Enlace no disponible')}
+
           </Button>
         </Stack>
       </Paper>

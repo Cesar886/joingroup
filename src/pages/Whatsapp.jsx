@@ -24,9 +24,10 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
 import slugify from '../assets/slugify';
-import styles from './TableSort.module.css';
 import { useLocation } from 'react-router-dom';
+import styles from './TableSortWhastapp.module.css';
 import { Helmet } from 'react-helmet-async';
+
 
 
 import { useTranslation } from 'react-i18next';
@@ -76,7 +77,7 @@ function sortData(data, { sortBy, reversed, search, collectionFilter }) {
 );
 }
 
-export default function TableSort() {
+export default function Whatsapp() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -108,6 +109,9 @@ export default function TableSort() {
       const snapshot = await getDocs(collection(db, 'groups'));
       const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
+      // Filtrar solo grupos de tipo "telegram"
+      const telegramGroups = groups.filter(g => g.tipo === 'whatsapp');
+
       const fetchCollections = async () => {
         const snapshot = await getDocs(collection(db, 'colections'));
         const docs = snapshot.docs.map(doc => doc.data());
@@ -117,13 +121,14 @@ export default function TableSort() {
 
       fetchCollections();
 
-      const destacados = groups.filter(g => g.destacado);
-      const normales = groups.filter(g => !g.destacado);
+      const destacados = telegramGroups.filter(g => g.destacado);
+      const normales = telegramGroups.filter(g => !g.destacado);
       const ordenados = [...destacados, ...normales];
 
       setData(ordenados);
       setSortedData(ordenados);
     };
+
     fetchData();
   }, []);
 
@@ -162,9 +167,8 @@ export default function TableSort() {
           || row.description['es']            // intento 3: español por defecto
         : row.description;
         
-    const isTelegram = row.tipo?.trim().toLowerCase() === 'telegram';
+    const isTelegram = location.pathname === '/telegram';
     const iconSrc = isTelegram ? '/telegramicons.png' : '/wapp.webp';
-
 
     return (
       <Paper
@@ -173,7 +177,7 @@ export default function TableSort() {
         shadow="xs"
         mb="sm"
         key={`${row.id}-${slug}-${idx}`}
-        onClick={() => navigate(`/${row.tipo}/${slug}`)}
+        onClick={() => navigate(`/whatsapp/${slug}`)}
       >
         <Table horizontalSpacing="md" withRowBorders={false}>
           <Table.Tbody>
@@ -236,9 +240,9 @@ export default function TableSort() {
   return (
     <>
       <Helmet>
-        <title>Join Groups</title>
-        <meta name="description" content="Explora y únete a miles de Grupos de Telegram  y Whatsapp creados por personas con tus mismos intereses. Conéctate con Comunidades ACTIVAS, encuentra Grupos relevantes fácilmente y comparte el tuyo para llegar a más personas. Es rápido, gratuito y sin complicaciones." />
-        <meta name="keywords" content="grupos de telegram, enlaces telegram, canales de telegram, unirse a grupos telegram, publicar grupo telegram, comunidades telegram activas, grupos de whatsapp, enlaces whatsapp, canales de whatsapp, unirse a grupos whatsapp, publicar grupo whatsapp, comunidades whatsapp activas" />
+        <title>Grupos de Whatsapp</title>
+        <meta name="description" content="Explora y únete a miles de Grupos de Whatsapp creados por personas con tus mismos intereses. Conéctate con Comunidades ACTIVAS, encuentra Grupos relevantes fácilmente y comparte el tuyo para llegar a más personas. Es rápido, gratuito y sin complicaciones." />
+        <meta name="keywords" content="grupos de whatsapp, enlaces whatsapp, canales de whatsapp, unirse a grupos whatsapp, publicar grupo whatsapp, comunidades whatsapp activas" />
       </Helmet>
       <ScrollArea>
         {selectedCollection && (
@@ -324,7 +328,7 @@ export default function TableSort() {
                 {t('Whatsapp')}
               </Button>
             </Group>
-
+          
             <Paper
               withBorder
               radius="md"
@@ -393,12 +397,27 @@ export default function TableSort() {
             </div>
 
 
-
-              <Text size="sm" color="dimmed" mb="xs">
-                {t('Tienes un grupo o canal de Telegram o Whatsapp ??')} <strong>{t('En JoinGroups puedes publicar tu grupo gratis')}</strong> {t('y conseguir más miembros fácilmente.')}
-                {t('Explora una lista actualizada de')} <strong>{t('grupos y canales de Telegram y Whatsapp')}</strong> {t('organizados por temática e intereses.')}{' '}
-                {t('Únete a comunidades activas, descubre nuevos grupos y haz crecer tu comunidad en Telegram con JoinGroups.')}
-              </Text>
+            {isMobile ? (
+              <>
+                <Title order={4} mb="xs">
+                  📣 ¡Promociona tu Grupo de WhatsApp en JoinGroups!
+                </Title>
+                <Text size="sm" color="dimmed" mb="xs">
+                  📱 {t('¿Tienes un grupo de WhatsApp?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
+                </Text>
+              </>
+            ) : (
+              <>
+                <Title order={3} mb="xs">
+                  📣 ¡Promociona tu Grupo de WhatsApp en JoinGroups!
+                </Title>
+                <Text size="sm" color="dimmed" mb="xs">
+                  📱 {t('¿Tienes un grupo de WhatsApp y quieres hacerlo crecer?')} <strong>{t('En JoinGroups puedes publicar tu grupo gratis')}</strong> {t('y empezar a recibir nuevos miembros interesados.')}<br />
+                  🔍 {t('Explora una lista actualizada de')} <strong>{t('grupos de WhatsApp')}</strong> {t('organizados por categoría e intereses.')}{' '}
+                  🤝 {t('Únete a comunidades activas, comparte tu grupo y conéctate con personas afines usando JoinGroups.')}
+                </Text>
+              </>
+            )}
 
 
 
@@ -452,7 +471,7 @@ export default function TableSort() {
               style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
             >
             <Text size="md" fw={600} mb="sm">
-              {t('Quieres que tu grupo de Telegram o Whatsapp crezca y llegue a más personas ??')}
+              {t('¿Quieres que tu grupo de Whatsapp crezca y llegue a más personas?')}
             </Text>
 
             <Text size="sm" color="dimmed" mb="xs">
@@ -475,6 +494,5 @@ export default function TableSort() {
         )}
       </ScrollArea>
     </>
-
   );
 }

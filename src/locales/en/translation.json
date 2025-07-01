@@ -5,9 +5,7 @@
   "Vistas": "Views",
   "Todos": "All",
   "Quitar filtro": "Remove filter",
-  "En JoinGroups puedes publicar tu grupo gratis": "On JoinGroups you can publish your group for free",
   "y conseguir más miembros fácilmente.": "and get more members easily.",
-  "Explora una lista actualizada de": "Explore an up-to-date list of",
   "grupos y canales de Telegram": "Telegram groups and channels",
   "organizados por temática e intereses.": "organized by topic and interests.",
   "Únete a comunidades activas, descubre nuevos grupos y haz crecer tu comunidad en Telegram con JoinGroups.": "Join active communities, discover new groups, and grow your Telegram community with JoinGroups.",
@@ -16,7 +14,7 @@
   "explorar canales y grupos de Telegram": "explore Telegram channels and groups",
   "unirte a comunidades activas": "join active communities",
   "Comparte tu grupo, encuentra otros y haz crecer tu comunidad en Telegram con JoinGroups!": "Share your group, find others, and grow your Telegram community with JoinGroups!",
-  "¿Quieres que tu grupo de Telegram crezca y llegue a más personas?": "Do you want your Telegram group to grow and reach more people?",
+  "¿Quieres que tu grupo de Telegram o Whatsapp crezca y llegue a más personas?": "Do you want your Telegram o Whatsapp group to grow and reach more people?",
   "Publica tu grupo gratuitamente en": "Post your group for free at",
   "y conecta con una comunidad activa que comparte tus intereses.": "and connect with an active community that shares your interests.",
   "aquí cómo crear tu grupo de Telegram": "here how to create your Telegram group",
@@ -95,6 +93,7 @@
   "como un espacio seguro y agradable para todos.": "as a safe and welcoming space for everyone.",
   "Reportar Enlace roto": "Report Broken Link",
   "Telegram - ACCEDER AL GRUPO": "Telegram - JOIN GROUP",
+  "Whatsapp - ACCEDER AL GRUPO": "Whatsapp - JOIN GROUP",
   "Enlace no disponible": "Link not available",
   "Reporte enviado": "Report sent",
   "¡Gracias!": "Thank you!",
@@ -110,5 +109,21 @@
   "Instagram Oficial": "Official Instagram",
   "Grupo en Telegram": "Telegram Group",
   "es tu herramienta para administrar, automatizar y organizar grupos de Telegram de forma eficiente.": "is your tool to manage, automate, and organize Telegram groups efficiently.",
-  "Todos los derechos reservados.": "All rights reserved."
+  "Todos los derechos reservados.": "All rights reserved.",
+
+
+
+  "Promociona tu Grupo de WhatsApp en JoinGroups": "Promote Your WhatsApp Group on JoinGroups",
+  "Promociona tu Grupo de Telegram en JoinGroups": "Promote Your Telegram Group on JoinGroups",
+  "¿Tienes un grupo de WhatsApp y quieres hacerlo crecer?": "Do you have a WhatsApp group and want to grow it?",
+  "¿Tienes un grupo de Telegram y quieres hacerlo crecer?": "Do you have a Telegram group and want to grow it?",
+  "En JoinGroups puedes publicar tu grupo gratis": "On JoinGroups you can publish your group for free",
+  "y empezar a recibir nuevos miembros interesados.": "and start receiving new interested members.",
+  "Explora una lista actualizada de": "Explore an up-to-date list of",
+  "grupos de WhatsApp": "WhatsApp groups",
+  "grupos de Telegram": "Telegram groups",
+  "organizados por categoría e intereses.": "organized by category and interest.",
+  "Únete a comunidades activas, comparte tu grupo y conéctate con personas afines usando JoinGroups.": "Join active communities, share your group, and connect with like-minded people using JoinGroups."
+
+
 }

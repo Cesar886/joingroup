@@ -5,6 +5,9 @@ import GroupDetail from '../pages/GrupoDetails';
 import AdminGroups from '../pages/AdminGroups';
 import NotFoundImage from '../pages/404';
 
+import Telegram from '../pages/Telegram';
+import Whatsapp from '../pages/Whatsapp';
+
 import Terminos from '../pages/Terminos';
 import Privacidad from '../pages/Privacidad';
 import Acerca from '../pages/Acerca';
@@ -18,7 +21,10 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<TableSort />} />
       <Route path="/form" element={<GroupForm />} />
-      <Route path="/grupo/:id" element={<GroupDetail />} />
+      <Route path="/telegram" element={<Telegram />} />
+      <Route path="/whatsapp" element={<Whatsapp />} />
+      <Route path="/telegram/:id" element={<GroupDetail />} />
+      <Route path="/whatsapp/:id" element={<GroupDetail />} />
       <Route path="/admin" element={<AdminGroups />} />
 
       <Route path="/terminos" element={<Terminos />} />

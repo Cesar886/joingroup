@@ -61,10 +61,17 @@ export default function GroupForm() {
           : t('You must write a description in English or Spanish (20–320 characters)');
       },
 
-      link: (v) =>
-        v.startsWith('https://t.me/')
-          ? null
-          : t('El enlace debe comenzar con https://t.me/'),
+      link: (v) => {
+        const validTelegram = v.startsWith('https://t.me/');
+        const validWhatsapp = v.startsWith('https://chat.whatsapp.com/');
+        if (redSocial === 'Telegram' && !validTelegram) {
+          return t('El enlace debe comenzar con https://t.me/');
+        }
+        if (redSocial === 'Whatsapp' && !validWhatsapp) {
+          return t('El enlace debe comenzar con https://chat.whatsapp.com/');
+        }
+        return null;
+      },
     },
   });
 
@@ -88,7 +95,7 @@ export default function GroupForm() {
     setIsLoading(true); 
 
     try {
-      const rawLink = form.values.link.trim().toLowerCase();
+      const rawLink = form.values.link.trim();
       const cleanLink = rawLink.endsWith('/') ? rawLink.slice(0, -1) : rawLink;
 
       const q = query(collection(db, 'groups'), where('link', '==', cleanLink));
@@ -127,6 +134,7 @@ export default function GroupForm() {
 
       const docRef = await addDoc(collection(db, 'groups'), {
         ...cleanValues,
+        tipo: redSocial.toLowerCase(), // ← esto guarda si es telegram o whatsapp
         description: {
           es: descEs || '',
           en: descEn || '',
@@ -142,7 +150,7 @@ export default function GroupForm() {
 
       form.reset();
       setCaptchaValues(null);
-      navigate(`/grupo/${slug}`);
+      navigate(`/${redSocial.toLowerCase()}/${slug}`);
 
 
       // 👇 Traducción automática post-envío
@@ -258,6 +266,12 @@ export default function GroupForm() {
     }
   }, 900);          // 900 ms tras la última tecla
 
+   const [redSocial, setRedSocial] = useState('Telegram');
+
+    const prefix = redSocial === 'Telegram'
+      ? 'https://t.me/'
+      : 'https://chat.whatsapp.com/';
+
 
 
   return (
@@ -274,25 +288,23 @@ export default function GroupForm() {
         >
          <Stack>
           <TextInput
-            label={t("Nombre del Grupo de Telegram")}
+            label={t(`Nombre del Grupo de ${redSocial}`)}
             required
             {...form.getInputProps('name')}
           />
 
           <TextInput
             label={t("Enlace de invitación")}
-            placeholder="https://t.me/..."
+            placeholder={prefix}
             required
             value={form.values.link}
             onChange={(event) => {
               const input = event.currentTarget.value;
-
-              const prefix = 'https://t.me/';
-              const typedPrefix = input.slice(0, prefix.length).toLowerCase();
+              const typedPrefix = input.slice(0, prefix.length);
               const rest = input.slice(prefix.length);
 
-              // Corrige automáticamente el inicio si coincide parcialmente
-              if (typedPrefix !== prefix && prefix.startsWith(typedPrefix)) {
+              // Compara ignorando mayúsculas, pero conserva el input original
+              if (typedPrefix.toLowerCase() !== prefix.toLowerCase() && prefix.toLowerCase().startsWith(typedPrefix.toLowerCase())) {
                 form.setFieldValue('link', prefix + rest);
               } else {
                 form.setFieldValue('link', input);
@@ -300,6 +312,17 @@ export default function GroupForm() {
             }}
             {...form.getInputProps('link')}
           />
+
+
+          <Select
+            label="Red social"
+            placeholder="Selecciona una red"
+            data={['Telegram', 'Whatsapp']}
+            value={redSocial}
+            onChange={setRedSocial}
+            allowDeselect={false}
+          />
+
 
           <Select
             label={t("¿ACEPTAS CONTENIDO SEXUAL o PARA ADULTOS?")}
@@ -366,9 +389,10 @@ export default function GroupForm() {
               'Anime y Manga',
               t('Películas y Series'),
               t('Criptomonedas'),
-              'XXX',
+              'Xxx',
               'Hacking',
               t('Memes y Humor'),
+              'Stickers',
               t('Porno'),
               t('Canales NSFW'),
               '18+',
@@ -393,7 +417,7 @@ export default function GroupForm() {
             {...form.getInputProps('acceptTerms', { type: 'checkbox' })}
           />
 
-          <Button type="submit" mt="md" loading={isLoading}>
+          <Button type="submit" mt="md" loading={isLoading} loaderProps={{ type: 'dots' }}>
             {t('Publicar')}
           </Button>
         </Stack>
