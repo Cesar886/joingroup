@@ -137,6 +137,13 @@
   "¡Promociona tu Grupo de WhatsApp en JoinGroups!": "Promote your WhatsApp group on JoinGroups!",
   "¡Promociona tu Grupo de Telegram en JoinGroups!": "Promote your Telegram group on JoinGroups!",
   "Apto para todo público": "Family-friendly",
-  "Público": "Public"
+  "Público": "Public",
+
+  
+  "Detectado: grupo de WhatsApp": "Detected: WhatsApp group",
+  "Detectado: canal de WhatsApp": "Detected: WhatsApp channel",
+  "Enlace no válido de grupo o canal": "Invalid group or channel link"
+
+
 
 }

@@ -322,7 +322,7 @@ export default function Telegram() {
                   <img
                     src="/wapp.webp"
                     alt="Whatsapp"
-                    style={{ width: 16, height: 16 }}
+                    style={{ width: 29, height: 29 }}
                   />
                 }
               >

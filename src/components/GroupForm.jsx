@@ -6,6 +6,7 @@ import {
   Select,
   Checkbox,
   Button,
+  Text,
   Title,
   Group,
   Stack,
@@ -26,6 +27,8 @@ export default function GroupForm() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
+  const [redSocial, setRedSocial] = useState('Telegram');
+
   const form = useForm({
     initialValues: {
       name: '',
@@ -62,16 +65,27 @@ export default function GroupForm() {
       },
 
       link: (v) => {
-        const validTelegram = v.startsWith('https://t.me/');
-        const validWhatsapp = v.startsWith('https://chat.whatsapp.com/');
-        if (redSocial === 'Telegram' && !validTelegram) {
-          return t('El enlace debe comenzar con https://t.me/');
+        const val = v.trim();
+
+        if (redSocial === 'Telegram' && !telegramRegex.test(val)) {
+          return t('El enlace de Telegram no es válido');
         }
-        if (redSocial === 'Whatsapp' && !validWhatsapp) {
-          return t('El enlace debe comenzar con https://chat.whatsapp.com/');
+
+        if (redSocial === 'Whatsapp') {
+          if (whatsappGroupRegex.test(val)) {
+            return null; // válido como grupo
+          }
+
+          if (whatsappChannelRegex.test(val)) {
+            return null; // válido como canal
+          }
+
+          return t('El enlace de WhatsApp debe ser un grupo o canal válido');
         }
+
         return null;
-      },
+      }
+
     },
   });
 
@@ -266,11 +280,14 @@ export default function GroupForm() {
     }
   }, 900);          // 900 ms tras la última tecla
 
-   const [redSocial, setRedSocial] = useState('Telegram');
 
-    const prefix = redSocial === 'Telegram'
-      ? 'https://t.me/'
-      : 'https://chat.whatsapp.com/';
+   const prefix = redSocial === 'Telegram' ? 'https://t.me/' : '';
+
+   const telegramRegex = /^https:\/\/t\.me\/[a-zA-Z0-9_]{5,}$/;
+  const whatsappGroupRegex = /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]{22}$/;
+  const whatsappChannelRegex = /^https:\/\/(wa\.me|whatsapp\.com)\/channel\/[a-zA-Z0-9_]{8,}$/;
+  
+
 
 
 
@@ -295,23 +312,48 @@ export default function GroupForm() {
 
           <TextInput
             label={t("Enlace de invitación")}
-            placeholder={prefix}
+            placeholder={redSocial === 'Telegram' ? 'https://t.me/' : ''}
             required
             value={form.values.link}
             onChange={(event) => {
               const input = event.currentTarget.value;
-              const typedPrefix = input.slice(0, prefix.length);
-              const rest = input.slice(prefix.length);
 
-              // Compara ignorando mayúsculas, pero conserva el input original
-              if (typedPrefix.toLowerCase() !== prefix.toLowerCase() && prefix.toLowerCase().startsWith(typedPrefix.toLowerCase())) {
-                form.setFieldValue('link', prefix + rest);
+              if (redSocial === 'Telegram') {
+                const typedPrefix = input.slice(0, prefix.length);
+                const rest = input.slice(prefix.length);
+                if (
+                  typedPrefix.toLowerCase() !== prefix.toLowerCase() &&
+                  prefix.toLowerCase().startsWith(typedPrefix.toLowerCase())
+                ) {
+                  form.setFieldValue('link', prefix + rest);
+                } else {
+                  form.setFieldValue('link', input);
+                }
               } else {
                 form.setFieldValue('link', input);
               }
             }}
             {...form.getInputProps('link')}
           />
+
+          {/* ✅ Mueve este bloque JSX AQUÍ */}
+          {redSocial === 'Whatsapp' && form.values.link && (
+            <Text size="xs" c={
+              whatsappGroupRegex.test(form.values.link.trim()) || whatsappChannelRegex.test(form.values.link.trim())
+                ? 'green'
+                : 'red'
+            }>
+              {
+                whatsappGroupRegex.test(form.values.link.trim())
+                  ? t('Detectado: grupo de WhatsApp')
+                  : whatsappChannelRegex.test(form.values.link.trim())
+                  ? t('Detectado: canal de WhatsApp')
+                  : t('Enlace no válido de grupo o canal')
+              }
+            </Text>
+          )}
+
+
 
 
           <Select

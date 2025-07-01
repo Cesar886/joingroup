@@ -185,11 +185,13 @@ export default function TableSort() {
             src={iconSrc}
             alt={row.name}
             style={{
-              width: '24px',
-              height: '24px',
+              width: isTelegram ? '24px' : '39px',
+              height: isTelegram ? '24px' : '39px',
               borderRadius: '4px',
               objectFit: 'cover',
               marginLeft: 'auto',
+              marginRight: isTelegram ? '9px' : '0px',
+              marginTop: isTelegram ? '5px' : '0px',
             }}
           />
         </div>
@@ -317,7 +319,7 @@ export default function TableSort() {
                   <img
                     src="/wapp.webp"
                     alt="Whatsapp"
-                    style={{ width: 16, height: 16 }}
+                    style={{ width: 29, height: 29 }}
                   />
                 }
               >
