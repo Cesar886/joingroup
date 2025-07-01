@@ -205,8 +205,8 @@ export default function TableSort() {
                   {row.content18 === 'Sí'
                     ? '18+'
                     : isMobile
-                      ? 'Público'
-                      : 'Apto para todo público'}
+                      ? t('Público')
+                      : t('Apto para todo público')}
                 </Text>
                 <Text size="xs" c="dimmed">{t('Contenido')}</Text>
               </Table.Td>
