@@ -85,7 +85,7 @@ export function Header() {
                 size="lg"
                 radius="xl"
                 variant="subtle"
-                onClick={() => i18n.changeLanguage(nextLang)}
+                onClick={() => {i18n.changeLanguage(nextLang); sessionStorage.setItem('lang', nextLang);}}
                 style={{ fontSize: rem(24) }}
               >
                 {flagEmoji}

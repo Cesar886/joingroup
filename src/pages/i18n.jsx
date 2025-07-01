@@ -9,11 +9,14 @@ const resources = {
   en: { translation: translationEN },
 };
 
+// Lee el idioma guardado en sessionStorage si existe
+const savedLang = sessionStorage.getItem('lang');
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'es', // idioma por defecto
+    lng: savedLang || 'es', // usa idioma guardado o español por defecto
     fallbackLng: 'es',
     interpolation: {
       escapeValue: false,
