@@ -1,52 +1,117 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
+    <!-- --------------------------------------------------
+         BÁSICOS
+    --------------------------------------------------- -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- SEO -->
-    <title order={2} mb="sm">Grupos de Telegram por Temática | Únete a Comunidades ACTIVAS</title>
+    <!-- --------------------------------------------------
+         TÍTULO + DESCRIPTION (máx. ~60 / 160 car.)
+    --------------------------------------------------- -->
+    <title>Grupos de Telegram Activos 2025 | Únete a Comunidades por Temas y Categorías</title>
+    <meta name="description"
+          content="Explora comunidades activas en Telegram en 2025: grupos +18, anime, estudio, tecnología, música, criptomonedas y más. ¡Comparte tu grupo gratis y únete hoy mismo!">
 
-    <meta name="description" content="Explora y únete a miles de Grupos de Telegram creados por personas con tus mismos intereses; Conéctate con Comunidades ACTIVAS, encuentra Grupos relevantes fácilmente y comparte el tuyo para llegar a más personas. Es rápido, gratuito y sin complicaciones." />
-    <meta name="keywords" content="grupos de telegram, enlaces telegram, canales de telegram, unirse a grupos telegram, publicar grupo telegram, comunidades telegram activas" />
+    <!-- Autor (opcional pero bien) -->
+    <meta name="author" content="JoinGroups" />
 
-    <!-- Favicon -->
+    <!-- --------------------------------------------------
+         CANONICAL + HREFLANG (para futuros idiomas)
+    --------------------------------------------------- -->
+    <link rel="canonical" href="https://joingroups.pro" />
+    <link rel="alternate" hreflang="es" href="https://joingroups.pro" />
+    <!--  Descomenta cuando tengas versión en inglés
+    <link rel="alternate" hreflang="en" href="https://joingroups.pro/en" /> 
+    -->
+
+    <!-- --------------------------------------------------
+         FAVICON
+    --------------------------------------------------- -->
     <link rel="icon" href="https://joingroups.pro/JoinGroups.ico" />
 
-    <!-- Open Graph (Facebook, WhatsApp, etc.) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://joingroups.pro" />
-    <meta property="og:title" content="JoinGroups - Grupos de Telegram en español" />
-    <meta property="og:description" content="Descubre y comparte grupos de Telegram fácilmente. Publica el tuyo gratis y únete a comunidades afines." />
-    <meta property="og:image" content="https://joingroups.pro/JoinGroup.svg" />
+    <!-- --------------------------------------------------
+         OPEN GRAPH (FB / WhatsApp)
+    --------------------------------------------------- -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content="https://joingroups.pro" />
+    <meta property="og:title"       content="Grupos de Telegram Activos 2025 | Comunidades por Temas" />
+    <meta property="og:description" content="Únete a comunidades activas en Telegram: +18, anime, estudio, tecnología y más. Comparte tu grupo gratis." />
+    <!-- Imagen OG: 1200×630 px aprox. -->
+    <meta property="og:image"       content="https://joingroups.pro/og-image-telegram-grupos.jpg" />
+    <meta property="og:site_name"   content="Comunidades Activas de Telegram" />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="JoinGroups - Grupos de Telegram en español" />
-    <meta name="twitter:description" content="Explora, comparte y publica tus grupos de Telegram de forma gratuita." />
-    <meta name="twitter:image" content="https://joingroups.pro/JoinGroup.svg" />
-    <meta name="twitter:site" content="@JoinGroups" /> <!-- Si tienes Twitter -->
+    <!-- --------------------------------------------------
+         TWITTER CARDS
+    --------------------------------------------------- -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:url"         content="https://joingroups.pro" />
+    <meta name="twitter:title"       content="Grupos de Telegram Activos 2025 | Comunidades por Temas" />
+    <meta name="twitter:description" content="Únete a comunidades activas en Telegram: +18, anime, estudio, tecnología y más. Comparte tu grupo gratis." />
+    <meta name="twitter:image"       content="https://joingroups.pro/og-image-telegram-grupos.jpg" />
 
-    <!-- Canonical (recomendado para evitar contenido duplicado) -->
-    <link rel="canonical" href="https://joingroups.pro" />
-
-    <!-- Optional Schema.org (JSON-LD para Google) -->
+    <!-- --------------------------------------------------
+         SCHEMA.ORG (JSON-LD)
+    --------------------------------------------------- -->
+    <!-- WebSite + SearchAction -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "JoinGroups",
+      "name": "Comunidades Activas de Telegram",
       "url": "https://joingroups.pro",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://joingroups.pro/?q={search_term_string}",
+        "target": "https://joingroups.pro/buscar?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
     </script>
+
+    <!-- ItemList con categorías destacadas -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Categorías de Grupos de Telegram",
+      "itemListElement": [
+        { "@type": "SiteNavigationElement", "position": 1, "name": "+18",       "url": "https://joingroups.pro/categoria/18" },
+        { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",     "url": "https://joingroups.pro/categoria/anime" },
+        { "@type": "SiteNavigationElement", "position": 3, "name": "Estudio",   "url": "https://joingroups.pro/categoria/estudio" },
+        { "@type": "SiteNavigationElement", "position": 4, "name": "Tecnología","url": "https://joingroups.pro/categoria/tecnologia" }
+      ]
+    }
+    </script>
+
+    <!-- --------------------------------------------------
+         ESTILOS RÁPIDOS PARA CTA (elimina si usas tu CSS)
+    --------------------------------------------------- -->
+    <style>
+      .cta-boton{
+        background:#00aaff; color:#fff; font-weight:600;
+        padding:12px 20px; border-radius:8px; text-decoration:none;
+        display:inline-block; margin-top:1rem;
+      }
+    </style>
   </head>
+
   <body>
-    <div id="root"></div>
+    <!-- --------------------------------------------------
+         CONTENIDO ESTÁTICO CLAVE (indexable incluso sin JS)
+    --------------------------------------------------- -->
+    <header>
+      <h1>Comunidades Activas de Telegram en 2025</h1>
+      <p>Descubre los grupos de Telegram que <strong>sí están activos</strong>: +18, anime, estudio, tecnología y mucho más.</p>
+      <a href="/publicar" class="cta-boton">📢 Publica tu grupo gratis</a>
+    </header>
+
+    <!-- Punto de montaje de tu app React -->
+    <main id="root"></main>
+
+    <!-- --------------------------------------------------
+         SCRIPTS
+    --------------------------------------------------- -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

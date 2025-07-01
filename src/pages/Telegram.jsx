@@ -241,10 +241,63 @@ export default function Telegram() {
   return (
     <>
       <Helmet>
-        <title>Grupos de Telegram</title>
-        <meta name="description" content="Explora y únete a miles de Grupos de Telegram creados por personas con tus mismos intereses. Conéctate con Comunidades ACTIVAS, encuentra Grupos relevantes fácilmente y comparte el tuyo para llegar a más personas. Es rápido, gratuito y sin complicaciones." />
-        <meta name="keywords" content="grupos de telegram, enlaces telegram, canales de telegram, unirse a grupos telegram, publicar grupo telegram, comunidades telegram activas" />
+        {/* ——— TITLE ——— */}
+        <title>Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo</title>
+
+        {/* ——— DESCRIPTION ——— */}
+        <meta
+          name="description"
+          content="Únete a los mejores Grupos de Telegram en 2025. Canales, grupos +18, anime, estudio, tecnología y más. Publica tu grupo gratis y conéctate con comunidades activas."
+        />
+
+        {/* ——— KEYWORDS (no tan importantes en Google, pero útiles para buscadores menores) ——— */}
+        <meta
+          name="keywords"
+          content="grupos de telegram, enlaces telegram, canales de telegram, comunidades telegram, telegram +18, grupos telegram activos, publicar grupo telegram"
+        />
+
+        {/* ——— CANONICAL ——— */}
+        <link rel="canonical" href="https://joingroups.pro/telegram" />
+
+        {/* ——— OPEN GRAPH ——— */}
+        <meta property="og:type"        content="website" />
+        <meta property="og:url"         content="https://joingroups.pro/telegram" />
+        <meta property="og:title"       content="Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo" />
+        <meta property="og:description" content="Únete a comunidades activas de Telegram. Grupos +18, anime, estudio, tecnología y más. Publica el tuyo gratis." />
+        <meta property="og:image"       content="https://joingroups.pro/JoinGroups.ico" />
+        <meta property="og:site_name"   content="JoinGroups" />
+
+        {/* ——— TWITTER CARDS ——— */}
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:url"         content="https://joingroups.pro/telegram" />
+        <meta name="twitter:title"       content="Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo" />
+        <meta name="twitter:description" content="Únete a comunidades activas de Telegram. Grupos +18, anime, estudio, tecnología y más. Publica el tuyo gratis." />
+        <meta name="twitter:image"       content="https://joingroups.pro/JoinGroups.ico" />
+
+        {/* ——— SCHEMA.ORG ——— */}
+        <script type="application/ld+json">
+          {`
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Grupos de Telegram Activos 2025",
+            "description": "Explora y únete a los grupos de Telegram más activos en 2025: canales, +18, anime, estudio, tecnología y más.",
+            "url": "https://joingroups.pro/telegram",
+            "mainEntity": {
+              "@type": "ItemList",
+              "name": "Categorías de Grupos de Telegram",
+              "itemListElement": [
+                { "@type": "SiteNavigationElement", "position": 1, "name": "+18",        "url": "https://joingroups.pro/telegram/18" },
+                { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",      "url": "https://joingroups.pro/telegram/anime" },
+                { "@type": "SiteNavigationElement", "position": 3, "name": "Estudio",    "url": "https://joingroups.pro/telegram/estudio" },
+                { "@type": "SiteNavigationElement", "position": 4, "name": "Tecnología", "url": "https://joingroups.pro/telegram/tecnologia" }
+              ]
+            }
+          }
+          `}
+        </script>
       </Helmet>
+
       <ScrollArea>
         {selectedCollection && (
           <Button

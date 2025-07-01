@@ -242,10 +242,63 @@ export default function Whatsapp() {
   return (
     <>
       <Helmet>
-        <title>Grupos de Whatsapp</title>
-        <meta name="description" content="Explora y únete a miles de Grupos de Whatsapp creados por personas con tus mismos intereses. Conéctate con Comunidades ACTIVAS, encuentra Grupos relevantes fácilmente y comparte el tuyo para llegar a más personas. Es rápido, gratuito y sin complicaciones." />
-        <meta name="keywords" content="grupos de whatsapp, enlaces whatsapp, canales de whatsapp, unirse a grupos whatsapp, publicar grupo whatsapp, comunidades whatsapp activas" />
+        {/* ——— TITLE (≤60 car.) ——— */}
+        <title>Grupos de WhatsApp ACTIVOS 2025 | Únete o Publica el Tuyo</title>
+
+        {/* ——— DESCRIPTION (≈150 car.) ——— */}
+        <meta
+          name="description"
+          content="Únete a los grupos de WhatsApp más activos de 2025: tecnología, estudio, ventas y más. Publica tu enlace gratis y conecta con miles de personas afines."
+        />
+
+        {/* ——— KEYWORDS (poco peso en Google, pero útil en otros buscadores) ——— */}
+        <meta
+          name="keywords"
+          content="grupos de whatsapp activos 2025, enlaces whatsapp, unirse a grupos whatsapp, publicar grupo whatsapp, comunidades whatsapp, canales whatsapp"
+        />
+
+        {/* ——— CANONICAL (evita duplicados) ——— */}
+        <link rel="canonical" href="https://joingroups.pro/whatsapp" />
+
+        {/* ——— OPEN GRAPH (FB / WhatsApp) ——— */}
+        <meta property="og:type"        content="website" />
+        <meta property="og:url"         content="https://joingroups.pro/whatsapp" />
+        <meta property="og:title"       content="Grupos de WhatsApp Activos 2025 | Únete o Publica el Tuyo" />
+        <meta property="og:description" content="Únete a los grupos de WhatsApp más activos de 2025: tecnología, estudio, ventas y más. Publica tu enlace gratis y conecta con miles de personas afines." />
+        <meta property="og:image"       content="https://joingroups.pro/JoinGroups.ico" />
+        <meta property="og:site_name"   content="JoinGroups" />
+
+        {/* ——— TWITTER CARDS ——— */}
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:url"         content="https://joingroups.pro/whatsapp" />
+        <meta name="twitter:title"       content="Grupos de WhatsApp Activos 2025 | Únete o Publica el Tuyo" />
+        <meta name="twitter:description" content="Únete a los grupos de WhatsApp más activos de 2025: tecnología, estudio, ventas y más. Publica tu enlace gratis y conecta con miles de personas afines." />
+        <meta name="twitter:image"       content="https://joingroups.pro/JoinGroups.ico" />
+
+        {/* ——— SCHEMA.ORG (JSON-LD) ——— */}
+        <script type="application/ld+json">
+          {`
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Grupos de WhatsApp Activos 2025",
+            "description": "Únete a los grupos de WhatsApp más activos de 2025: tecnología, estudio, ventas y más.",
+            "url": "https://joingroups.pro/whatsapp",
+            "mainEntity": {
+              "@type": "ItemList",
+              "name": "Categorías de Grupos de WhatsApp",
+              "itemListElement": [
+                { "@type": "SiteNavigationElement", "position": 1, "name": "Tecnología", "url": "https://joingroups.pro/whatsapp/tecnologia" },
+                { "@type": "SiteNavigationElement", "position": 2, "name": "Estudio",     "url": "https://joingroups.pro/whatsapp/estudio" },
+                { "@type": "SiteNavigationElement", "position": 3, "name": "+18",        "url": "https://joingroups.pro/whatsapp/18" },
+                { "@type": "SiteNavigationElement", "position": 4, "name": "Ventas",     "url": "https://joingroups.pro/whatsapp/ventas" }
+              ]
+            }
+          }
+          `}
+        </script>
       </Helmet>
+
       <ScrollArea>
         {selectedCollection && (
           <Button
