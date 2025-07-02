@@ -19,6 +19,7 @@ import { useRef, useState } from 'react';
 import slugify from '../assets/slugify'
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
+import { Helmet } from 'react-helmet';
 
 
 
@@ -293,6 +294,28 @@ export default function GroupForm() {
 
   return (
     <>
+      <Helmet>
+        <title>Publicar Grupo de Telegram o WhatsApp | Gratis en JoinGroups 2025</title>
+        <meta
+          name="description"
+          content="Envía tu grupo o canal de Telegram o WhatsApp para ser listado en el directorio verificado JoinGroups. +18, anime, estudio, tecnología y más. ¡Publicar es gratis y fácil!"
+        />
+        <link rel="canonical" href="https://joingroups.pro/form" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Etiquetas sociales para más clics en WhatsApp, Telegram, Facebook y Twitter */}
+        <meta property="og:title" content="Publica tu Grupo en JoinGroups | Gratis, Fácil y Verificado" />
+        <meta property="og:description" content="Comparte tu grupo de Telegram o WhatsApp con miles de usuarios. Únete al directorio de comunidades activas. +18, anime, estudio, tecnología y más." />
+        <meta property="og:url" content="https://joingroups.pro/form" />
+        <meta property="og:image" content="https://joingroups.pro/og-image-formulario.jpg" />
+        <meta property="og:type" content="website" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Publicar Grupo en Telegram o WhatsApp | Gratis en JoinGroups" />
+        <meta name="twitter:description" content="Agrega tu grupo a nuestro directorio verificado. Miles de usuarios activos buscan comunidades como la tuya." />
+        <meta name="twitter:image" content="https://joingroups.pro/og-image-formulario.jpg" />
+      </Helmet>
+
       <Title order={2} mb="md">{t('Publica tu Grupo')}</Title>
         <form
           onSubmit={async (e) => {
