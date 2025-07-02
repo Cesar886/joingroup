@@ -43,6 +43,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hcaptcha": "^0.1.1",
+    "react-helmet": "^6.1.0",
     "react-helmet-async": "^2.0.5",
     "react-i18next": "^15.5.3",
     "react-router-dom": "^7.6.3",
