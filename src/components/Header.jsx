@@ -22,7 +22,7 @@ export function Header() {
 
   const links = [
     { link: '/', label: t('Inicio') },
-    { link: '/form', label: t('Publica Tu Grupo'), highlight: true },
+    { link: '/comunidades/form', label: t('Publica Tu Grupo'), highlight: true },
   ];
 
   const items = links.map((link) => {

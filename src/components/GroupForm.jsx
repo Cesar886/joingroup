@@ -157,7 +157,6 @@ export default function GroupForm() {
         link: cleanLink,
         destacado: false,
         visitas: 0,
-        miembros: 0,
         createdAt: new Date(),
         slug,
         translationPending: !descEs || !descEn,
@@ -165,7 +164,7 @@ export default function GroupForm() {
 
       form.reset();
       setCaptchaValues(null);
-      navigate(`/${redSocial.toLowerCase()}/${slug}`);
+      navigate(`/comunidades/grupos-de-${redSocial.toLowerCase()}/${slug}`);
 
 
       // 👇 Traducción automática post-envío

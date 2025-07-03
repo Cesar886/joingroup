@@ -5,6 +5,7 @@ import {
   IconChevronUp,
   IconSearch,
   IconSelector,
+  IconSwords,
 } from '@tabler/icons-react';
 import {
   Box,
@@ -24,9 +25,9 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
 import slugify from '../assets/slugify';
-import styles from './TableSort.module.css';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import styles from './ClanClashRoyale.module.css';
 
 
 import { useTranslation } from 'react-i18next';
@@ -53,7 +54,7 @@ function Th({ children, reversed, sorted, onSort }) {
 function filterData(data, search, collectionFilter = null) {
   const query = search.toLowerCase().trim();
   return data.filter((item) => {
-    const matchesSearch = ['name', 'categories', 'content18'].some((key) =>
+    const matchesSearch = ['name', 'categories' ].some((key) =>
       item[key]?.toLowerCase().includes(query)
   );
   
@@ -76,7 +77,7 @@ function sortData(data, { sortBy, reversed, search, collectionFilter }) {
 );
 }
 
-export default function TableSort() {
+export default function ClashRoyale() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -89,8 +90,6 @@ export default function TableSort() {
   const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const orden = searchParams.get('orden');
 
 
   const handleCollectionFilter = (collection) => {
@@ -107,8 +106,11 @@ export default function TableSort() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const snapshot = await getDocs(collection(db, 'groups'));
+      const snapshot = await getDocs(collection(db, 'clanes'));
       const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      // Filtrar solo grupos de tipo "clashroyale"
+      const clashRoyaleFilter = groups.filter(g => g.tipo === 'clash-royale');
 
       const fetchCollections = async () => {
         const snapshot = await getDocs(collection(db, 'colections'));
@@ -119,23 +121,17 @@ export default function TableSort() {
 
       fetchCollections();
 
-      let ordenados = [...groups];
-
-      if (orden === 'top' || orden === 'vistos') {
-        ordenados.sort((a, b) => b.visitas - a.visitas);
-      } else if (orden === 'nuevos') {
-        ordenados.sort((a, b) => {
-          const dateA = a.createdAt?.toDate?.() ?? new Date(0);
-          const dateB = b.createdAt?.toDate?.() ?? new Date(0);
-          return dateB - dateA;
-        });
-      }
+      const destacados = clashRoyaleFilter.filter(g => g.destacado);
+      const normales = clashRoyaleFilter.filter(g => !g.destacado);
+      const ordenados = [...destacados, ...normales];
 
       setData(ordenados);
       setSortedData(ordenados);
     };
+
     fetchData();
-  }, [location.search]);
+  }, []);
+
 
   const setSorting = (field) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -145,7 +141,7 @@ export default function TableSort() {
   };
 
   const handleSearchChange = (event) => {
-    const value = event.currentTarget.value;
+    const value = event.currentTarget.Telegramvalue;
     setSearch(value);
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value, collectionFilter: selectedCollection }));
   };
@@ -172,9 +168,6 @@ export default function TableSort() {
           || row.description['es']            // intento 3: español por defecto
         : row.description;
         
-    const isTelegram = row.tipo?.trim().toLowerCase() === 'telegram';
-    const iconSrc = isTelegram ? '/telegramicons.png' : '/wapp.webp';
-
 
     return (
       <Paper
@@ -183,7 +176,7 @@ export default function TableSort() {
         shadow="xs"
         mb="sm"
         key={`${row.id}-${slug}-${idx}`}
-        onClick={() => navigate(`/comunidades/grupos-de-${row.tipo}/${slug}`)}
+        onClick={() => navigate(`/clanes/clanes-de-clash-royale/${slug}`)}
       >
         <Table horizontalSpacing="md" withRowBorders={false}>
           <Table.Tbody>
@@ -192,16 +185,14 @@ export default function TableSort() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <Text fw={700}>{row.name}</Text>
           <img
-            src={iconSrc}
+            src={IconSwords}
             alt={row.name}
             style={{
-              width: isTelegram ? '24px' : '39px',
-              height: isTelegram ? '24px' : '39px',
+              width: '24px',
+              height: '24px',
               borderRadius: '4px',
               objectFit: 'cover',
               marginLeft: 'auto',
-              marginRight: isTelegram ? '9px' : '0px',
-              marginTop: isTelegram ? '5px' : '0px',
             }}
           />
         </div>
@@ -217,8 +208,8 @@ export default function TableSort() {
                   {row.content18 === 'Sí'
                     ? '18+'
                     : isMobile
-                      ? t('Público')
-                      : t('Apto para todo público')}
+                      ? 'Público'
+                      : 'Apto para todo público'}
                 </Text>
                 <Text size="xs" c="dimmed">{t('Contenido')}</Text>
               </Table.Td>
@@ -248,10 +239,63 @@ export default function TableSort() {
   return (
     <>
       <Helmet>
-        <title>Join Groups</title>
-        <meta name="description" content="Explora y únete a miles de Grupos de Telegram  y Whatsapp creados por personas con tus mismos intereses. Conéctate con Comunidades ACTIVAS, encuentra Grupos relevantes fácilmente y comparte el tuyo para llegar a más personas. Es rápido, gratuito y sin complicaciones." />
-        <meta name="keywords" content="grupos de telegram, enlaces telegram, canales de telegram, unirse a grupos telegram, publicar grupo telegram, comunidades telegram activas, grupos de whatsapp, enlaces whatsapp, canales de whatsapp, unirse a grupos whatsapp, publicar grupo whatsapp, comunidades whatsapp activas" />
+        {/* ——— TITLE ——— */}
+        <title>Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo</title>
+
+        {/* ——— DESCRIPTION ——— */}
+        <meta
+          name="description"
+          content="Únete a los mejores Grupos de Telegram en 2025. Canales, grupos +18, anime, estudio, tecnología y más. Publica tu grupo gratis y conéctate con comunidades activas."
+        />
+
+        {/* ——— KEYWORDS (no tan importantes en Google, pero útiles para buscadores menores) ——— */}
+        <meta
+          name="keywords"
+          content="grupos de telegram, enlaces telegram, canales de telegram, comunidades telegram, telegram +18, grupos telegram activos, publicar grupo telegram"
+        />
+
+        {/* ——— CANONICAL ——— */}
+        <link rel="canonical" href="https://joingroups.pro/telegram" />
+
+        {/* ——— OPEN GRAPH ——— */}
+        <meta property="og:type"        content="website" />
+        <meta property="og:url"         content="https://joingroups.pro/telegram" />
+        <meta property="og:title"       content="Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo" />
+        <meta property="og:description" content="Únete a comunidades activas de Telegram. Grupos +18, anime, estudio, tecnología y más. Publica el tuyo gratis." />
+        <meta property="og:image"       content="https://joingroups.pro/JoinGroups.ico" />
+        <meta property="og:site_name"   content="JoinGroups" />
+
+        {/* ——— TWITTER CARDS ——— */}
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:url"         content="https://joingroups.pro/telegram" />
+        <meta name="twitter:title"       content="Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo" />
+        <meta name="twitter:description" content="Únete a comunidades activas de Telegram. Grupos +18, anime, estudio, tecnología y más. Publica el tuyo gratis." />
+        <meta name="twitter:image"       content="https://joingroups.pro/JoinGroups.ico" />
+
+        {/* ——— SCHEMA.ORG ——— */}
+        <script type="application/ld+json">
+          {`
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Grupos de Telegram Activos 2025",
+            "description": "Explora y únete a los grupos de Telegram más activos en 2025: canales, +18, anime, estudio, tecnología y más.",
+            "url": "https://joingroups.pro/telegram",
+            "mainEntity": {
+              "@type": "ItemList",
+              "name": "Categorías de Grupos de Telegram",
+              "itemListElement": [
+                { "@type": "SiteNavigationElement", "position": 1, "name": "+18",        "url": "https://joingroups.pro/telegram/18" },
+                { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",      "url": "https://joingroups.pro/telegram/anime" },
+                { "@type": "SiteNavigationElement", "position": 3, "name": "Estudio",    "url": "https://joingroups.pro/telegram/estudio" },
+                { "@type": "SiteNavigationElement", "position": 4, "name": "Tecnología", "url": "https://joingroups.pro/telegram/tecnologia" }
+              ]
+            }
+          }
+          `}
+        </script>
       </Helmet>
+
       <ScrollArea>
         {selectedCollection && (
           <Button
@@ -302,12 +346,11 @@ export default function TableSort() {
 
         {rows.length > 0 ? (
           <>
-            <Group gap='xs' mb="md" justify="center">
               <Button
                 variant="light"
                 size="xs"
                 radius="md"
-                onClick={() => navigate('/comunidades/grupos-de-telegram')}
+                onClick={() => navigate('/clanes/form')}
                 leftSection={
                   <img
                     src="/telegramicons.png"
@@ -316,54 +359,57 @@ export default function TableSort() {
                   />
                 }
               >
-                {t('Telegram')}
+                {t('Publica tu clan AQUI')}
               </Button>
 
+            <Group gap='xs' mb="md" justify="center">
               <Button
-                img src="/wapp.webp"
                 variant="light"
                 size="xs"
                 radius="md"
-                onClick={() => navigate('/comunidades/grupos-de-whatsapp')}
+                onClick={() => navigate('/clanes')}
                 leftSection={
                   <img
-                    src="/wapp.webp"
-                    alt="Whatsapp"
-                    style={{ width: 29, height: 29 }}
+                    src="/telegramicons.png"
+                    alt="Telegram"
+                    style={{ width: 16, height: 16 }}
                   />
                 }
               >
-                {t('Whatsapp')}
+                {t('Todos los Clanes')}
               </Button>
-              <Group mt="md" mb="md">
-                <Button
-                  onClick={() => {
-                    const newOrden = orden === 'top' ? '' : '?orden=top';
-                    navigate(newOrden);
-                  }}
-                  variant={orden === 'top' ? 'filled' : 'light'}
-                >
-                  Top
-                </Button>
+              <Button
+                height={140}
+                variant="light"
+                size="xs"
+                radius="md"
+                onClick={() => navigate('/clanes/clanes-de-clash-royale')}
+                leftSection={
+                  <img
+                    src="/clashRoyaleFondo1.png"
+                    alt="Clash Royale"
+                    style={{ width: 32, height: 32 }}
+                  />
+                }
+              >
+                {t('Clash Royale')}
+              </Button>
 
-                <Button
-                  onClick={() => {
-                    const newOrden = orden === 'nuevos' ? '' : '?orden=nuevos';
-                    navigate(newOrden);
-                  }}
-                  variant={orden === 'nuevos' ? 'filled' : 'light'}
-                >
-                  Nuevos
-                </Button>
-
-                <Button
-                  onClick={() => navigate('')}
-                  variant={!orden ? 'filled' : 'light'}
-                >
-                  Destacados
-                </Button>
-              </Group>
-
+              <Button
+                variant="light"
+                size="xs"
+                radius="md"
+                onClick={() => navigate('/clanes/clanes-de-clash-of-clans')}
+                leftSection={
+                  <img
+                    src="/clashOfClansFondo.png"
+                    alt="Clash of Clans"
+                    style={{ width: 34, height: 34 }}
+                  />
+                }
+              >
+                {t('Clash of Clans')}
+              </Button>
             </Group>
 
             <Paper
@@ -433,11 +479,29 @@ export default function TableSort() {
 
             </div>
 
-              <Text size="sm" color="dimmed" mb="xs">
-                {t('Tienes un grupo o canal de Telegram o Whatsapp ??')} <strong>{t('En JoinGroups puedes publicar tu grupo gratis')}</strong> {t('y conseguir más miembros fácilmente.')}
-                {t('Explora una lista actualizada de')} <strong>{t('grupos y canales de Telegram y Whatsapp')}</strong> {t('organizados por temática e intereses.')}{' '}
-                {t('Únete a comunidades activas, descubre nuevos grupos y haz crecer tu comunidad en Telegram con JoinGroups.')}
-              </Text>
+
+            {isMobile ? (
+              <>
+                <Title order={4} mb="xs">
+                  📣 {t('¡Promociona tu Grupo de Telegram en JoinGroups!')}
+                </Title>
+                <Text size="sm" color="dimmed" mb="xs">
+                  📱 {t('¿Tienes un grupo de Telegram?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
+                </Text>
+              </>
+            ) : (
+              <>
+                <Title order={3} mb="xs">
+                  📣 {t('¡Promociona tu Grupo de Telegram en JoinGroups!')}
+                </Title>
+                <Text size="sm" color="dimmed" mb="xs">
+                  📱 {t('¿Tienes un grupo de Telegram y quieres hacerlo crecer?')} <strong>{t('En JoinGroups puedes publicar tu grupo gratis')}</strong> {t('y empezar a recibir nuevos miembros interesados.')}<br />
+                  🔍 {t('Explora una lista actualizada de')} <strong>{t('grupos de Telegram')}</strong> {t('organizados por categoría e intereses.')}{' '}
+                  🤝 {t('Únete a comunidades activas, comparte tu grupo y conéctate con personas afines usando JoinGroups.')}
+                </Text>
+              </>
+            )}
+
 
             </Paper>
 
@@ -489,7 +553,7 @@ export default function TableSort() {
               style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
             >
             <Text size="md" fw={600} mb="sm">
-              {t('Quieres que tu grupo de Telegram o Whatsapp crezca y llegue a más personas ??')}
+              {t('¿Quieres que tu grupo de Telegram crezca y llegue a más personas?')}
             </Text>
 
             <Text size="sm" color="dimmed" mb="xs">
@@ -512,6 +576,5 @@ export default function TableSort() {
         )}
       </ScrollArea>
     </>
-
   );
 }

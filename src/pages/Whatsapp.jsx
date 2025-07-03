@@ -90,6 +90,8 @@ export default function Whatsapp() {
   const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const orden = searchParams.get('orden');
 
 
   const handleCollectionFilter = (collection) => {
@@ -123,14 +125,24 @@ export default function Whatsapp() {
 
       const destacados = telegramGroups.filter(g => g.destacado);
       const normales = telegramGroups.filter(g => !g.destacado);
-      const ordenados = [...destacados, ...normales];
+      let ordenados = [...telegramGroups];
+
+      if (orden === 'top' || orden === 'vistos') {
+        ordenados.sort((a, b) => b.visitas - a.visitas);
+      } else if (orden === 'nuevos') {
+        ordenados.sort((a, b) => {
+          const dateA = a.createdAt?.toDate?.() ?? new Date(0);
+          const dateB = b.createdAt?.toDate?.() ?? new Date(0);
+          return dateB - dateA;
+        });
+      }
 
       setData(ordenados);
       setSortedData(ordenados);
     };
 
     fetchData();
-  }, []);
+  }, [location.search]);
 
   const setSorting = (field) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -177,7 +189,7 @@ export default function Whatsapp() {
         shadow="xs"
         mb="sm"
         key={`${row.id}-${slug}-${idx}`}
-        onClick={() => navigate(`/whatsapp/${slug}`)}
+        onClick={() => navigate(`/comunidades/grupos-de-whatsapp/${slug}`)}
       >
         <Table horizontalSpacing="md" withRowBorders={false}>
           <Table.Tbody>
@@ -354,7 +366,7 @@ export default function Whatsapp() {
                 variant="light"
                 size="xs"
                 radius="md"
-                onClick={() => navigate('/telegram')}
+                onClick={() => navigate('/comunidades/grupos-de-telegram')}
                 leftSection={
                   <img
                     src="/telegramicons.png"
@@ -371,7 +383,7 @@ export default function Whatsapp() {
                 variant="light"
                 size="xs"
                 radius="md"
-                onClick={() => navigate('/whatsapp')}
+                onClick={() => navigate('/comunidades/grupos-de-whatsapp')}
                 leftSection={
                    <img
                     src="/wapp.webp"
@@ -382,6 +394,12 @@ export default function Whatsapp() {
               >
                 {t('Whatsapp')}
               </Button>
+
+              <Group mt="md" mb="md">
+                <Button onClick={() => navigate('?orden=top')} variant={orden === 'top' ? 'filled' : 'light'}>Top</Button>
+                <Button onClick={() => navigate('?orden=nuevos')} variant={orden === 'nuevos' ? 'filled' : 'light'}>Nuevos</Button>
+                <Button onClick={() => navigate('')} variant={!orden ? 'filled' : 'light'}>Destacados</Button>
+              </Group>
             </Group>
           
             <Paper

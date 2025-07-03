@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import {
   IconChevronDown,
   IconChevronUp,
@@ -24,7 +24,6 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
 import slugify from '../assets/slugify';
-import { useLocation } from 'react-router-dom';
 import styles from './TableSortTelegram.module.css';
 import { Helmet } from 'react-helmet-async';
 
@@ -90,7 +89,9 @@ export default function Telegram() {
   const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const location = useLocation();
-
+  const searchParams = new URLSearchParams(location.search);
+  const orden = searchParams.get('orden');
+  
 
   const handleCollectionFilter = (collection) => {
     const newValue = collection === selectedCollection ? null : collection;
@@ -105,11 +106,12 @@ export default function Telegram() {
   };
 
   useEffect(() => {
+
+
     const fetchData = async () => {
       const snapshot = await getDocs(collection(db, 'groups'));
       const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      // Filtrar solo grupos de tipo "telegram"
       const telegramGroups = groups.filter(g => g.tipo === 'telegram');
 
       const fetchCollections = async () => {
@@ -118,19 +120,28 @@ export default function Telegram() {
         const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
         setCollections([...new Set(allCollections)]);
       };
-
       fetchCollections();
 
-      const destacados = telegramGroups.filter(g => g.destacado);
-      const normales = telegramGroups.filter(g => !g.destacado);
-      const ordenados = [...destacados, ...normales];
+      let ordenados = [...telegramGroups];
+
+      if (orden === 'top' || orden === 'vistos') {
+        ordenados.sort((a, b) => b.visitas - a.visitas);
+      } else if (orden === 'nuevos') {
+        ordenados.sort((a, b) => {
+          const dateA = a.createdAt?.toDate?.() ?? new Date(0);
+          const dateB = b.createdAt?.toDate?.() ?? new Date(0);
+          return dateB - dateA;
+        });
+      }
+
 
       setData(ordenados);
       setSortedData(ordenados);
     };
 
     fetchData();
-  }, []);
+  }, [location.search]);
+
 
 
   const setSorting = (field) => {
@@ -141,7 +152,7 @@ export default function Telegram() {
   };
 
   const handleSearchChange = (event) => {
-    const value = event.currentTarget.Telegramvalue;
+  const value = event.currentTarget.value;
     setSearch(value);
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value, collectionFilter: selectedCollection }));
   };
@@ -178,7 +189,7 @@ export default function Telegram() {
         shadow="xs"
         mb="sm"
         key={`${row.id}-${slug}-${idx}`}
-        onClick={() => navigate(`/telegram/${slug}`)}
+        onClick={() => navigate(`/comunidades/grupos-de-telegram/${slug}`)}
       >
         <Table horizontalSpacing="md" withRowBorders={false}>
           <Table.Tbody>
@@ -353,7 +364,7 @@ export default function Telegram() {
                 variant="light"
                 size="xs"
                 radius="md"
-                onClick={() => navigate('/telegram')}
+                onClick={() => navigate('/comunidades/grupos-de-telegram')}
                 leftSection={
                   <img
                     src="/telegramicons.png"
@@ -370,7 +381,7 @@ export default function Telegram() {
                 variant="light"
                 size="xs"
                 radius="md"
-                onClick={() => navigate('/whatsapp')}
+                onClick={() => navigate('/comunidades/grupos-de-whatsapp')}
                 leftSection={
                   <img
                     src="/wapp.webp"
@@ -381,6 +392,12 @@ export default function Telegram() {
               >
                 {t('Whatsapp')}
               </Button>
+
+              <Group mt="md" mb="md">
+                <Button onClick={() => navigate('?orden=top')} variant={orden === 'top' ? 'filled' : 'light'}>Top</Button>
+                <Button onClick={() => navigate('?orden=nuevos')} variant={orden === 'nuevos' ? 'filled' : 'light'}>Nuevos</Button>
+                <Button onClick={() => navigate('')} variant={!orden ? 'filled' : 'light'}>Destacados</Button>
+              </Group>
             </Group>
 
             <Paper
