@@ -3,3 +3,121 @@
     display: none !important;
   }
 }
+
+/* NUEVO CSS MEJORADO */
+
+.hero-banner {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('/banner-clanes.jpg') center/cover no-repeat;
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 16px;
+  margin-bottom: 32px;
+}
+
+.hero-banner h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.hero-banner p {
+  font-size: 1.1rem;
+  color: #f1f1f1;
+}
+
+.clan-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.clan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.clan-badge {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 600;
+  background-color: #edf2ff;
+  color: #3b5bdb;
+  margin-right: 6px;
+}
+
+.collection-carousel {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 12px;
+  margin-bottom: 24px;
+}
+
+.collection-carousel > div {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  min-width: 180px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.rating-stars {
+  color: gold;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.tooltip-preview {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  white-space: nowrap;
+  display: none;
+  z-index: 100;
+}
+
+.card-container:hover .tooltip-preview {
+  display: block;
+}
+
+.language-switcher {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+}
+
+.sticky-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1971c2;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: background 0.3s ease;
+}
+
+.sticky-button:hover {
+  background: #1864ab;
+}

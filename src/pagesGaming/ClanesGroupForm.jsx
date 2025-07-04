@@ -26,6 +26,7 @@ import slugify from '../assets/slugify';
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
 import { Helmet } from 'react-helmet';
+import { IconBrandWhatsapp } from '@tabler/icons-react';
 
 /**
  * Formulario para publicar clanes de Clash Royale o Clash of Clans.
@@ -284,9 +285,25 @@ export default function ClanesGroupForm() {
         />
       </Helmet>
 
-      <Title order={2} mb="md">
-        {t('Publica tu Clan')}
-      </Title>
+      <Stack spacing="sm" mb="md">
+        <Title order={2}>
+          {t('Publica tu Clan')}
+        </Title>
+
+        <Button
+          leftIcon={<IconBrandWhatsapp size={18} />}
+          variant="outline"
+          color="blue"
+          component="a"
+          href="https://wa.me/5212284935831?text=Hola%2C%20me%20gustaría%20sugerir%20un%20nuevo%20juego%20para%20los%20clanes%20en%20JoinGroups"
+          target="_blank"
+          rel="noopener noreferrer"
+          fullWidth
+        >
+          {t('¿Quieres que agreguemos otro juego? Comunícate con nosotros')}
+        </Button>
+      </Stack>
+
 
       <form
         onSubmit={(e) => {

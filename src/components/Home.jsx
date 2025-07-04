@@ -179,15 +179,26 @@ export default function Home() {
 
   return (
     <Container size="md" py="xl">
-      <Stack align="center" spacing="lg">
-        <Title order={1} ta="center">Encuentra los mejores grupos de Telegram y clanes de juegos</Title>
-        <Text ta="center" c="dimmed" fz="md" maw={700}>
-          En <strong>JoinGroups.pro</strong> conectamos usuarios con comunidades activas en Telegram, WhatsApp, Discord y juegos como Clash Royale. Todo en un solo lugar.
-        </Text>
-        <Button size="lg" color="blue" component={Link} to="/comunidades">
-          Explorar grupos ahora
-        </Button>
-      </Stack>
+    <Stack align="center" spacing="lg" px="md">
+      <Title order={1} ta="center" fw={800}>
+        Descubre Grupos de Telegram, WhatsApp y Clanes de Juegos Activos
+      </Title>
+      <Text ta="center" c="dimmed" fz="md" maw={700}>
+        En <strong>JoinGroups.pro</strong> puedes unirte fácilmente a comunidades populares en <strong>Telegram</strong>, <strong>WhatsApp</strong>, <strong>Discord</strong> y juegos como <strong>Clash Royale</strong>. Explora grupos organizados por temas, idiomas y más.
+      </Text>
+      <Button
+        size="lg"
+        color="blue"
+        component={Link}
+        variant="light"
+        radius="lg"
+        to="/comunidades"
+        style={{ fontWeight: 600 }}
+      >
+        Explorar Grupos Populares
+      </Button>
+    </Stack>
+
 
       <Box className={styles['scrolling-container']} mt="xl">
         <div className={styles['scrolling-track']}>
@@ -198,6 +209,7 @@ export default function Home() {
               to={b.to}
               leftSection={b.icon}
               variant="light"
+              radius='xl'
               color={b.color}
               style={{ whiteSpace: 'nowrap', pointerEvents: 'auto', flexShrink: 0 }}
             >
@@ -231,38 +243,72 @@ export default function Home() {
         </Center>
       </Paper>
 
+      <Center mt="xl">
+        <Button component={Link} to="/clanes/form" variant='light' color="teal" size="lg">
+          Publica tu CLAN ahora
+        </Button>
+      </Center>
       <Box mt="xl">
         <Divider my="lg" />
         <Title order={2} mb="xs">📢 Únete a las comunidades más activas del momento</Title>
+        
         <Text fz="sm" c="dimmed" mb="sm">
-          En JoinGroups, no solo encuentras enlaces. Encuentras conexiones reales. Con miles de grupos verificados y organizados por categoría, JoinGroups se ha convertido en la plataforma líder para descubrir comunidades de Telegram, WhatsApp, Discord y videojuegos.
+          ¿Buscas comunidades auténticas y activas en las plataformas más populares? En <strong>JoinGroups</strong> lo hacemos fácil. Accede a miles de <strong>grupos de Telegram, WhatsApp, Discord y videojuegos</strong> cuidadosamente organizados por temática, país y nivel de actividad. No pierdas tiempo con enlaces rotos o comunidades vacías.
         </Text>
+
         <Text fz="sm" c="dimmed" mb="sm">
-          🚀 Optimizado para SEO, fácil de navegar y 100% gratuito, nuestro sitio se actualiza constantemente para brindarte las mejores recomendaciones. Explora grupos NSFW, anime, estudios, música, tecnología y más.
+          🌍 Nuestra plataforma está diseñada para ayudarte a descubrir grupos que realmente aportan valor. Ya sea que te interesen <strong>grupos de anime, NSFW, música, criptomonedas, desarrollo web, IA, estudios, salud, memes</strong> o cualquier otra categoría, tenemos algo para ti. 
         </Text>
+
+        <Text fz="sm" c="dimmed" mb="sm">
+          🚀 JoinGroups está <strong>100% optimizado para SEO</strong>, es rápido, intuitivo y completamente gratuito. Actualizamos nuestra base de datos a diario, destacando siempre los grupos más populares y relevantes para que no te pierdas lo mejor.
+        </Text>
+
+        <Text fz="sm" c="dimmed" mb="sm">
+          🧠 Gracias a nuestro sistema de organización inteligente, puedes filtrar por <strong>idioma, país, temática y número de miembros</strong>, garantizando que encuentres exactamente lo que estás buscando. Además, nuestros <strong>grupos destacados</strong> han sido seleccionados por nuestra comunidad y moderadores.
+        </Text>
+
+        <Text fz="sm" c="dimmed" mb="sm">
+          🔒 Tu privacidad es una prioridad. No recopilamos datos personales ni compartimos información con terceros. Todos los enlaces publicados son verificados manualmente para ofrecerte una experiencia segura y libre de spam.
+        </Text>
+
+        <Text fz="sm" c="dimmed" mb="sm">
+          👥 ¿Tienes una comunidad y quieres hacerla crecer? Publica tu grupo fácilmente y llega a miles de usuarios interesados en tu contenido. En JoinGroups apoyamos tanto a <strong>creadores como exploradores</strong> de comunidades.
+        </Text>
+
         <Text fz="sm" c="dimmed">
-          🔒 Tu privacidad es importante. No recolectamos tus datos y todos los enlaces que compartimos están previamente revisados. Ya seas creador o explorador, estás en el lugar correcto.
+          ✅ Miles de usuarios nos visitan cada día para encontrar nuevos grupos y canales. Únete a la comunidad de JoinGroups y empieza a descubrir, conectar y compartir hoy mismo.
         </Text>
-        <Center mt="xl">
-          <Button component={Link} to="/comunidades/form" color="teal" size="lg">
-            Publica tu grupo ahora
-          </Button>
-        </Center>
+
       </Box>
+
+      <Button
+        variant="outline"
+        color="blue"
+        component="a"
+        href="https://wa.me/5212284935831?text=Hola,%20tengo%20un%20problema%20para%20publicar%20mi%20grupo%20en%20JoinGroups"
+        target="_blank"
+        rel="noopener noreferrer"
+        fullWidth
+      >
+        {t('¿Tienes problemas? O quisieras sugerir un cambio en la página? Escríbenos por WhatsApp')}
+      </Button>
+
 
       {/* Botón flotante con cambio de posición */}
       <Button
         component={Link}
         to="/comunidades/form"
-        color="pink"
+        color="red"
         size="sm"
+        variant='light'
         radius="xl"
         className={styles['floating-publish-button']}
         style={{
           ...floatingStyle(buttonPosition),
         }}
       >
-        🎉 Publica tu grupo gratis
+        Publica tu grupo gratis !!
       </Button>
 
     </Container>

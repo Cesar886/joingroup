@@ -110,7 +110,7 @@ export default function ClashOfClans() {
       const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
       // Filtrar solo grupos de tipo "clashroyale"
-      const clashRoyaleFilter = groups.filter(g => g.tipo === 'clash-royale');
+      const clashOfClans = groups.filter(g => g.tipo === 'clash-of-clans');
 
       const fetchCollections = async () => {
         const snapshot = await getDocs(collection(db, 'colections'));
@@ -121,8 +121,8 @@ export default function ClashOfClans() {
 
       fetchCollections();
 
-      const destacados = clashRoyaleFilter.filter(g => g.destacado);
-      const normales = clashRoyaleFilter.filter(g => !g.destacado);
+      const destacados = clashOfClans.filter(g => g.destacado);
+      const normales = clashOfClans.filter(g => !g.destacado);
       const ordenados = [...destacados, ...normales];
 
       setData(ordenados);
@@ -176,7 +176,7 @@ export default function ClashOfClans() {
         shadow="xs"
         mb="sm"
         key={`${row.id}-${slug}-${idx}`}
-        onClick={() => navigate(`/clanes/clanes-de-clash-royale/${slug}`)}
+        onClick={() => navigate(`/clanes/clanes-de-clash-of-clans/${slug}`)}
       >
         <Table horizontalSpacing="md" withRowBorders={false}>
           <Table.Tbody>
@@ -185,7 +185,7 @@ export default function ClashOfClans() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <Text fw={700}>{row.name}</Text>
           <img
-            src="/clashRoyaleFondo1.png" // Assuming this is the logo for Clash Royale
+            src="/clashOfClansFondo.png" // Assuming this is the logo for Clash of Clans
             alt={row.name}
             style={{
               width: '24px',
@@ -346,22 +346,6 @@ export default function ClashOfClans() {
 
         {rows.length > 0 ? (
           <>
-              <Button
-                variant="light"
-                size="xs"
-                radius="md"
-                onClick={() => navigate('/clanes/form')}
-                leftSection={
-                  <img
-                    src="/telegramicons.png"
-                    alt="Telegram"
-                    style={{ width: 16, height: 16 }}
-                  />
-                }
-              >
-                {t('Publica tu clan AQUI')}
-              </Button>
-
             <Group gap='xs' mb="md" justify="center">
               <Button
                 variant="light"
@@ -501,9 +485,25 @@ export default function ClashOfClans() {
                 </Text>
               </>
             )}
-
-
             </Paper>
+
+            <Group>
+              <Button
+                variant="outline"
+                size="xs"
+                radius="md"
+                onClick={() => navigate('/clanes/form')}
+                leftSection={
+                  <img
+                  src="/telegramicons.png"
+                  alt="Telegram"
+                  style={{ width: 16, height: 16 }}
+                  />
+                }
+                >
+                {t('Publica tu clan AQUI')}
+              </Button>
+            </Group>
 
             {rows}
 

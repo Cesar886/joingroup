@@ -179,8 +179,7 @@ export default function Telegram() {
           || row.description['es']            // intento 3: español por defecto
         : row.description;
         
-    const isTelegram = location.pathname === '/telegram';
-    const iconSrc = isTelegram ? '/telegramicons.png' : '/wapp.webp';
+    const iconSrc = '/telegramicons.png'
 
     return (
       <Paper

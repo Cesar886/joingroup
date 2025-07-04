@@ -20,6 +20,7 @@ import slugify from '../assets/slugify'
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
 import { Helmet } from 'react-helmet';
+import { IconBrandWhatsapp } from '@tabler/icons-react';
 
 
 
@@ -340,8 +341,26 @@ export default function GroupForm() {
         </script>
       </Helmet>
 
-      <Title order={2} mb="md">{t('Publica tu Grupo')}</Title>
-        <form
+      <Stack spacing="sm" mb="md">
+        <Title order={2}>
+          {t('Publica tu Clan')}
+        </Title>
+
+        <Button
+          leftIcon={<IconBrandWhatsapp size={18} />}
+          variant="outline"
+          color="blue"
+          component="a"
+          href="https://wa.me/5212284935831?text=Hola,%20tengo%20un%20problema%20para%20publicar%20mi%20grupo%20en%20JoinGroups"
+          target="_blank"
+          rel="noopener noreferrer"
+          fullWidth
+        >
+          {t('¿Tienes problemas? Escríbenos por WhatsApp')}
+        </Button>
+      </Stack>
+
+      <form
           onSubmit={async (e) => {
             e.preventDefault();
             const validation = form.validate();

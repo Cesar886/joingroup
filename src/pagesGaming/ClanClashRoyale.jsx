@@ -185,7 +185,7 @@ export default function ClashRoyale() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <Text fw={700}>{row.name}</Text>
           <img
-            src={IconSwords}
+            src='/clashRoyaleFondo1.png' // Assuming this is the logo for Clash Royale
             alt={row.name}
             style={{
               width: '24px',
