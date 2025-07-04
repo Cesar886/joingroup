@@ -1,11 +1,19 @@
 .scrolling-container {
-  overflow: hidden;
-  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  width: 100vw;            /* usa toda la pantalla */
+  max-width: 100%;
   position: relative;
   height: 50px;
   white-space: nowrap;
-}
 
+  /* Ocultar scrollbar */
+  scrollbar-width: none;         /* Firefox */
+  -ms-overflow-style: none;      /* IE/Edge */
+}
 .scrolling-track {
   display: flex;
   flex-wrap: nowrap;
@@ -13,6 +21,10 @@
   white-space: nowrap;
   width: max-content;
   animation: scroll-left 25s linear infinite;
+}
+
+.scrolling-track > * {
+  scroll-snap-align: start;
 }
 
 @keyframes scroll-left {
@@ -49,7 +61,6 @@
   padding: 6px 12px;
 }
 
-
 /* Posiciones posibles */
 .top-left {
   top: 60px;
@@ -62,7 +73,6 @@
 }
 
 /* Responsive */
-
 @media (max-width: 768px) {
   .floating-publish-button {
     font-size: 12px !important;
