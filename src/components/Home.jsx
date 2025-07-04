@@ -81,16 +81,22 @@ export default function Home() {
 
       //Controlar el Preview de los grupos
       const destacadosGroups = allGroups.filter(g => g.destacado).slice(0, 1);
-      const masVistosGroups = [...allGroups].sort((a, b) => b.visitas - a.visitas).slice(0, 4);
-      setGroups([...destacadosGroups, ...masVistosGroups]);
+      const masNuevosGroups = [...allGroups]
+        .filter(g => g.createdAt)
+        .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis())
+        .slice(0, 4);
+      setGroups([...destacadosGroups, ...masNuevosGroups]);
 
       const clanesSnapshot = await getDocs(collection(db, 'clanes'));
       const allClanes = clanesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
       //Controlar el Preview de los clanes
       const destacadosClanes = allClanes.filter(c => c.destacado).slice(0, 1);
-      const masVistosClanes = [...allClanes].sort((a, b) => b.visitas - a.visitas).slice(0, 4);
-      setClanes([...destacadosClanes, ...masVistosClanes]);
+      const masNuevosClanes = [...allClanes]
+        .filter(c => c.createdAt)
+        .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis())
+        .slice(0, 4);
+      setClanes([...destacadosClanes, ...masNuevosClanes]);
 
     };
     fetchData();
@@ -235,7 +241,7 @@ export default function Home() {
       </Box>
 
       <Paper mt="xl" withBorder shadow="sm" p="md" radius="lg">
-        <Title order={2} mb="sm" fz={isMobile ? 20 : 26}>{isMobile ? '🎯 Grupos populares' : '🎯 Grupos populares y destacados'}</Title>
+        <Title order={2} mb="sm" fz={isMobile ? 20 : 26}>{isMobile ? '🎯 Grupos nuevos' : '🎯 Grupos nuevos y destacados'}</Title>
         <Stack>
           {groups.map((group, i) => renderCard(group, i, true))}
         </Stack>
