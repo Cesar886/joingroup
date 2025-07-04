@@ -180,11 +180,26 @@ export default function Home() {
   return (
     <Container size="md" py="xl">
     <Stack align="center" spacing="lg" px="md">
-      <Title order={1} ta="center" fw={800}>
-        Descubre Grupos de Telegram, WhatsApp y Clanes de Juegos Activos
+      <Title
+        order={1}
+        ta="center"
+        fw={isMobile ? 600 : 800}
+        fz={isMobile ? 28 : 36} // puedes ajustar estos valores según tu diseño
+      >
+        {isMobile
+          ? 'Grupos de Telegram, WhatsApp y Juegos'
+          : 'Los mejores Grupos de Telegram, WhatsApp y Clanes de Juegos Activos'}
       </Title>
-      <Text ta="center" c="dimmed" fz="md" maw={700}>
-        En <strong>JoinGroups.pro</strong> puedes unirte fácilmente a comunidades populares en <strong>Telegram</strong>, <strong>WhatsApp</strong>, <strong>Discord</strong> y juegos como <strong>Clash Royale</strong>. Explora grupos organizados por temas, idiomas y más.
+
+
+      <Text ta="center" c="dimmed" fz="md" maw={700} mx="auto">
+        {isMobile
+          ? 'Únete a comunidades en Telegram, WhatsApp y juegos populares.'
+          : (
+              <>
+                En <strong>JoinGroups.pro</strong> puedes unirte fácilmente a comunidades populares en <strong>Telegram</strong>, <strong>WhatsApp</strong>, <strong>Discord</strong> y juegos como <strong>Clash Royale</strong>. Explora grupos organizados por temas, idiomas y más.
+              </>
+            )}
       </Text>
       <Button
         size="lg"
@@ -200,7 +215,7 @@ export default function Home() {
     </Stack>
 
 
-      <Box className={styles['scrolling-container']} mt="xl">
+      <Box className={styles['scrolling-container']} mt="xl" maw={700}>
         <div className={styles['scrolling-track']}>
           {[...featuredButtons, ...featuredButtons].map((b, i) => (
             <Button
@@ -220,79 +235,65 @@ export default function Home() {
       </Box>
 
       <Paper mt="xl" withBorder shadow="sm" p="md" radius="lg">
-        <Title order={2} mb="sm">🎯 Grupos populares y destacados</Title>
+        <Title order={2} mb="sm" fz={isMobile ? 20 : 26}>{isMobile ? '🎯 Grupos populares' : '🎯 Grupos populares y destacados'}</Title>
         <Stack>
           {groups.map((group, i) => renderCard(group, i, true))}
         </Stack>
         <Center mt="md">
-          <Button variant="light" component={Link} to="/comunidades">
+          <Button variant="light" component={Link} radius="md" to="/comunidades">
             Ver todos los grupos
           </Button>
         </Center>
       </Paper>
 
       <Paper mt="xl" withBorder shadow="sm" p="md" radius="lg">
-        <Title order={2} mb="sm">🛡️ Clanes destacados y con más vistas</Title>
+        <Title order={2} mb="sm" fz={isMobile ? 20 : 26}>{isMobile ? '🏆 Clanes destacados' : '🏆 Clanes destacados y con más vistas'}</Title>
         <Stack>
           {clanes.map((clan, i) => renderCard(clan, i, false))}
         </Stack>
         <Center mt="md">
-          <Button variant="light" component={Link} to="/clanes">
+          <Button variant="light" component={Link} radius="md" to="/clanes" color='violet'>
             Ver todos los clanes
           </Button>
         </Center>
       </Paper>
 
       <Center mt="xl">
-        <Button component={Link} to="/clanes/form" variant='light' color="teal" size="lg">
+        <Button component={Link} to="/clanes/form" variant='light' color="violet" size="lg" radius='lg'>
           Publica tu CLAN ahora
         </Button>
       </Center>
-      <Box mt="xl">
+
+      <Box mt="xl" mx="auto" style={isMobile ? { textAlign: 'center' } : {}}>
         <Divider my="lg" />
-        <Title order={2} mb="xs">📢 Únete a las comunidades más activas del momento</Title>
-        
+        <Title order={2} mb="xs">Únete a los mejores grupos y canales de Telegram, WhatsApp y más</Title>
+
         <Text fz="sm" c="dimmed" mb="sm">
-          ¿Buscas comunidades auténticas y activas en las plataformas más populares? En <strong>JoinGroups</strong> lo hacemos fácil. Accede a miles de <strong>grupos de Telegram, WhatsApp, Discord y videojuegos</strong> cuidadosamente organizados por temática, país y nivel de actividad. No pierdas tiempo con enlaces rotos o comunidades vacías.
+          ¿Quieres encontrar un <strong>grupo</strong> o <strong>canal</strong> activo en <strong>Telegram</strong>, <strong>WhatsApp</strong> o incluso juegos? En <strong>JoinGroups</strong> puedes <strong>descubrir, conocer</strong> y unirte fácilmente a miles de <strong>grupos</strong> clasificados por temática, país y número de <strong>miembros</strong>. 
         </Text>
 
         <Text fz="sm" c="dimmed" mb="sm">
-          🌍 Nuestra plataforma está diseñada para ayudarte a descubrir grupos que realmente aportan valor. Ya sea que te interesen <strong>grupos de anime, NSFW, música, criptomonedas, desarrollo web, IA, estudios, salud, memes</strong> o cualquier otra categoría, tenemos algo para ti. 
+          Nuestra plataforma te ayuda a encontrar <strong>canales</strong> de calidad en categorías como anime, música, desarrollo, amistad, NSFW, salud, IA, memes y más. Todos los <strong>grupos</strong> son verificados y contienen contenido actualizado.
         </Text>
 
         <Text fz="sm" c="dimmed" mb="sm">
-          🚀 JoinGroups está <strong>100% optimizado para SEO</strong>, es rápido, intuitivo y completamente gratuito. Actualizamos nuestra base de datos a diario, destacando siempre los grupos más populares y relevantes para que no te pierdas lo mejor.
+          <strong>JoinGroups</strong> ha sido diseñado para que <strong>puedas</strong> navegar rápidamente, desde cualquier dispositivo, ya sea <strong>Android</strong> o PC. Utiliza nuestros filtros inteligentes por idioma, país o tipo de <strong>contenido</strong> para encontrar exactamente lo que buscas.
         </Text>
 
         <Text fz="sm" c="dimmed" mb="sm">
-          🧠 Gracias a nuestro sistema de organización inteligente, puedes filtrar por <strong>idioma, país, temática y número de miembros</strong>, garantizando que encuentres exactamente lo que estás buscando. Además, nuestros <strong>grupos destacados</strong> han sido seleccionados por nuestra comunidad y moderadores.
+          Si eres creador, también puedes <strong>crear</strong> tu propio <strong>grupo</strong> y publicarlo gratis. Miles de <strong>usuarios</strong> buscan comunidades nuevas cada día, así que no pierdas la oportunidad de hacer crecer la tuya.
         </Text>
 
         <Text fz="sm" c="dimmed" mb="sm">
-          🔒 Tu privacidad es una prioridad. No recopilamos datos personales ni compartimos información con terceros. Todos los enlaces publicados son verificados manualmente para ofrecerte una experiencia segura y libre de spam.
-        </Text>
-
-        <Text fz="sm" c="dimmed" mb="sm">
-          👥 ¿Tienes una comunidad y quieres hacerla crecer? Publica tu grupo fácilmente y llega a miles de usuarios interesados en tu contenido. En JoinGroups apoyamos tanto a <strong>creadores como exploradores</strong> de comunidades.
+          En <strong>JoinGroups</strong> priorizamos la seguridad: no recopilamos datos personales y verificamos cada enlace manualmente. Nuestra misión es ayudarte a <strong>conectar</strong> con <strong>personas</strong> reales y comunidades auténticas, sin spam.
         </Text>
 
         <Text fz="sm" c="dimmed">
-          ✅ Miles de usuarios nos visitan cada día para encontrar nuevos grupos y canales. Únete a la comunidad de JoinGroups y empieza a descubrir, conectar y compartir hoy mismo.
+          Ya sea que quieras hacer nuevos amigos, aprender algo nuevo o simplemente pasar el rato, aquí encontrarás la <strong>forma</strong> más fácil de acceder a las mejores comunidades. Incluso si vienes desde <strong>Google</strong>, te damos la bienvenida a JoinGroups.
         </Text>
-
       </Box>
 
-      <Button
-        variant="outline"
-        color="blue"
-        component="a"
-        href="https://wa.me/5212284935831?text=Hola,%20tengo%20un%20problema%20para%20publicar%20mi%20grupo%20en%20JoinGroups"
-        target="_blank"
-        rel="noopener noreferrer"
-        fullWidth
-      >
-        {t('¿Tienes problemas? O quisieras sugerir un cambio en la página? Escríbenos por WhatsApp')}
-      </Button>
+
 
 
       {/* Botón flotante con cambio de posición */}
@@ -311,6 +312,18 @@ export default function Home() {
         Publica tu grupo gratis !!
       </Button>
 
+      <Button
+        variant="outline"
+        color="blue"
+        mt='xl'
+        component="a"
+        href="https://wa.me/5212284935831?text=Hola,%20tengo%20un%20problema%20para%20publicar%20mi%20grupo%20en%20JoinGroups"
+        target="_blank"
+        rel="noopener noreferrer"
+        fullWidth
+      >
+        {t('¿Tienes problemas? O quisieras sugerir un cambio en la página? Escríbenos por WhatsApp')}
+      </Button>
     </Container>
   );
 }

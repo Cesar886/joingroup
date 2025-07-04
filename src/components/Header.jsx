@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   ActionIcon,
   Center,
@@ -16,13 +16,20 @@ export function Header() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language.startsWith('en') ? 'en' : 'es';
   const nextLang = currentLang === 'es' ? 'en' : 'es';
+  const location = useLocation();
 
   const flagEmoji = nextLang === 'es' ? '🇺🇸' : '🇲🇽';
   const tooltipText = nextLang === 'es' ? 'Cambiar a español' : 'Switch to English';
 
+  const isClanesSection = location.pathname.startsWith('/clanes');
+
   const links = [
     { link: '/', label: t('Inicio') },
-    { link: '/comunidades/form', label: t('Publica Tu Grupo'), highlight: true },
+    {
+      link: isClanesSection ? '/clanes/form' : '/comunidades/form',
+      label: isClanesSection ? t('Publica tu clan') : t('Publica Tu Grupo'),
+      highlight: true,
+    },
   ];
 
   const items = links.map((link) => {

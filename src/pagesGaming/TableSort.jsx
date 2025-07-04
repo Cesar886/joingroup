@@ -393,63 +393,64 @@ export default function Clanes() {
               style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
             >
               <Title order={2} mb="sm" className={styles.GruposDeTelegram}>
-                Grupos de Telegram ⟶ Enlaces Directos para Unirte (Por Temática)
+                Grupos de Juegos en Telegram y WhatsApp ⟶ Únete Directamente (Por Categoría)
               </Title>
 
               <div className={styles.GruposDeTelegram}>
-              <h2>Grupos de Telegram: Descubre y Únete a Comunidades Activas</h2>
-              <p>
-                Los <strong>Grupos de Telegram</strong> se han convertido en una de las formas más populares de conectarse con personas que comparten tus intereses. Desde tecnología hasta entretenimiento, existen miles de comunidades esperando nuevos miembros. Si estás buscando una forma de expandir tus redes o simplemente pasar un buen rato, unirte a grupos de Telegram puede ser la opción ideal.
-              </p>
+                <h2>Grupos de Juegos: Encuentra Comunidades Activas para Jugar y Conocer Nuevos Miembros</h2>
+                <p>
+                  Los <strong>grupos de juegos en Telegram y WhatsApp</strong> son ideales para <strong>conocer personas</strong> con tus mismos intereses, compartir estrategias, organizar partidas o simplemente charlar sobre tu juego favorito. Desde títulos móviles hasta consolas y PC, existen miles de <strong>canales y grupos activos</strong> esperando nuevos <strong>usuarios</strong>.
+                </p>
 
-              <h3>Unirse a Grupos de Telegram Nunca Fue Tan Fácil</h3>
-              <p>
-                Hoy en día, <strong>unirse a grupos de Telegram</strong> es un proceso rápido y sencillo. A través de plataformas como JoinGroups, puedes explorar una gran variedad de comunidades activas, organizadas por categorías, intereses y temáticas. Ya no necesitas buscar por horas; aquí encuentras lo que te gusta en segundos.
-              </p>
+                <h3>Únete a Grupos de Juegos en Telegram, WhatsApp y Discord</h3>
+                <p>
+                  En <strong>JoinGroups</strong> puedes <strong>unirte a grupos</strong> rápidamente gracias a nuestros <strong>enlaces verificados</strong>. Accede a comunidades clasificadas por juego, plataforma, país o idioma. Ya sea que juegues Free Fire, Clash Royale, Among Us, Roblox o Call of Duty Mobile, aquí encontrarás el grupo ideal.
+                </p>
 
-              <h3>Enlaces de Grupos de Telegram Verificados y Activos</h3>
-              <p>
-                Uno de los mayores desafíos es encontrar <strong>enlaces de grupos de Telegram</strong> que realmente funcionen y estén activos. En nuestro sitio recopilamos los mejores enlaces verificados, para que no pierdas tiempo con enlaces rotos o grupos abandonados. Todo está organizado para que accedas directamente a las comunidades más relevantes.
-              </p>
+                <h3>Grupos de Juegos con Enlaces Activos y Moderación Real</h3>
+                <p>
+                  Sabemos que es frustrante hacer clic en enlaces rotos o <strong>grupos abandonados</strong>. Por eso en JoinGroups solo mostramos <strong>grupos activos</strong>, revisados manualmente y organizados para que <strong>puedas encontrar contenido</strong> real y actualizado.
+                </p>
 
-              <h3>Buscar Grupos de Telegram por Temática e Intereses</h3>
-              <p>
-                Si quieres <strong>buscar grupos de Telegram</strong> específicos, puedes usar nuestro sistema de filtros por categoría. ¿Te gusta el anime? ¿Estás interesado en criptomonedas? ¿Quieres unirte a grupos de estudio? Aquí puedes encontrar exactamente lo que buscas de forma fácil y sin complicaciones.
-              </p>
+                <h3>Buscar Grupos Gamer por Plataforma, Juego o Comunidad</h3>
+                <p>
+                  Usa nuestro sistema de búsqueda para filtrar <strong>grupos de juegos</strong> por plataforma: Android, iOS, PC, consolas, y también por temáticas como PvP, clanes, torneos, eSports o solo charlas. Todo está organizado para ayudarte a <strong>encontrar grupos</strong> fácilmente, sin complicaciones.
+                </p>
 
-              <h3>Grupos Públicos de Telegram para Todos</h3>
-              <p>
-                Los <strong>grupos públicos de Telegram</strong> permiten que cualquier persona pueda unirse sin necesidad de una invitación privada. Esta apertura es ideal para quienes buscan ampliar sus horizontes, hacer networking, o simplemente conocer gente nueva. Nuestra plataforma te ayuda a descubrir estos grupos y unirte con un solo clic.
-              </p>
+                <h3>Grupos Públicos de Juegos para Todos los Jugadores</h3>
+                <p>
+                  Nuestra plataforma te da acceso a <strong>grupos públicos de Telegram y WhatsApp</strong> donde puedes unirte sin invitaciones. Es la <strong>forma más fácil</strong> de expandir tu red de amigos gamers, conocer nuevas personas o simplemente pasar un buen rato con jugadores reales.
+                </p>
 
-              <h2>Grupos de Telegram para Adultos 18+: Encuentra Comunidades NSFW Activas</h2>
-              <p>
-                Existen <strong>grupos de Telegram para adultos </strong> que se enfocan en conversaciones, contenido NSFW, o relaciones. JoinGroups permite encontrar este tipo de comunidades con etiquetas claras y advertencias necesarias para usuarios mayores de edad. El acceso es directo, seguro y sin spam.
-              </p>
+                <h2>Grupos de Juegos para Adultos: Comunidades 18+ en Telegram</h2>
+                <p>
+                  También existen <strong>grupos NSFW de juegos</strong> o comunidades para adultos que combinan el mundo gamer con conversaciones privadas. En JoinGroups puedes encontrar este tipo de grupos con etiquetas claras y advertencias apropiadas, garantizando privacidad y contenido verificado.
+                </p>
 
-              <h3>Los Mejores Grupos de Telegram en un Solo Lugar</h3>
-              <p>
-                ¿Quieres estar en los más populares? Hemos recopilado una selección con los <strong>Mejores Grupos de Telegram</strong>, basada en actividad, número de usuarios y relevancia. No te conformes con cualquier grupo; accede directamente a los más destacados del momento.
-              </p>
+                <h3>Top Grupos de Juegos en Telegram: ¡No te Pierdas los Más Populares!</h3>
+                <p>
+                  Consulta nuestra selección de los <strong>mejores grupos de juegos</strong>, actualizados por número de <strong>miembros</strong>, participación y calidad del contenido. Desde clanes competitivos hasta comunidades relajadas, te mostramos lo más destacado del momento.
+                </p>
 
-              <p>
-                En JoinGroups, nuestro objetivo es ayudarte a encontrar, compartir y unirte a las mejores comunidades de Telegram. Desde los <strong>grupos públicos</strong> más populares hasta aquellos más especializados, aquí tienes todo lo que necesitas para empezar.
-              </p>
+                <p>
+                  JoinGroups es la herramienta ideal para <strong>crear, encontrar y compartir</strong> comunidades gamer. Aquí puedes descubrir nuevos <strong>canales</strong>, unirte a grupos organizados y estar siempre al tanto de lo mejor del mundo de los juegos.
+                </p>
 
-              <h2>Cómo Hacer Crecer un Grupo de Telegram en 2025: Guía para Admins</h2>
-              <p>
-                Si te preguntas <strong>cómo hacer crecer mi grupo de Telegram</strong>, estás en el lugar indicado. Hacer crecer una comunidad de Telegram requiere estrategia, paciencia y las herramientas adecuadas. A continuación, te ofrecemos los mejores consejos para aumentar la participación, atraer nuevos miembros y asegurar que tu grupo se mantenga activo y atractivo.
-              </p>
+                <h2>Cómo Hacer Crecer tu Grupo de Juegos en Telegram</h2>
+                <p>
+                  Si eres administrador, te mostramos <strong>cómo hacer crecer tu grupo de juegos</strong> en Telegram o WhatsApp. Aprende a mejorar tu contenido, atraer nuevos <strong>usuarios</strong>, y mantener una comunidad activa e interesante para todos los miembros.
+                </p>
 
-              <h3>Promocionar mi Grupo de Telegram en Canales Relacionados</h3>
-              <p>
-                Una estrategia eficaz para <strong>hacer crecer tu grupo</strong> es promoverlo en otros <strong>canales de Telegram</strong> relacionados. Puedes colaborar con administradores de otros grupos similares para intercambiar menciones o invitaciones. Esto ayuda a atraer miembros interesados en el mismo tipo de contenido.
-              </p>
+                <h3>Promociona tu Grupo de Juegos en Comunidades Relacionadas</h3>
+                <p>
+                  Una forma efectiva de ganar <strong>miembros</strong> es promocionarlo en otros <strong>grupos y canales</strong> similares. Usa nuestra plataforma para que otros jugadores descubran tu grupo fácilmente y se unan directamente desde sus dispositivos, incluso si vienen desde <strong>Google</strong>.
+                </p>
 
-              <h3>¿Cómo encontrar los mejores grupos de Telegram?</h3>
-              <p>Para encontrar los mejores grupos de Telegram, usa plataformas que verifiquen los enlaces, como JoinGroups. Filtra por categoría o interés y evita enlaces rotos.</p>
-
-            </div>
+                <h3>¿Cómo encontrar los mejores grupos de juegos?</h3>
+                <p>
+                  Usa herramientas como JoinGroups para acceder a <strong>grupos verificados</strong>, organizados por categorías y sin spam. Encuentra comunidades reales, con contenido útil, y empieza a jugar con otros desde hoy.
+                </p>
+              </div>
 
 
             {isMobile ? (

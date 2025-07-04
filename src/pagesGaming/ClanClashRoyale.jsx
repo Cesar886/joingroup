@@ -425,57 +425,54 @@ export default function ClashRoyale() {
               </Title>
 
               <div className={styles.GruposDeTelegram}>
-              <h2>Grupos de Telegram: Descubre y Únete a Comunidades Activas</h2>
+              <h2>Clanes de Clash Royale: Descubre y Únete a Comunidades Activas</h2>
               <p>
-                Los <strong>Grupos de Telegram</strong> se han convertido en una de las formas más populares de conectarse con personas que comparten tus intereses. Desde tecnología hasta entretenimiento, existen miles de comunidades esperando nuevos miembros. Si estás buscando una forma de expandir tus redes o simplemente pasar un buen rato, unirte a grupos de Telegram puede ser la opción ideal.
+                Los <strong>Clanes de Clash Royale</strong> se han convertido en una de las formas más populares de conectarse con personas que comparten tus intereses. Desde tecnología hasta entretenimiento, existen miles de comunidades esperando nuevos miembros. Si estás buscando una forma de expandir tus redes o simplemente pasar un buen rato, unirte a clanes de Clash Royale puede ser la opción ideal.
               </p>
 
-              <h3>Unirse a Grupos de Telegram Nunca Fue Tan Fácil</h3>
+              <h3>Unirse a Clanes de Clash Royale Nunca Fue Tan Fácil</h3>
               <p>
-                Hoy en día, <strong>unirse a grupos de Telegram</strong> es un proceso rápido y sencillo. A través de plataformas como JoinGroups, puedes explorar una gran variedad de comunidades activas, organizadas por categorías, intereses y temáticas. Ya no necesitas buscar por horas; aquí encuentras lo que te gusta en segundos.
+                Hoy en día, <strong>unirse a clanes de Clash Royale</strong> es un proceso rápido y sencillo. A través de plataformas como JoinGroups, puedes explorar una gran variedad de comunidades activas, organizadas por categorías, intereses y temáticas. Ya no necesitas buscar por horas; aquí encuentras lo que te gusta en segundos.
               </p>
 
-              <h3>Enlaces de Grupos de Telegram Verificados y Activos</h3>
+              <h3>Enlaces de Clanes de Clash Royale Verificados y Activos</h3>
               <p>
-                Uno de los mayores desafíos es encontrar <strong>enlaces de grupos de Telegram</strong> que realmente funcionen y estén activos. En nuestro sitio recopilamos los mejores enlaces verificados, para que no pierdas tiempo con enlaces rotos o grupos abandonados. Todo está organizado para que accedas directamente a las comunidades más relevantes.
+                Uno de los mayores desafíos es encontrar <strong>enlaces de clanes de Clash Royale</strong> que realmente funcionen y estén activos. En nuestro sitio recopilamos los mejores enlaces verificados, para que no pierdas tiempo con enlaces rotos o grupos abandonados. Todo está organizado para que accedas directamente a las comunidades más relevantes.
               </p>
 
-              <h3>Buscar Grupos de Telegram por Temática e Intereses</h3>
+              <h3>Buscar Clanes de Clash Royale por Temática e Intereses</h3>
               <p>
-                Si quieres <strong>buscar grupos de Telegram</strong> específicos, puedes usar nuestro sistema de filtros por categoría. ¿Te gusta el anime? ¿Estás interesado en criptomonedas? ¿Quieres unirte a grupos de estudio? Aquí puedes encontrar exactamente lo que buscas de forma fácil y sin complicaciones.
+                Si quieres <strong>buscar clanes de Clash Royale</strong> específicos, puedes usar nuestro sistema de filtros por categoría. ¿Te gusta el anime? ¿Estás interesado en criptomonedas? ¿Quieres unirte a grupos de estudio? Aquí puedes encontrar exactamente lo que buscas de forma fácil y sin complicaciones.
               </p>
 
-              <h3>Grupos Públicos de Telegram para Todos</h3>
+              <h3>Clanes Públicos de Clash Royale para Todos</h3>
               <p>
-                Los <strong>grupos públicos de Telegram</strong> permiten que cualquier persona pueda unirse sin necesidad de una invitación privada. Esta apertura es ideal para quienes buscan ampliar sus horizontes, hacer networking, o simplemente conocer gente nueva. Nuestra plataforma te ayuda a descubrir estos grupos y unirte con un solo clic.
+                Los <strong>clanes públicos de Clash Royale</strong> permiten que cualquier persona pueda unirse sin necesidad de una invitación privada. Esta apertura es ideal para quienes buscan ampliar sus horizontes, hacer networking, o simplemente conocer gente nueva. Nuestra plataforma te ayuda a descubrir estos grupos y unirte con un solo clic.
               </p>
 
-              <h2>Grupos de Telegram para Adultos 18+: Encuentra Comunidades NSFW Activas</h2>
-              <p>
-                Existen <strong>grupos de Telegram para adultos </strong> que se enfocan en conversaciones, contenido NSFW, o relaciones. JoinGroups permite encontrar este tipo de comunidades con etiquetas claras y advertencias necesarias para usuarios mayores de edad. El acceso es directo, seguro y sin spam.
-              </p>
+              <h2>Clanes de Clash Royale</h2>
 
-              <h3>Los Mejores Grupos de Telegram en un Solo Lugar</h3>
+              <h3>Los Mejores Clanes de Clash Royale en un Solo Lugar</h3>
               <p>
-                ¿Quieres estar en los más populares? Hemos recopilado una selección con los <strong>Mejores Grupos de Telegram</strong>, basada en actividad, número de usuarios y relevancia. No te conformes con cualquier grupo; accede directamente a los más destacados del momento.
+                ¿Quieres estar en los más populares? Hemos recopilado una selección con los <strong>Mejores Clanes de Clash Royale</strong>, basada en actividad, número de usuarios y relevancia. No te conformes con cualquier clan; accede directamente a los más destacados del momento.
               </p>
 
               <p>
-                En JoinGroups, nuestro objetivo es ayudarte a encontrar, compartir y unirte a las mejores comunidades de Telegram. Desde los <strong>grupos públicos</strong> más populares hasta aquellos más especializados, aquí tienes todo lo que necesitas para empezar.
+                En JoinGroups, nuestro objetivo es ayudarte a encontrar, compartir y unirte a las mejores comunidades de Telegram. Desde los <strong>clanes públicos</strong> más populares hasta aquellos más especializados, aquí tienes todo lo que necesitas para empezar.
               </p>
 
-              <h2>Cómo Hacer Crecer un Grupo de Telegram en 2025: Guía para Admins</h2>
+              <h2>Cómo Hacer Crecer un Clan de Clash Royale en 2025: Guía para Admins</h2>
               <p>
-                Si te preguntas <strong>cómo hacer crecer mi grupo de Telegram</strong>, estás en el lugar indicado. Hacer crecer una comunidad de Telegram requiere estrategia, paciencia y las herramientas adecuadas. A continuación, te ofrecemos los mejores consejos para aumentar la participación, atraer nuevos miembros y asegurar que tu grupo se mantenga activo y atractivo.
+                Si te preguntas <strong>cómo hacer crecer mi clan de Clash Royale</strong>, estás en el lugar indicado. Hacer crecer una comunidad de Clash Royale requiere estrategia, paciencia y las herramientas adecuadas. A continuación, te ofrecemos los mejores consejos para aumentar la participación, atraer nuevos miembros y asegurar que tu clan se mantenga activo y atractivo.
               </p>
 
-              <h3>Promocionar mi Grupo de Telegram en Canales Relacionados</h3>
+              <h3>Promocionar mi Clan de Clash Royale en Canales Relacionados</h3>
               <p>
-                Una estrategia eficaz para <strong>hacer crecer tu grupo</strong> es promoverlo en otros <strong>canales de Telegram</strong> relacionados. Puedes colaborar con administradores de otros grupos similares para intercambiar menciones o invitaciones. Esto ayuda a atraer miembros interesados en el mismo tipo de contenido.
+                Una estrategia eficaz para <strong>hacer crecer tu clan</strong> es promoverlo en otros <strong>canales de Clash Royale</strong> relacionados. Puedes colaborar con administradores de otros grupos similares para intercambiar menciones o invitaciones. Esto ayuda a atraer miembros interesados en el mismo tipo de contenido.
               </p>
 
-              <h3>¿Cómo encontrar los mejores grupos de Telegram?</h3>
-              <p>Para encontrar los mejores grupos de Telegram, usa plataformas que verifiquen los enlaces, como JoinGroups. Filtra por categoría o interés y evita enlaces rotos.</p>
+              <h3>¿Cómo encontrar los mejores clanes de Clash Royale?</h3>
+              <p>Para encontrar los mejores clanes de Clash Royale, usa plataformas que verifiquen los enlaces, como JoinGroups. Filtra por categoría o interés y evita enlaces rotos.</p>
 
             </div>
 
@@ -483,21 +480,21 @@ export default function ClashRoyale() {
             {isMobile ? (
               <>
                 <Title order={4} mb="xs">
-                  📣 {t('¡Promociona tu Grupo de Telegram en JoinGroups!')}
+                  📣 {t('¡Promociona tu Clan de Clash Royale en JoinGroups!')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
-                  📱 {t('¿Tienes un grupo de Telegram?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
+                  📱 {t('¿Tienes un clan de Clash Royale?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
                 </Text>
               </>
             ) : (
               <>
                 <Title order={3} mb="xs">
-                  📣 {t('¡Promociona tu Grupo de Telegram en JoinGroups!')}
+                  📣 {t('¡Promociona tu Clan de Clash Royale en JoinGroups!')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
-                  📱 {t('¿Tienes un grupo de Telegram y quieres hacerlo crecer?')} <strong>{t('En JoinGroups puedes publicar tu grupo gratis')}</strong> {t('y empezar a recibir nuevos miembros interesados.')}<br />
-                  🔍 {t('Explora una lista actualizada de')} <strong>{t('grupos de Telegram')}</strong> {t('organizados por categoría e intereses.')}{' '}
-                  🤝 {t('Únete a comunidades activas, comparte tu grupo y conéctate con personas afines usando JoinGroups.')}
+                  📱 {t('¿Tienes un clan de Clash Royale y quieres hacerlo crecer?')} <strong>{t('En JoinGroups puedes publicar tu clan gratis')}</strong> {t('y empezar a recibir nuevos miembros interesados.')}<br />
+                  🔍 {t('Explora una lista actualizada de')} <strong>{t('clanes de Clash Royale')}</strong> {t('organizados por categoría e intereses.')}{' '}
+                  🤝 {t('Únete a comunidades activas, comparte tu clan y conéctate con personas afines usando JoinGroups.')}
                 </Text>
               </>
             )}
@@ -553,19 +550,19 @@ export default function ClashRoyale() {
               style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
             >
             <Text size="md" fw={600} mb="sm">
-              {t('¿Quieres que tu grupo de Telegram crezca y llegue a más personas?')}
+              {t('¿Quieres que tu clan de Clash Royale crezca y llegue a más personas?')}
             </Text>
 
             <Text size="sm" color="dimmed" mb="xs">
-              {t('Publica tu grupo gratuitamente en')} <Link to="/" style={{ color: '#228be6', textDecoration: 'underline' }}>JoinGroups</Link> {t('y conecta con una comunidad activa que comparte tus intereses.')}
-              {t('Si aún no sabes cómo crear un grupo, puedes aprender fácilmente')} {' '}
+              {t('Publica tu CLAN gratuitamente en')} <Link to="/clanes/form" style={{ color: '#228be6', textDecoration: 'underline' }}>JoinGroups</Link> {t('y conecta con una comunidad activa que comparte tus intereses.')}
+              {t('Si aún no sabes cómo crear un clan, puedes aprender fácilmente')} {' '}
               <Link to="/instrucciones-crear-grupo-telegram" style={{ color: '#228be6', textDecoration: 'underline' }}>
-                {t('aquí cómo crear tu grupo de Telegram')}
+                {t('aquí cómo crear tu clan de Clash Royale')}
               </Link>.
             </Text>
 
             <Text size="xs" color="dimmed" style={{ fontStyle: 'italic' }}>
-              {t('Únete a miles de usuarios que ya están haciendo crecer sus comunidades en Telegram.')}
+              {t('Únete a miles de usuarios que ya están haciendo crecer sus clanes de Clash Royale.')}
             </Text>
             </Paper>
           </>

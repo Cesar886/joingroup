@@ -410,65 +410,65 @@ export default function Whatsapp() {
               p="md"
               style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
             >
-              <Title order={2} mb="sm" className={styles.GruposDeTelegram}>
-                Grupos de Telegram ⟶ Enlaces Directos para Unirte (Por Temática)
-              </Title>
+            <Title order={2} mb="sm" className={styles.GruposDeTelegram}>
+              Grupos de WhatsApp ⟶ Enlaces Directos para Unirte (Por Temática)
+            </Title>
 
-              <div className={styles.GruposDeTelegram}>
-              <h2>Grupos de Telegram: Descubre y Únete a Comunidades Activas</h2>
+            <div className={styles.GruposDeTelegram}>
+              <h2>Grupos de WhatsApp: Únete a Comunidades Activas y Conecta con Nuevos Miembros</h2>
               <p>
-                Los <strong>Grupos de Telegram</strong> se han convertido en una de las formas más populares de conectarse con personas que comparten tus intereses. Desde tecnología hasta entretenimiento, existen miles de comunidades esperando nuevos miembros. Si estás buscando una forma de expandir tus redes o simplemente pasar un buen rato, unirte a grupos de Telegram puede ser la opción ideal.
+                Los <strong>grupos de WhatsApp</strong> se han convertido en una de las mejores formas de <strong>conocer personas</strong>, compartir intereses y disfrutar <strong>contenido</strong> en tiempo real. Desde entretenimiento y estudio hasta <strong>amistad</strong> o negocios, existen miles de comunidades activas esperando nuevos <strong>usuarios</strong> como tú.
               </p>
 
-              <h3>Unirse a Grupos de Telegram Nunca Fue Tan Fácil</h3>
+              <h3>Unirte a un Grupo de WhatsApp Nunca Fue Tan Rápido</h3>
               <p>
-                Hoy en día, <strong>unirse a grupos de Telegram</strong> es un proceso rápido y sencillo. A través de plataformas como JoinGroups, puedes explorar una gran variedad de comunidades activas, organizadas por categorías, intereses y temáticas. Ya no necesitas buscar por horas; aquí encuentras lo que te gusta en segundos.
+                Hoy en día, <strong>unirse a grupos de WhatsApp</strong> es simple y directo. En <strong>JoinGroups</strong> puedes explorar <strong>grupos verificados</strong> organizados por temáticas, intereses, idioma y cantidad de <strong>miembros</strong>. Ya no necesitas buscar en foros ni en redes sociales; aquí <strong>puedes encontrar</strong> tu comunidad ideal en segundos.
               </p>
 
-              <h3>Enlaces de Grupos de Telegram Verificados y Activos</h3>
+              <h3>Grupos de WhatsApp con Enlaces Activos y Contenido Relevante</h3>
               <p>
-                Uno de los mayores desafíos es encontrar <strong>enlaces de grupos de Telegram</strong> que realmente funcionen y estén activos. En nuestro sitio recopilamos los mejores enlaces verificados, para que no pierdas tiempo con enlaces rotos o grupos abandonados. Todo está organizado para que accedas directamente a las comunidades más relevantes.
+                Uno de los mayores desafíos es hallar <strong>grupos con enlaces que funcionen</strong>. En JoinGroups reunimos los <strong>mejores grupos de WhatsApp</strong> con acceso directo, sin spam y con <strong>contenido actualizado</strong>. Todos nuestros enlaces son revisados para que accedas a canales activos y reales.
               </p>
 
-              <h3>Buscar Grupos de Telegram por Temática e Intereses</h3>
+              <h3>Buscar Grupos de WhatsApp por Temática y Categoría</h3>
               <p>
-                Si quieres <strong>buscar grupos de Telegram</strong> específicos, puedes usar nuestro sistema de filtros por categoría. ¿Te gusta el anime? ¿Estás interesado en criptomonedas? ¿Quieres unirte a grupos de estudio? Aquí puedes encontrar exactamente lo que buscas de forma fácil y sin complicaciones.
+                Ya sea que busques <strong>grupos de estudio</strong>, deportes, memes, música, negocios o videojuegos, nuestro sistema de búsqueda y filtros te permite encontrar grupos según tus intereses. Puedes filtrar por tipo de <strong>canal</strong>, país o idioma fácilmente, incluso desde tu dispositivo <strong>Android</strong>.
               </p>
 
-              <h3>Grupos Públicos de Telegram para Todos</h3>
+              <h3>Grupos Públicos de WhatsApp para Todos los Usuarios</h3>
               <p>
-                Los <strong>grupos públicos de Telegram</strong> permiten que cualquier persona pueda unirse sin necesidad de una invitación privada. Esta apertura es ideal para quienes buscan ampliar sus horizontes, hacer networking, o simplemente conocer gente nueva. Nuestra plataforma te ayuda a descubrir estos grupos y unirte con un solo clic.
+                Los <strong>grupos públicos de WhatsApp</strong> no requieren invitación personal. Esta característica los hace perfectos para ampliar tus contactos, compartir ideas o hacer <strong>networking</strong>. Ya sea desde tu celular o buscando en <strong>Google</strong>, puedes unirte con un solo clic.
               </p>
 
-              <h2>Grupos de Telegram para Adultos 18+: Encuentra Comunidades NSFW Activas</h2>
+              <h2>Grupos de WhatsApp para Adultos 18+: Comunidades NSFW con Acceso Seguro</h2>
               <p>
-                Existen <strong>grupos de Telegram para adultos </strong> que se enfocan en conversaciones, contenido NSFW, o relaciones. JoinGroups permite encontrar este tipo de comunidades con etiquetas claras y advertencias necesarias para usuarios mayores de edad. El acceso es directo, seguro y sin spam.
+                También puedes encontrar <strong>grupos de WhatsApp para adultos</strong> enfocados en <strong>contenido NSFW</strong> o relaciones. En JoinGroups estos grupos cuentan con advertencias claras y están marcados apropiadamente para usuarios mayores de edad. El acceso es seguro y verificado.
               </p>
 
-              <h3>Los Mejores Grupos de Telegram en un Solo Lugar</h3>
+              <h3>Los Mejores Grupos de WhatsApp, Seleccionados para Ti</h3>
               <p>
-                ¿Quieres estar en los más populares? Hemos recopilado una selección con los <strong>Mejores Grupos de Telegram</strong>, basada en actividad, número de usuarios y relevancia. No te conformes con cualquier grupo; accede directamente a los más destacados del momento.
+                Nuestra selección de <strong>mejores grupos de WhatsApp</strong> incluye aquellos con más actividad, mejores temas y mayor número de <strong>usuarios</strong>. Si buscas calidad y participación, aquí encontrarás lo más relevante del momento.
               </p>
 
               <p>
-                En JoinGroups, nuestro objetivo es ayudarte a encontrar, compartir y unirte a las mejores comunidades de Telegram. Desde los <strong>grupos públicos</strong> más populares hasta aquellos más especializados, aquí tienes todo lo que necesitas para empezar.
+                JoinGroups es la plataforma ideal para <strong>crear, encontrar y compartir grupos</strong>. Nuestro objetivo es ayudarte a conectar con <strong>personas reales</strong> y comunidades activas, sin perder tiempo en canales vacíos.
               </p>
 
-              <h2>Cómo Hacer Crecer un Grupo de Telegram en 2025: Guía para Admins</h2>
+              <h2>Cómo Hacer Crecer tu Grupo de WhatsApp en 2025</h2>
               <p>
-                Si te preguntas <strong>cómo hacer crecer mi grupo de Telegram</strong>, estás en el lugar indicado. Hacer crecer una comunidad de Telegram requiere estrategia, paciencia y las herramientas adecuadas. A continuación, te ofrecemos los mejores consejos para aumentar la participación, atraer nuevos miembros y asegurar que tu grupo se mantenga activo y atractivo.
+                ¿Quieres <strong>hacer crecer tu grupo de WhatsApp</strong>? Te ofrecemos consejos prácticos para <strong>crear</strong> una comunidad activa, atraer nuevos <strong>miembros</strong> y aumentar la participación. Desde la gestión del <strong>contenido</strong> hasta la promoción efectiva, aquí tienes lo que necesitas.
               </p>
 
-              <h3>Promocionar mi Grupo de Telegram en Canales Relacionados</h3>
+              <h3>Promocionar tu Grupo en Canales Similares</h3>
               <p>
-                Una estrategia eficaz para <strong>hacer crecer tu grupo</strong> es promoverlo en otros <strong>canales de Telegram</strong> relacionados. Puedes colaborar con administradores de otros grupos similares para intercambiar menciones o invitaciones. Esto ayuda a atraer miembros interesados en el mismo tipo de contenido.
+                Una técnica clave para ganar <strong>usuarios</strong> es promocionarte en otros <strong>canales y grupos relacionados</strong>. En JoinGroups puedes destacar tu comunidad y llegar a más personas interesadas en tu temática.
               </p>
 
-              <h3>¿Cómo encontrar los mejores grupos de Telegram?</h3>
-              <p>Para encontrar los mejores grupos de Telegram, usa plataformas que verifiquen los enlaces, como JoinGroups. Filtra por categoría o interés y evita enlaces rotos.</p>
-
+              <h3>¿Cómo Encontrar los Mejores Grupos de WhatsApp?</h3>
+              <p>
+                La mejor manera es usar plataformas confiables como JoinGroups. Te mostramos solo <strong>grupos verificados</strong>, organizados por categoría, <strong>número de miembros</strong> e idioma, para que <strong>puedas unirte</strong> sin complicaciones ni riesgos.
+              </p>
             </div>
-
 
             {isMobile ? (
               <>
