@@ -12,7 +12,7 @@ export default function App() {
   <HelmetProvider>
     <HashRouter basename="/">
         <Header />
-        <Container size="md" py="xl">
+        <Container fluid px="md" py="xl">
           <AppRoutes />
         </Container>
         <Footer />

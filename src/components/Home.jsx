@@ -161,47 +161,47 @@ export default function Home() {
     );
   };
 
-  const scrollRef = useRef();
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
+  // const scrollRef = useRef();
+  // useEffect(() => {
+  //   const el = scrollRef.current;
+  //   if (!el) return;
 
-    let autoScroll = true;
-    let resumeTimeout;
+  //   let autoScroll = true;
+  //   let resumeTimeout;
 
-    const handleUserScroll = () => {
-      autoScroll = false;
-      clearTimeout(resumeTimeout);
+  //   const handleUserScroll = () => {
+  //     autoScroll = false;
+  //     clearTimeout(resumeTimeout);
 
-      // Espera 2s tras el último scroll manual para volver a activar el auto-scroll
-      resumeTimeout = setTimeout(() => {
-        autoScroll = true;
-      }, 2000);
-    };
+  //     // Espera 2s tras el último scroll manual para volver a activar el auto-scroll
+  //     resumeTimeout = setTimeout(() => {
+  //       autoScroll = true;
+  //     }, 2000);
+  //   };
 
-    el.addEventListener('scroll', handleUserScroll);
+  //   el.addEventListener('scroll', handleUserScroll);
 
-    const interval = setInterval(() => {
-      if (!el || !autoScroll) return;
+  //   const interval = setInterval(() => {
+  //     if (!el || !autoScroll) return;
 
-      const scrollWidth = el.scrollWidth;
-      const containerWidth = el.offsetWidth;
-      const scrollLeft = el.scrollLeft;
+  //     const scrollWidth = el.scrollWidth;
+  //     const containerWidth = el.offsetWidth;
+  //     const scrollLeft = el.scrollLeft;
 
-      // Si llega al final, reinicia al inicio
-      if (scrollLeft + containerWidth >= scrollWidth - 1) {
-        el.scrollLeft = 0;
-      } else {
-        el.scrollLeft += 1;
-      }
-    }, 30); // velocidad
+  //     // Si llega al final, reinicia al inicio
+  //     if (scrollLeft + containerWidth >= scrollWidth - 1) {
+  //       el.scrollLeft = 0;
+  //     } else {
+  //       el.scrollLeft += 1;
+  //     }
+  //   }, 30); // velocidad
 
-    return () => {
-      el.removeEventListener('scroll', handleUserScroll);
-      clearInterval(interval);
-      clearTimeout(resumeTimeout);
-    };
-  }, []);
+  //   return () => {
+  //     el.removeEventListener('scroll', handleUserScroll);
+  //     clearInterval(interval);
+  //     clearTimeout(resumeTimeout);
+  //   };
+  // }, []);
 
 
 
@@ -266,7 +266,7 @@ export default function Home() {
     </Stack>
 
 
-    <Box className={styles['scrolling-container']} mt="xl" ref={scrollRef}>
+    <Box className={styles['scrolling-container']} mt="xl" >
       <div className={styles['scrolling-track']}>
         {[...featuredButtons, ...featuredButtons].map((b, i) => (
           <Button

@@ -45,7 +45,7 @@ export default function Footer() {
   
   return (
     <footer className={classes.footer}>
-      <Container size="lg" className={classes.inner}>
+      <Container fluid px="md" className={classes.inner}>
         <Flex justify="space-between" direction={{ base: 'column', sm: 'row' }} gap="xl">
           <Stack spacing="xs" className={classes.logoWrapper}>
             <Image src="/JoinGroups.png" alt="Logo de JoinGroup" className={classes.logo}/>
@@ -90,7 +90,7 @@ export default function Footer() {
         </Flex>
       </Container>
 
-      <Container size="lg" className={classes.afterFooter} mt="xl">
+      <Container fluid px="md" className={classes.afterFooter} mt="xl">
         <Flex justify="space-between" align="center" direction={{ base: 'column', sm: 'row' }} gap="sm">
           <Text c="dimmed" size="sm">
             © {new Date().getFullYear()} joingroups.pro. {t('Todos los derechos reservados.')}
