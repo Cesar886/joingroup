@@ -1,82 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <!-- Página principal -->
   <url>
     <loc>https://joingroups.pro/</loc>
-    <lastmod>2025-07-01</lastmod>
+    <lastmod>2025-07-04</lastmod>
     <priority>1.0</priority>
     <changefreq>daily</changefreq>
   </url>
 
-  <!-- Formulario de publicación -->
+  <!-- Comunidades -->
   <url>
-    <loc>https://joingroups.pro/form</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://joingroups.pro/comunidades</loc>
+    <lastmod>2025-07-04</lastmod>
     <priority>0.8</priority>
+    <changefreq>daily</changefreq>
+  </url>
+
+  <url>
+    <loc>https://joingroups.pro/comunidades/form</loc>
+    <lastmod>2025-07-04</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
 
-  <!-- Listado de Telegram -->
   <url>
-    <loc>https://joingroups.pro/telegram</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://joingroups.pro/comunidades/grupos-de-telegram</loc>
+    <lastmod>2025-07-04</lastmod>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
 
-  <!-- Listado de WhatsApp -->
   <url>
-    <loc>https://joingroups.pro/whatsapp</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://joingroups.pro/comunidades/grupos-de-whatsapp</loc>
+    <lastmod>2025-07-04</lastmod>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
 
-  <!-- Página de instrucciones -->
   <url>
-    <loc>https://joingroups.pro/instrucciones-crear-grupo-telegram</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://joingroups.pro/comunidades/instrucciones-crear-grupo-telegram</loc>
+    <lastmod>2025-07-04</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
 
-  <!-- Página de instrucciones en inglés -->
   <url>
-    <loc>https://joingroups.pro/how-to-create-telegram-group</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://joingroups.pro/comunidades/how-to-create-telegram-group</loc>
+    <lastmod>2025-07-04</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
 
-  <!-- Página de Términos y condiciones -->
+  <!-- Clanes -->
+  <url>
+    <loc>https://joingroups.pro/clanes</loc>
+    <lastmod>2025-07-04</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://joingroups.pro/clanes/form</loc>
+    <lastmod>2025-07-04</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://joingroups.pro/clanes/clanes-de-clash-royale</loc>
+    <lastmod>2025-07-04</lastmod>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://joingroups.pro/clanes/clanes-de-clash-of-clans</loc>
+    <lastmod>2025-07-04</lastmod>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <!-- Página de administración -->
+  <url>
+    <loc>https://joingroups.pro/admin</loc>
+    <lastmod>2025-07-04</lastmod>
+    <priority>0.1</priority>
+    <changefreq>never</changefreq>
+  </url>
+
+  <!-- Información legal -->
   <url>
     <loc>https://joingroups.pro/terminos</loc>
-    <lastmod>2025-07-01</lastmod>
+    <lastmod>2025-07-04</lastmod>
     <priority>0.3</priority>
     <changefreq>yearly</changefreq>
   </url>
 
-  <!-- Página de Privacidad -->
   <url>
     <loc>https://joingroups.pro/privacidad</loc>
-    <lastmod>2025-07-01</lastmod>
+    <lastmod>2025-07-04</lastmod>
     <priority>0.3</priority>
     <changefreq>yearly</changefreq>
   </url>
 
-  <!-- Página Acerca de -->
   <url>
     <loc>https://joingroups.pro/acerca</loc>
-    <lastmod>2025-07-01</lastmod>
+    <lastmod>2025-07-04</lastmod>
     <priority>0.4</priority>
     <changefreq>yearly</changefreq>
   </url>
 
-  <!-- Página de administración (opcional, según si es pública) -->
-  <url>
-    <loc>https://joingroups.pro/admin</loc>
-    <lastmod>2025-07-01</lastmod>
-    <priority>0.1</priority>
-    <changefreq>never</changefreq>
-  </url>
 </urlset>
