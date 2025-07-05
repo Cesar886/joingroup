@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   IconChevronDown,
@@ -27,10 +27,7 @@ import slugify from '../assets/slugify';
 import styles from './TableSort.module.css';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-
-
 import { useTranslation } from 'react-i18next';
-
 
 
 function Th({ children, reversed, sorted, onSort }) {
@@ -91,6 +88,9 @@ export default function TableSort() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const orden = searchParams.get('orden');
+  
+  const [buttonPosition, setButtonPosition] = useState('top-left');
+  const positionRef = useRef('top-left');
 
 
   const handleCollectionFilter = (collection) => {
@@ -136,6 +136,44 @@ export default function TableSort() {
     };
     fetchData();
   }, [location.search]);
+
+  useEffect(() => {
+    const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
+
+    const changePosition = () => {
+      let next;
+      do {
+        next = positions[Math.floor(Math.random() * positions.length)];
+      } while (next === positionRef.current); // evitar repetir la misma
+
+      setButtonPosition(next);
+      positionRef.current = next;
+    };
+
+    const interval = setInterval(changePosition, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const floatingStyle = (position) => {
+    const common = {
+      position: 'fixed',
+      zIndex: 1000,
+      animation: 'pulse 1.5s infinite',
+    };
+
+    switch (position) {
+      case 'top-left':
+        return { ...common, top: '60px', left: '20px' };
+      case 'bottom-right':
+        return { ...common, bottom: '20px', right: '20px' };
+      case 'top-right':
+        return { ...common, top: '60px', right: '20px' };
+      case 'bottom-left':
+        return { ...common, bottom: '20px', left: '20px' };
+      default:
+        return common;
+    }
+  };
 
   const setSorting = (field) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -320,7 +358,6 @@ export default function TableSort() {
               </Button>
 
               <Button
-                img src="/wapp.webp"
                 variant="light"
                 size="xs"
                 radius="md"
@@ -510,6 +547,21 @@ export default function TableSort() {
             {t('No se encontraron resultados.')}
           </Text>
         )}
+        {/* Botón flotante con cambio de posición */}
+        <Button
+          component={Link}
+          to="/comunidades/form"
+          color="blue"
+          size="sm"
+          variant='filled'
+          radius="xl"
+          className={styles['floating-publish-button']}
+          style={{
+            ...floatingStyle(buttonPosition),
+          }}
+        >
+          Publica tu grupo AHORA !!
+        </Button>
       </ScrollArea>
     </>
 

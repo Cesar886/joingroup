@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   IconChevronDown,
@@ -92,6 +92,9 @@ export default function Clanes() {
   const [selectedCollection, setSelectedCollection] = useState(null);
   const location = useLocation();
 
+  const [buttonPosition, setButtonPosition] = useState('top-left');
+  const positionRef = useRef('top-left');
+
 
   const handleCollectionFilter = (collection) => {
     const newValue = collection === selectedCollection ? null : collection;
@@ -103,6 +106,44 @@ export default function Clanes() {
       collectionFilter: newValue
     }));
     setCurrentPage(1);
+  };
+
+  useEffect(() => {
+    const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
+
+    const changePosition = () => {
+      let next;
+      do {
+        next = positions[Math.floor(Math.random() * positions.length)];
+      } while (next === positionRef.current); // evitar repetir la misma
+
+      setButtonPosition(next);
+      positionRef.current = next;
+    };
+
+    const interval = setInterval(changePosition, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const floatingStyle = (position) => {
+    const common = {
+      position: 'fixed',
+      zIndex: 1000,
+      animation: 'pulse 1.5s infinite',
+    };
+
+    switch (position) {
+      case 'top-left':
+        return { ...common, top: '60px', left: '20px' };
+      case 'bottom-right':
+        return { ...common, bottom: '20px', right: '20px' };
+      case 'top-right':
+        return { ...common, top: '60px', right: '20px' };
+      case 'bottom-left':
+        return { ...common, bottom: '20px', left: '20px' };
+      default:
+        return common;
+    }
   };
 
   useEffect(() => {
@@ -547,6 +588,21 @@ export default function Clanes() {
             {t('No se encontraron resultados.')}
           </Text>
         )}
+        {/* Botón flotante con cambio de posición */}
+        <Button
+          component={Link}
+          to="/comunidades/form"
+          color="red"
+          size="sm"
+          variant='filled'
+          radius="xl"
+          className={styles['floating-publish-button']}
+          style={{
+            ...floatingStyle(buttonPosition),
+          }}
+        >
+          Publica tu clan AHORA !!
+        </Button>
       </ScrollArea>
     </>
   );

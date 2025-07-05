@@ -161,51 +161,6 @@ export default function Home() {
     );
   };
 
-  // const scrollRef = useRef();
-  // useEffect(() => {
-  //   const el = scrollRef.current;
-  //   if (!el) return;
-
-  //   let autoScroll = true;
-  //   let resumeTimeout;
-
-  //   const handleUserScroll = () => {
-  //     autoScroll = false;
-  //     clearTimeout(resumeTimeout);
-
-  //     // Espera 2s tras el último scroll manual para volver a activar el auto-scroll
-  //     resumeTimeout = setTimeout(() => {
-  //       autoScroll = true;
-  //     }, 2000);
-  //   };
-
-  //   el.addEventListener('scroll', handleUserScroll);
-
-  //   const interval = setInterval(() => {
-  //     if (!el || !autoScroll) return;
-
-  //     const scrollWidth = el.scrollWidth;
-  //     const containerWidth = el.offsetWidth;
-  //     const scrollLeft = el.scrollLeft;
-
-  //     // Si llega al final, reinicia al inicio
-  //     if (scrollLeft + containerWidth >= scrollWidth - 1) {
-  //       el.scrollLeft = 0;
-  //     } else {
-  //       el.scrollLeft += 1;
-  //     }
-  //   }, 30); // velocidad
-
-  //   return () => {
-  //     el.removeEventListener('scroll', handleUserScroll);
-  //     clearInterval(interval);
-  //     clearTimeout(resumeTimeout);
-  //   };
-  // }, []);
-
-
-
-
   const floatingStyle = (position) => {
     const common = {
       position: 'fixed',
@@ -361,16 +316,16 @@ export default function Home() {
       <Button
         component={Link}
         to="/comunidades/form"
-        color="red"
+        color="rgba(255, 0, 0, 1)"
         size="sm"
-        variant='light'
+        variant='filled'
         radius="xl"
         className={styles['floating-publish-button']}
         style={{
           ...floatingStyle(buttonPosition),
         }}
       >
-        Publica tu grupo gratis !!
+        Publica tu grupo GRATIS !!
       </Button>
 
       <Button
@@ -378,7 +333,7 @@ export default function Home() {
         color="blue"
         mt='xl'
         component="a"
-        href="https://wa.me/5212284935831?text=Hola,%20tengo%20un%20problema%20para%20publicar%20mi%20grupo%20en%20JoinGroups"
+        href="https://wa.me/5212284935831?text=Hola,%20quisiera%20sugerir%20un%20cambio%20para%20la%20pagina%20de%20JoinGroups"
         target="_blank"
         rel="noopener noreferrer"
         fullWidth

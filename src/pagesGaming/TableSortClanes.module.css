@@ -121,3 +121,20 @@
 .sticky-button:hover {
   background: #1864ab;
 }
+
+.floating-publish-button {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+/* Posiciones posibles */
+.top-left {
+  top: 60px;
+  left: 20px;
+}
+
+.bottom-right {
+  bottom: 20px;
+  right: 20px;
+}

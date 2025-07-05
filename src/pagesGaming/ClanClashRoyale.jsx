@@ -346,22 +346,6 @@ export default function ClashRoyale() {
 
         {rows.length > 0 ? (
           <>
-              <Button
-                variant="light"
-                size="xs"
-                radius="md"
-                onClick={() => navigate('/clanes/form')}
-                leftSection={
-                  <img
-                    src="/telegramicons.png"
-                    alt="Telegram"
-                    style={{ width: 16, height: 16 }}
-                  />
-                }
-              >
-                {t('Publica tu clan AQUI')}
-              </Button>
-
             <Group gap='xs' mb="md" justify="center">
               <Button
                 variant="light"
