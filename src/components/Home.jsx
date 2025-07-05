@@ -229,7 +229,12 @@ export default function Home() {
 
 
   return (
-    <Container size="md" py="xl">
+    <Container
+      size="md"
+      py="xl"
+      className={styles.mobileContainerFix}
+    >
+
     <Stack align="center" spacing="lg" px="md">
       <Title
         order={1}

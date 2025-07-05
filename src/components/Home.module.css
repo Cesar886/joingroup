@@ -79,3 +79,14 @@
     padding: 4px 10px !important;
   }
 }
+
+@media (max-width: 768px) {
+  .mobileContainerFix {
+    padding: 0 !important;
+  }
+
+  .mobileContainerFix > div[class*="Container-inner"] {
+    padding-top: 0 !important;
+  }
+}
+
