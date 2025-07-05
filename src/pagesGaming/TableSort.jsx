@@ -591,7 +591,7 @@ export default function Clanes() {
         {/* Botón flotante con cambio de posición */}
         <Button
           component={Link}
-          to="/comunidades/form"
+          to="/clanes/form"
           color="red"
           size="sm"
           variant='filled'

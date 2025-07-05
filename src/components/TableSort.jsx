@@ -551,7 +551,7 @@ export default function TableSort() {
         <Button
           component={Link}
           to="/comunidades/form"
-          color="blue"
+          color="red"
           size="sm"
           variant='filled'
           radius="xl"
