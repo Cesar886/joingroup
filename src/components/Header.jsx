@@ -61,7 +61,7 @@ export function Header() {
 
   return (
     <header className={classes.header}>
-      <Container fluid px="md">
+      <Container size="md">
         <div className={classes.inner}>
           <NavLink to="/" className={classes.logoLink}>
             <Group align="center" gap="xs" wrap="nowrap">
