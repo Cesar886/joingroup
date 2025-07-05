@@ -142,10 +142,10 @@ export default function GroupDetailClanes() {
             disabled={!group.link}
           >
             {group.link
-              ? t(`${(tipo || group?.tipo || 'telegram')[0].toUpperCase() + (tipo || group?.tipo || 'telegram').slice(1)} - ACCEDER AL GRUPO`)
+              ? `${group.name} - ${t('Acceder al Clan')}`
               : t('Enlace no disponible')}
-
           </Button>
+
         </Stack>
       </Paper>
     </Container>
