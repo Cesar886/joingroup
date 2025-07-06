@@ -284,36 +284,36 @@ export default function Clanes() {
     <>
       <Helmet>
         {/* ——— TITLE ——— */}
-        <title>Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo</title>
+        <title>Clanes de VideoJuegos | Únete o Publica el Tuyo</title>
 
         {/* ——— DESCRIPTION ——— */}
         <meta
           name="description"
-          content="Únete a los mejores Grupos de Telegram en 2025. Canales, grupos +18, anime, estudio, tecnología y más. Publica tu grupo gratis y conéctate con comunidades activas."
+          content="Únete a los mejores Clanes en este 2025. Publica tu grupo gratis y conéctate con comunidades activas."
         />
 
         {/* ——— KEYWORDS (no tan importantes en Google, pero útiles para buscadores menores) ——— */}
         <meta
           name="keywords"
-          content="grupos de telegram, enlaces telegram, canales de telegram, comunidades telegram, telegram +18, grupos telegram activos, publicar grupo telegram"
+          content="Mejores clanes de videojuegos, clanes de Clash Royale, clanes de Clash of Clans, grupos de videojuegos, unirse a clanes, publicar clan gratis, comunidades activas, grupos de juegos, Telegram, WhatsApp"
         />
 
         {/* ——— CANONICAL ——— */}
-        <link rel="canonical" href="https://joingroups.pro/telegram" />
+        <link rel="canonical" href="https://joingroups.pro/clanes" />
 
         {/* ——— OPEN GRAPH ——— */}
         <meta property="og:type"        content="website" />
-        <meta property="og:url"         content="https://joingroups.pro/telegram" />
-        <meta property="og:title"       content="Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo" />
-        <meta property="og:description" content="Únete a comunidades activas de Telegram. Grupos +18, anime, estudio, tecnología y más. Publica el tuyo gratis." />
+        <meta property="og:url"         content="https://joingroups.pro/clanes" />
+        <meta property="og:title"       content="Clanes de VideoJuegos | Únete o Publica el Tuyo" />
+        <meta property="og:description" content="Únete a Clanes ACTIVOS o Publica el tuyo gratis." />
         <meta property="og:image"       content="https://joingroups.pro/JoinGroups.ico" />
         <meta property="og:site_name"   content="JoinGroups" />
 
         {/* ——— TWITTER CARDS ——— */}
         <meta name="twitter:card"        content="summary_large_image" />
-        <meta name="twitter:url"         content="https://joingroups.pro/telegram" />
-        <meta name="twitter:title"       content="Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo" />
-        <meta name="twitter:description" content="Únete a comunidades activas de Telegram. Grupos +18, anime, estudio, tecnología y más. Publica el tuyo gratis." />
+        <meta name="twitter:url"         content="https://joingroups.pro/clanes" />
+        <meta name="twitter:title"       content="Clanes de VideoJuegos | Únete o Publica el Tuyo" />
+        <meta name="twitter:description" content="Únete a Clanes ACTIVOS o Publica el tuyo gratis." />
         <meta name="twitter:image"       content="https://joingroups.pro/JoinGroups.ico" />
 
         {/* ——— SCHEMA.ORG ——— */}
@@ -322,17 +322,15 @@ export default function Clanes() {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            "name": "Grupos de Telegram Activos 2025",
-            "description": "Explora y únete a los grupos de Telegram más activos en 2025: canales, +18, anime, estudio, tecnología y más.",
-            "url": "https://joingroups.pro/telegram",
+            "name": "Clanes de VideoJuegos Activos 2025",
+            "description": "Explora y únete a los clanes de videojuegos más activos en 2025: canales, +18, anime, estudio, tecnología y más.",
+            "url": "https://joingroups.pro/clanes",
             "mainEntity": {
               "@type": "ItemList",
-              "name": "Categorías de Grupos de Telegram",
+              "name": "Categorías de Clanes de VideoJuegos",
               "itemListElement": [
-                { "@type": "SiteNavigationElement", "position": 1, "name": "+18",        "url": "https://joingroups.pro/telegram/18" },
-                { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",      "url": "https://joingroups.pro/telegram/anime" },
-                { "@type": "SiteNavigationElement", "position": 3, "name": "Estudio",    "url": "https://joingroups.pro/telegram/estudio" },
-                { "@type": "SiteNavigationElement", "position": 4, "name": "Tecnología", "url": "https://joingroups.pro/telegram/tecnologia" }
+                { "@type": "SiteNavigationElement", "position": 1, "name": "+18",        "url": "https://joingroups.pro/clanes/clanes-de-clash-royale" },
+                { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",      "url": "https://joingroups.pro/clanes/clanes-de-clash-of-clans" },
               ]
             }
           }
@@ -500,7 +498,7 @@ export default function Clanes() {
                   📣 {t('¡Promociona tu Clan de VideoJuego en JoinGroups!')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
-                  📱 {t('¿Tienes un grupo de Telegram?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
+                  📱 {t('¿Tienes un clan de videojuego?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
                 </Text>
               </>
             ) : (
