@@ -343,7 +343,7 @@ export default function GroupForm() {
 
       <Stack spacing="sm" mb="md">
         <Title order={2}>
-          {t('Publica tu Clan')}
+          {t('Publica tu Grupo')}
         </Title>
 
         <Button
