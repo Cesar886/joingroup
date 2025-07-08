@@ -51,7 +51,7 @@ export default function AppRoutes() {
       <Route path="/acerca" element={<Acerca />} />
 
       <Route path="/comunidades/how-to-create-telegram-group" element={<HowToCreateTelegramGroup />} />
-      <Route path="/comunidades/instrucciones-crear-grupo-telegram" element={<InstruccionesCrearGrupoTelegram />} />
+      <Route path="/comunidades/como-crear-grupo-telegram" element={<InstruccionesCrearGrupoTelegram />} />
 
 
       {/* Catch-all route for 404 Not Found */}

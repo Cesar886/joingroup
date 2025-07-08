@@ -602,10 +602,12 @@ export default function TableSort() {
             <Text size="sm" color="dimmed" mb="xs">
               {t('Publica tu grupo gratuitamente en')} <Link to="/" style={{ color: '#228be6', textDecoration: 'underline' }}>JoinGroups</Link> {t('y conecta con una comunidad activa que comparte tus intereses.')}
               {t('Si aún no sabes cómo crear un grupo, puedes aprender fácilmente')} {' '}
-              <Link to="/instrucciones-crear-grupo-telegram" style={{ color: '#228be6', textDecoration: 'underline' }}>
+              <Link to={i18n.language === 'es' ? '/comunidades/como-crear-grupo-telegram' : '/comunidades/how-to-create-telegram-group'}
+                style={{ color: '#228be6', textDecoration: 'underline' }}>
                 {t('aquí cómo crear tu grupo de Telegram')}
               </Link>.
             </Text>
+
 
             <Text size="xs" color="dimmed" style={{ fontStyle: 'italic' }}>
               {t('Únete a miles de usuarios que ya están haciendo crecer sus comunidades en Telegram.')}
