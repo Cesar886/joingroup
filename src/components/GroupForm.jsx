@@ -49,7 +49,6 @@ export default function GroupForm() {
       emailRepeat: (v, vals) => v === vals.email ? null : t('Los emails no coinciden'),
       acceptTerms: (v) => v ? null : t('Debes aceptar los términos'),
 
-      // 320 car máx. en cada idioma:
       descriptionEs: (v, values) => {
         const hasEs = v.trim().length >= 20 && v.trim().length <= 320;
         const hasEn = values.descriptionEn.trim().length >= 20 && values.descriptionEn.trim().length <= 320;
@@ -94,19 +93,9 @@ export default function GroupForm() {
 
   const captchaRef = useRef();
   const [modalOpen, setModalOpen] = useState(false);
-  const [captchaValues, setCaptchaValues] = useState(null);
-  const [activeLang] = useState(baseLang);
 
-
-  const handleOpenCaptcha = () => {
-    const validation = form.validate(); // ✅ Asigna correctamente
-    if (!validation.hasErrors) {
-      setModalOpen(true);
-    }
-  };
-
-  const handleVerify = async (token) => {
-    setCaptchaValues(token);
+  const handleVerify = async () => {
+    // setCaptchaValues(token);
     setModalOpen(false);
     setIsLoading(true); 
 
@@ -143,8 +132,6 @@ export default function GroupForm() {
       let descEn = form.values.descriptionEn.trim();
 
       const {
-        descriptionEs,
-        descriptionEn,
         ...cleanValues
       } = form.values;
 
@@ -164,7 +151,6 @@ export default function GroupForm() {
       });
 
       form.reset();
-      setCaptchaValues(null);
       navigate(`/comunidades/grupos-de-${redSocial.toLowerCase()}/${slug}`);
 
 
@@ -279,7 +265,7 @@ export default function GroupForm() {
       const translated = await translateText(descriptionEn, 'EN', 'ES');
       form.setFieldValue('descriptionEs', translated);
     }
-  }, 900);          // 900 ms tras la última tecla
+  }, 900);
 
 
    const prefix = redSocial === 'Telegram' ? 'https://t.me/' : '';
@@ -347,7 +333,7 @@ export default function GroupForm() {
         </Title>
 
         <Button
-          leftIcon={<IconBrandWhatsapp size={18} />}
+          leftSection={<IconBrandWhatsapp size={18} />}
           variant="outline"
           color="blue"
           component="a"
@@ -509,13 +495,18 @@ export default function GroupForm() {
               t('Programación'),
               'Gaming',
               t('Cursos y Tutoriales'),
+              t('Música y Podcasts'),
+              t('Arte y Diseño'),
+              t('Ciencia y Educación'),
               t('Negocios y Finanzas'),
               'Packs',
               'Trading',
               t('Ofertas y Descuentos'),
               t('Emprendimiento'),
               t('Relaciones y Citas'),
-              'Telegram Bots'
+              'Telegram Bots',
+              t('Stickers'),
+              t('NSFW0'),
             ]}
           />
 
