@@ -19,6 +19,7 @@ import {
   Button,
   UnstyledButton,
   Title,
+  MultiSelect,
 } from '@mantine/core';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -174,13 +175,6 @@ export default function TableSort() {
         return common;
     }
   };
-
-  // const setSorting = (field) => {
-  //   const reversed = field === sortBy ? !reverseSortDirection : false;
-  //   setReverseSortDirection(reversed);
-  //   setSortBy(field);
-  //   setSortedData(sortData(data, { sortBy: field, reversed, search }));
-  // };
 
   const handleSearchChange = (event) => {
     const value = event.currentTarget.value;
@@ -380,34 +374,6 @@ export default function TableSort() {
           onChange={handleSearchChange}
         />
 
-        {collections.length > 0 && (
-          <Group mb="md" spacing="xs" wrap="wrap">
-            <Badge
-              key="todos"
-              variant={selectedCollection === null ? 'filled' : 'light'}
-              color={selectedCollection === null ? 'blue' : 'gray'}
-              size="md"
-              onClick={() => handleCollectionFilter(null)}
-              style={{ cursor: 'pointer' }}
-            >
-              {t('Todos')}
-            </Badge>
-
-            {collections.map((col) => (
-              <Badge
-                key={col}
-                variant={selectedCollection === col ? 'filled' : 'light'}
-                color={selectedCollection === col ? 'blue' : 'gray'}
-                size="md"
-                onClick={() => handleCollectionFilter(col)}
-                style={{ cursor: 'pointer' }}
-              >
-                {col}
-              </Badge>
-            ))}
-          </Group>
-        )}
-
         {rows.length > 0 ? (
           <>
             <Group gap='xs' mb="md" justify="center">
@@ -470,6 +436,33 @@ export default function TableSort() {
                   Destacados
                 </Button>
               </Group>
+
+              <ScrollArea type="auto" offsetScrollbars scrollbarSize={0}>
+                <Group wrap="nowrap" gap="sm" style={{ padding: '10px' }}>
+                  {collections && collections.collections && Array.isArray(collections.collections) && collections.collections.map((cat, i) => (
+                    <Badge
+                      key={i}
+                      variant="light"
+                      color="violet"
+                      size="lg"
+                      radius="xl"
+                      style={{
+                        padding: '8px 14px',
+                        fontSize: '14px',
+                        textTransform: 'uppercase',
+                        fontWeight: 600,
+                        backgroundColor: '#f3e8ff',
+                        color: '#4a0080', // Color de texto más oscuro para mejor contraste
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleCollectionFilter(cat)}
+                    >
+                      {cat}
+                    </Badge>
+                  ))}
+                </Group>
+              </ScrollArea>
+
 
             </Group>
 

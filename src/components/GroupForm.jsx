@@ -510,7 +510,7 @@ export default function GroupForm() {
               t('Relaciones y Citas'),
               'Telegram Bots',
               t('Stickers'),
-              t('NSFW0'),
+              t('NSFW'),
             ]}
             searchable
             clearable
