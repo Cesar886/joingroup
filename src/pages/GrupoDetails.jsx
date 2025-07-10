@@ -7,7 +7,7 @@ import {
 import { db } from '../firebase';
 import {
   Box, Button, Center, Container, Divider,
-  Group, Paper, Stack, Text, Title,
+  Group, Paper, Stack, Text, Title, Badge,
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import slugify from '../assets/slugify';     // ⬅️ el mismo helper que usas en TableSort
@@ -100,6 +100,7 @@ export default function GroupDetail() {
             {t('El grupo tiene')} <strong>{group.visitas || 0} {t('visitas')}</strong>
           </Text>
 
+
           <Divider my="sm" />
 
           <Box>
@@ -111,6 +112,22 @@ export default function GroupDetail() {
           </Text>
 
           </Box>
+
+          <Group gap="sm" mt="md">
+            {Array.isArray(group.categories) && group.categories.length > 0 ? (
+              group.categories.map((cat, i) => (
+                <Badge key={i} variant="light" color="violet" size="lg" radius="md">
+                  {cat}
+                </Badge>
+              ))
+            ) : (
+              <Badge variant="light" color="gray" size="lg">
+                {t('Sin categoría')}
+              </Badge>
+            )}
+          </Group>
+
+
 
           <Box mt="md" bg="#f9f9f9" p="md" radius="md" style={{ borderLeft: '4px solid rgb(33, 85, 255)' }}>
             <Text size="sm" c="dimmed">

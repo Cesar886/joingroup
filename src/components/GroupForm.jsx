@@ -8,7 +8,7 @@ import {
   Button,
   Text,
   Title,
-  Group,
+  MultiSelect,
   Stack,
   Modal,
 } from '@mantine/core';
@@ -41,13 +41,19 @@ export default function GroupForm() {
       descriptionEn: '',   // 🆕
       city: '',
       content18: '',
-      categories: '',
+      categories: [],
       acceptTerms: false,
     },
     validate: {
       email:  (v) => (/^\S+@\S+\.\S+$/.test(v) ? null : t('Email inválido')),
       emailRepeat: (v, vals) => v === vals.email ? null : t('Los emails no coinciden'),
       acceptTerms: (v) => v ? null : t('Debes aceptar los términos'),
+
+      categories: (value) => {
+        if (!Array.isArray(value) || value.length < 1) return t('Selecciona al menos una categoría');
+        if (value.length > 3) return t('Máximo 3 categorías');
+        return null;
+      },
 
       descriptionEs: (v, values) => {
         const hasEs = v.trim().length >= 20 && v.trim().length <= 320;
@@ -473,11 +479,10 @@ export default function GroupForm() {
             {...form.getInputProps('city')}
           />
 
-          <Select
+          <MultiSelect
             label={t("Categorías")}
-            placeholder={t("Selecciona una categoría")}
+            placeholder={t("Selecciona una o varias categorías, Max 3")}
             required
-            {...form.getInputProps('categories')}
             data={[
               'Hot',
               'Anime y Manga',
@@ -486,7 +491,6 @@ export default function GroupForm() {
               'Xxx',
               'Hacking',
               t('Memes y Humor'),
-              'Stickers',
               t('Porno'),
               t('Canales NSFW'),
               '18+',
@@ -508,7 +512,12 @@ export default function GroupForm() {
               t('Stickers'),
               t('NSFW0'),
             ]}
+            searchable
+            clearable
+            multiple
+            {...form.getInputProps('categories')}
           />
+
 
           <Checkbox
             label={t("He leído y acepto las condiciones de uso y la privacidad")}
