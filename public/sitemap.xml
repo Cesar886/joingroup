@@ -81,14 +81,6 @@
     <changefreq>weekly</changefreq>
   </url>
 
-  <!-- Página de administración -->
-  <url>
-    <loc>https://joingroups.pro/admin</loc>
-    <lastmod>2025-07-04</lastmod>
-    <priority>0.1</priority>
-    <changefreq>never</changefreq>
-  </url>
-
   <!-- Información legal -->
   <url>
     <loc>https://joingroups.pro/terminos</loc>

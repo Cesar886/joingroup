@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
   collection, query, where, getDocs,
-  doc, increment, limit, runTransaction, updateDoc
+  limit, runTransaction, updateDoc
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import {

@@ -208,7 +208,7 @@ export default function Home() {
           ? 'Únete a comunidades en Telegram, WhatsApp y juegos populares.'
           : (
               <>
-                En <strong>JoinGroups.pro</strong> puedes unirte fácilmente a comunidades populares en <strong>Telegram</strong>, <strong>WhatsApp</strong>, <strong>Discord</strong> y juegos como <strong>Clash Royale</strong>. Explora grupos organizados por temas, idiomas y más.
+                En <strong>JoinGroups.pro</strong> puedes unirte fácilmente a comunidades populares en <strong>Telegram</strong>, <strong>WhatsApp</strong> y juegos como <strong>Clash Royale</strong>. Explora grupos organizados por temas, idiomas y más.
               </>
             )}
       </Text>
