@@ -79,8 +79,8 @@ export default function TableSort() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState([]);
-  const [sortBy, setSortBy] = useState(null);
-  const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  // const [sortBy, setSortBy] = useState(null);
+  // const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [currentPage, setCurrentPage] = useState(1);
   const [collections, setCollections] = useState([]);
@@ -97,8 +97,8 @@ export default function TableSort() {
     const newValue = collection === selectedCollection ? null : collection;
     setSelectedCollection(newValue);
     setSortedData(sortData(data, {
-      sortBy,
-      reversed: reverseSortDirection,
+      // sortBy,
+      // reversed: reverseSortDirection,
       search,
       collectionFilter: newValue
     }));
@@ -175,17 +175,17 @@ export default function TableSort() {
     }
   };
 
-  const setSorting = (field) => {
-    const reversed = field === sortBy ? !reverseSortDirection : false;
-    setReverseSortDirection(reversed);
-    setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
-  };
+  // const setSorting = (field) => {
+  //   const reversed = field === sortBy ? !reverseSortDirection : false;
+  //   setReverseSortDirection(reversed);
+  //   setSortBy(field);
+  //   setSortedData(sortData(data, { sortBy: field, reversed, search }));
+  // };
 
   const handleSearchChange = (event) => {
     const value = event.currentTarget.value;
     setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value, collectionFilter: selectedCollection }));
+    // setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value, collectionFilter: selectedCollection }));
   };
 
   const groupsPerPage = 12;
