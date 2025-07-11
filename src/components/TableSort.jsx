@@ -69,17 +69,11 @@ export default function TableSort() {
   const positionRef = useRef('top-left');
 
   const toggleCollection = (collection) => {
-    setSelectedCollections((prev) => {
-      const already = prev.includes(collection);
-
-      // quita si ya estaba
-      if (already) return prev.filter((c) => c !== collection);
-
-      // añade si NO estaba (máx. 3)
-      const next = [...prev, collection];
-      return next.length > 3 ? next.slice(1) : next;   // deja los 3 + recientes
-    });
+    setSelectedCollections((prev) =>
+      prev.includes(collection) ? [] : [collection]
+    );
   };
+
 
   useEffect(() => {
     setSortedData(
@@ -87,6 +81,7 @@ export default function TableSort() {
     );
     setCurrentPage(1);               // regresa a página 1 si cambian filtros
   }, [data, search, selectedCollections]);
+
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -105,9 +100,11 @@ export default function TableSort() {
     const query = search.toLowerCase().trim();
 
     return data.filter((item) => {
-      const matchesSearch = ['name', 'categories', 'content18'].some((key) =>
-        typeof item[key] === 'string' && item[key].toLowerCase().includes(query)
-      );
+      const matchesSearch =
+        item.name?.toLowerCase().includes(query) ||
+        item.content18?.toLowerCase().includes(query) ||
+        item.categories?.some(cat => cat.toLowerCase().includes(query));
+
 
       const matchesCollection = collectionFilter.length
         ? item.categories?.some((cat) =>
@@ -132,34 +129,50 @@ export default function TableSort() {
     const fetchData = async () => {
       const snapshot = await getDocs(collection(db, 'groups'));
       const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-      const fetchCollections = async () => {
-        const snapshot = await getDocs(collection(db, 'colections'));
-        const docs = snapshot.docs.map(doc => doc.data());
-        const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
-        setCollections({ collections: [...new Set(allCollections)] });
-      };
-
-      fetchCollections();
-
-      let ordenados = [...groups];
-
-      if (orden === 'top' || orden === 'vistos') {
-        ordenados.sort((a, b) => b.visitas - a.visitas);
-      } else if (orden === 'nuevos') {
-        ordenados.sort((a, b) => {
-          const dateA = a.createdAt?.toDate?.() ?? new Date(0);
-          const dateB = b.createdAt?.toDate?.() ?? new Date(0);
-          return dateB - dateA;
-        });
-      }
-
-      setData(ordenados);
-      setSortedData(ordenados);
+      setData(groups);
     };
     fetchData();
   }, [location.search]);
 
+  const fetchCollections = async () => {
+    const snapshot = await getDocs(collection(db, 'colections'));
+    const docs = snapshot.docs.map(doc => doc.data());
+    const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
+    setCollections([...new Set(allCollections)]);
+    // setCollections({ collections: [...new Set(allCollections)] });
+  };
+  fetchCollections();
+
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const orden = searchParams.get('orden');
+    const cats = searchParams.get('cats')?.split(',') || [];
+
+    let ordenados = [...data];
+
+    if (orden === 'top' || orden === 'vistos') {
+      ordenados.sort((a, b) => b.visitas - a.visitas);
+    } else if (orden === 'nuevos') {
+      ordenados.sort((a, b) => {
+        const dateA = a.createdAt?.toDate?.() ?? new Date(0);
+        const dateB = b.createdAt?.toDate?.() ?? new Date(0);
+        return dateB - dateA;
+      });
+    }
+
+    setSelectedCollections(cats); // sincronizar estado con URL
+
+    const final = sortData(ordenados, {
+      search,
+      collectionFilter: cats,
+    });
+
+    setSortedData(final);
+  }, [location.search, data]); // 👈 importante que dependa de `data` también
+
+
+  
   useEffect(() => {
     const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
 
@@ -201,18 +214,6 @@ export default function TableSort() {
   const handleSearchChange = (event) => {
     setSearch(event.currentTarget.value);
   };
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (selectedCollections.length) {
-      params.set('cats', selectedCollections.join(','));
-    } else {
-      params.delete('cats');
-    }
-    navigate({ search: params.toString() }, { replace: true });
-  }, [selectedCollections, location]);   // ← añade ‘location’
-
-
 
   const groupsPerPage = 12;
   const indexOfLastGroup = currentPage * groupsPerPage;
@@ -309,7 +310,7 @@ export default function TableSort() {
     );
   });
 
-  const collectionsExist = collections && collections.collections;
+  const collectionsExist = Array.isArray(collections) && collections.length > 0;
 
   return (
     <>
@@ -486,7 +487,7 @@ export default function TableSort() {
                 }}
               >
                 {collectionsExist &&
-                  collections.collections.map((cat, i) => {
+                  collections.map((cat, i) => {
                     const selected = selectedCollections.includes(cat);
                     return (
                       <Badge
