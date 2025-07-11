@@ -485,14 +485,14 @@ export default function GroupForm() {
             required
             data={[
               'Hot',
+              t('NSFW'),
               'Anime y Manga',
               t('Películas y Series'),
+              t('Porno'),
               t('Criptomonedas'),
               'Xxx',
               'Hacking',
               t('Memes y Humor'),
-              t('Porno'),
-              t('Canales NSFW'),
               '18+',
               t('Fútbol'),
               t('Tecnología'),
@@ -510,7 +510,6 @@ export default function GroupForm() {
               t('Relaciones y Citas'),
               'Telegram Bots',
               t('Stickers'),
-              t('NSFW'),
             ]}
             searchable
             clearable

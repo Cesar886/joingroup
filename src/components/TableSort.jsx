@@ -146,8 +146,15 @@ export default function TableSort() {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const orden = searchParams.get('orden');
+    // const orden = searchParams.get('orden');
     const cats = searchParams.get('cats')?.split(',') || [];
+
+    setSelectedCollections(cats);
+  }, [location.search]);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const orden = searchParams.get('orden');
 
     let ordenados = [...data];
 
@@ -161,15 +168,14 @@ export default function TableSort() {
       });
     }
 
-    setSelectedCollections(cats); // sincronizar estado con URL
-
     const final = sortData(ordenados, {
       search,
-      collectionFilter: cats,
+      collectionFilter: selectedCollections,
     });
 
     setSortedData(final);
-  }, [location.search, data]); // 👈 importante que dependa de `data` también
+  }, [data, search, selectedCollections, location.search]);
+
 
 
   
@@ -441,7 +447,7 @@ export default function TableSort() {
                     } else {
                       params.set('orden', 'top');
                     }
-                    navigate({ search: params.toString() });
+                    navigate({ search: params.toString() }, { replace: false });
                   }}
                   variant={orden === 'top' ? 'filled' : 'light'}
                 >
@@ -457,7 +463,7 @@ export default function TableSort() {
                     } else {
                       params.set('orden', 'nuevos');
                     }
-                    navigate({ search: params.toString() });
+                    navigate({ search: params.toString() }, { replace: false });
                   }}
                   variant={orden === 'nuevos' ? 'filled' : 'light'}
                 >
@@ -468,7 +474,7 @@ export default function TableSort() {
                   onClick={() => {
                     const params = new URLSearchParams(location.search);
                     params.delete('orden'); // quitar orden para mostrar "destacados"
-                    navigate({ search: params.toString() });
+                    navigate({ search: params.toString() }, { replace: false });
                   }}
                   variant={!orden ? 'filled' : 'light'}
                 >
