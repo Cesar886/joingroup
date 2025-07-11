@@ -668,8 +668,8 @@ export default function TableSort() {
               {t('No se encontraron resultados para esta categoría.')}
             </Text>
             <img
-              src="/sinresultados.png"
-              alt="Sin resultados"
+              src="https://joingroups.pro/meme-Pica.png"
+              alt="Nada, No hay, No existe"
               style={{ width: '160px', opacity: 0.5 }}
             />
           </Box>
