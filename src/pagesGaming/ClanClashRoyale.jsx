@@ -25,7 +25,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
 import slugify from '../assets/slugify';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import styles from './ClanClashRoyale.module.css';
 
@@ -83,21 +83,19 @@ export default function ClashRoyale() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState([]);
-  const [sortBy, setSortBy] = useState(null);
-  const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  // const [sortBy, setSortBy] = useState(null);
+  // const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [currentPage, setCurrentPage] = useState(1);
   const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState(null);
-  const location = useLocation();
+  // const location = useLocation();
 
 
   const handleCollectionFilter = (collection) => {
     const newValue = collection === selectedCollection ? null : collection;
     setSelectedCollection(newValue);
     setSortedData(sortData(data, {
-      sortBy,
-      reversed: reverseSortDirection,
       search,
       collectionFilter: newValue
     }));
@@ -133,17 +131,17 @@ export default function ClashRoyale() {
   }, []);
 
 
-  const setSorting = (field) => {
-    const reversed = field === sortBy ? !reverseSortDirection : false;
-    setReverseSortDirection(reversed);
-    setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
-  };
+  // const setSorting = (field) => {
+  //   const reversed = field === sortBy ? !reverseSortDirection : false;
+  //   setReverseSortDirection(reversed);
+  //   setSortBy(field);
+  //   setSortedData(sortData(data, { sortBy: field, reversed, search }));
+  // };
 
   const handleSearchChange = (event) => {
     const value = event.currentTarget.Telegramvalue;
     setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value, collectionFilter: selectedCollection }));
+    setSortedData(sortData(data, { search: value, collectionFilter: selectedCollection }));
   };
 
   const groupsPerPage = 12;
@@ -255,11 +253,11 @@ export default function ClashRoyale() {
         />
 
         {/* ——— CANONICAL ——— */}
-        <link rel="canonical" href="https://joingroups.pro/clanes/clanes-de-clash-royale" />
+        <link rel="canonical" href="https://joingroups.pro/#/clanes/clanes-de-clash-royale" />
 
         {/* ——— OPEN GRAPH (Para compartir en redes sociales como Facebook ) ——— */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://joingroups.pro/clanes/clanes-de-clash-royale" />
+        <meta property="og:url" content="https://joingroups.pro/#/clanes/clanes-de-clash-royale" />
         <meta property="og:title" content="Clanes de Clash Royale Activos 2025: Únete o Publica tu Clan Gratis" />
         <meta property="og:description" content="Encuentra y únete a los mejores clanes de Clash Royale activos en 2025. Publica tu clan gratis para reclutar nuevos miembros y conectar con la comunidad." />
         <meta property="og:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -267,7 +265,7 @@ export default function ClashRoyale() {
 
         {/* ——— TWITTER CARDS (Para compartir en Twitter ) ——— */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://joingroups.pro/clanes/clanes-de-clash-royale" />
+        <meta name="twitter:url" content="https://joingroups.pro/#/clanes/clanes-de-clash-royale" />
         <meta name="twitter:title" content="Clanes de Clash Royale Activos 2025: Únete o Publica tu Clan Gratis" />
         <meta name="twitter:description" content="Encuentra y únete a los mejores clanes de Clash Royale activos en 2025. Publica tu clan gratis para reclutar nuevos miembros y conectar con la comunidad." />
         <meta name="twitter:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -280,7 +278,7 @@ export default function ClashRoyale() {
             "@type": "CollectionPage",
             "name": "Clanes de Clash Royale Activos 2025",
             "description": "Explora y únete a los clanes de Clash Royale más activos en 2025. Publica tu grupo gratis y conéctate con comunidades activas para ganar batallas y subir de copas.",
-            "url": "https://joingroups.pro/clanes/clanes-de-clash-royale",
+            "url": "https://joingroups.pro/#/clanes/clanes-de-clash-royale",
             "mainEntity": {
               "@type": "ItemList",
               "name": "Clanes de Clash Royale",

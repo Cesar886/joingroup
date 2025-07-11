@@ -28,13 +28,6 @@ import { useForm } from '@mantine/form';
 import { Helmet } from 'react-helmet';
 import { IconBrandWhatsapp } from '@tabler/icons-react';
 
-/**
- * Formulario para publicar clanes de Clash Royale o Clash of Clans.
- * – Verifica duplicados (link y slug)
- * – Guarda en ‘clanes’ con juego = clash‑royale | clash‑of‑clans
- * – Traduce la descripción faltante (ES ↔ EN)
- * – Muestra loader/alertas y navega a la ficha tras publicar
- */
 export default function ClanesGroupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { t, i18n } = useTranslation();
@@ -109,7 +102,6 @@ export default function ClanesGroupForm() {
   const captchaRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  /* ───────────────────── DeepL proxy API ─────────────────────── */
   const DEEPL_PROXY_URL = 'https://daniel-rdz.tech/translate';
 
   async function translateText(text, source, target) {
@@ -156,7 +148,6 @@ export default function ClanesGroupForm() {
     }
   }, 900);
 
-  /* ────────────────────── onVerify Captcha ───────────────────── */
   const handleVerify = async (token) => {
     if (!token) return;
     setModalOpen(false);
@@ -251,7 +242,7 @@ export default function ClanesGroupForm() {
           } catch {
             /* ignore */
           }
-          if (attempts > 60) clearInterval(intervalId); // 5 min máx.
+          if (attempts > 60) clearInterval(intervalId);
         }, 5000);
       }
 
@@ -281,7 +272,7 @@ export default function ClanesGroupForm() {
         />
         <link
           rel="canonical"
-          href="https://joingroups.pro/form/clanes"
+          href="https://joingroups.pro/#/clanes/form"
         />
       </Helmet>
 

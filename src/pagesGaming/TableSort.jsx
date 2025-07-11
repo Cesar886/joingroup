@@ -25,7 +25,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
 import slugify from '../assets/slugify';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import styles from './TableSortClanes.module.css';
 import { Helmet } from 'react-helmet-async';
 
@@ -84,13 +84,13 @@ export default function Clanes() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState([]);
-  const [sortBy, setSortBy] = useState(null);
-  const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  // const [sortBy, setSortBy] = useState(null);
+  // const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [currentPage, setCurrentPage] = useState(1);
   const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState(null);
-  const location = useLocation();
+  // const location = useLocation();
 
   const [buttonPosition, setButtonPosition] = useState('top-left');
   const positionRef = useRef('top-left');
@@ -100,8 +100,8 @@ export default function Clanes() {
     const newValue = collection === selectedCollection ? null : collection;
     setSelectedCollection(newValue);
     setSortedData(sortData(data, {
-      sortBy,
-      reversed: reverseSortDirection,
+      // sortBy,
+      // reversed: reverseSortDirection,
       search,
       collectionFilter: newValue
     }));
@@ -173,17 +173,17 @@ export default function Clanes() {
   }, []);
 
 
-  const setSorting = (field) => {
-    const reversed = field === sortBy ? !reverseSortDirection : false;
-    setReverseSortDirection(reversed);
-    setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
-  };
+  // const setSorting = (field) => {
+  //   const reversed = field === sortBy ? !reverseSortDirection : false;
+  //   setReverseSortDirection(reversed);
+  //   setSortBy(field);
+  //   setSortedData(sortData(data, { sortBy: field, reversed, search }));
+  // };
 
   const handleSearchChange = (event) => {
     const value = event.currentTarget.Telegramvalue;
     setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value, collectionFilter: selectedCollection }));
+    setSortedData(sortData(data, { search: value, collectionFilter: selectedCollection }));
   };
 
   const groupsPerPage = 12;
@@ -210,8 +210,8 @@ export default function Clanes() {
         
     const iconSrc =
       row.tipo === 'clash-royale'
-        ? '/clashRoyaleFondo1.png'     //  ← pon esta imagen en /public
-        : '/clashOfClansFondo.png';   //  ← pon esta imagen en /public
+        ? '/clashRoyaleFondo1.png'     
+        : '/clashOfClansFondo.png'; 
 
     return (
       <Paper
@@ -299,11 +299,11 @@ export default function Clanes() {
         />
 
         {/* ——— CANONICAL ——— */}
-        <link rel="canonical" href="https://joingroups.pro/clanes" />
+        <link rel="canonical" href="https://joingroups.pro/#/clanes" />
 
         {/* ——— OPEN GRAPH ——— */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://joingroups.pro/clanes" />
+        <meta property="og:url" content="https://joingroups.pro/#/clanes" />
         <meta property="og:title" content="Clanes de Videojuegos Activos 2025: Únete o Publica tu Clan Gratis" />
         <meta property="og:description" content="Encuentra y únete a los mejores clanes de videojuegos activos. Publica tu clan gratis para reclutar miembros y conectar con la comunidad gamer de Clash Royale y Clash of Clans." />
         <meta property="og:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -311,7 +311,7 @@ export default function Clanes() {
 
         {/* ——— TWITTER CARDS ——— */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://joingroups.pro/clanes" />
+        <meta name="twitter:url" content="https://joingroups.pro/#/clanes" />
         <meta name="twitter:title" content="Clanes de Videojuegos Activos 2025: Únete o Publica tu Clan Gratis" />
         <meta name="twitter:description" content="Encuentra y únete a los mejores clanes de videojuegos activos. Publica tu clan gratis para reclutar miembros y conectar con la comunidad gamer de Clash Royale y Clash of Clans." />
         <meta name="twitter:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -324,7 +324,7 @@ export default function Clanes() {
             "@type": "CollectionPage",
             "name": "Clanes de Videojuegos Activos 2025",
             "description": "Explora y únete a los clanes de videojuegos más activos en 2025. Publica tu clan gratis para reclutar jugadores y conectar con comunidades de Clash Royale y Clash of Clans.",
-            "url": "https://joingroups.pro/clanes",
+            "url": "https://joingroups.pro/#/clanes",
             "mainEntity": {
               "@type": "ItemList",
               "name": "Clanes de Clash Royale y Clash of Clans",
@@ -335,7 +335,7 @@ export default function Clanes() {
                   "item": {
                     "@type": "Thing",
                     "name": "Clanes de Clash Royale",
-                    "url": "https://joingroups.pro/clanes/clanes-de-clash-royale",
+                    "url": "https://joingroups.pro/#/clanes/clanes-de-clash-royale",
                     "description": "Encuentra clanes activos de Clash Royale para unirte o publicar el tuyo."
                   }
                 },
@@ -345,7 +345,7 @@ export default function Clanes() {
                   "item": {
                     "@type": "Thing",
                     "name": "Clanes de Clash of Clans",
-                    "url": "https://joingroups.pro/clanes/clanes-de-clash-of-clans",
+                    "url": "https://joingroups.pro/#/clanes/clanes-de-clash-of-clans",
                     "description": "Descubre los mejores clanes de Clash of Clans para guerras y comunidad."
                   }
                 }

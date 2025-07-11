@@ -48,31 +48,6 @@ function Th({ children, reversed, sorted, onSort }) {
   );
 }
 
-function filterData(data, search, collectionFilter = null) {
-  const query = search.toLowerCase().trim();
-  return data.filter((item) => {
-    const matchesSearch = ['name', 'categories', 'content18'].some((key) =>
-      item[key]?.toLowerCase().includes(query)
-  );
-  
-  const matchesCollection = collectionFilter
-  ? item.categories?.toLowerCase() === collectionFilter.toLowerCase()
-  : true;
-  
-  return matchesSearch && matchesCollection;
-});
-}
-
-function sortData(data, { sortBy, reversed, search, collectionFilter }) {
-  const filtered = filterData(data, search, collectionFilter);
-  if (!sortBy) return filtered;
-  
-  return [...filtered].sort((a, b) =>
-    reversed
-  ? b[sortBy]?.localeCompare(a[sortBy])
-  : a[sortBy]?.localeCompare(b[sortBy])
-);
-}
 
 export default function TableSort() {
   const { t, i18n } = useTranslation();
@@ -85,7 +60,7 @@ export default function TableSort() {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [currentPage, setCurrentPage] = useState(1);
   const [collections, setCollections] = useState([]);
-  const [selectedCollection, setSelectedCollection] = useState(null);
+  const [selectedCollections, setSelectedCollections] = useState([]);  // ✅ único estado
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const orden = searchParams.get('orden');
@@ -93,18 +68,65 @@ export default function TableSort() {
   const [buttonPosition, setButtonPosition] = useState('top-left');
   const positionRef = useRef('top-left');
 
+  const toggleCollection = (collection) => {
+    setSelectedCollections((prev) => {
+      const already = prev.includes(collection);
 
-  const handleCollectionFilter = (collection) => {
-    const newValue = collection === selectedCollection ? null : collection;
-    setSelectedCollection(newValue);
-    setSortedData(sortData(data, {
-      // sortBy,
-      // reversed: reverseSortDirection,
-      search,
-      collectionFilter: newValue
-    }));
-    setCurrentPage(1);
+      // quita si ya estaba
+      if (already) return prev.filter((c) => c !== collection);
+
+      // añade si NO estaba (máx. 3)
+      const next = [...prev, collection];
+      return next.length > 3 ? next.slice(1) : next;   // deja los 3 + recientes
+    });
   };
+
+  useEffect(() => {
+    setSortedData(
+      sortData(data, { search, collectionFilter: selectedCollections })
+    );
+    setCurrentPage(1);               // regresa a página 1 si cambian filtros
+  }, [data, search, selectedCollections]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (selectedCollections.length) {
+      params.set('cats', selectedCollections.join(','));
+    } else {
+      params.delete('cats');
+    }
+    navigate({ search: params.toString() }, { replace: true });
+    // eslint‑disable‑next‑line react‑hooks/exhaustive‑deps
+  }, [selectedCollections]);   // ✅ sin ‘location’ y sin duplicar el hook
+
+
+
+  function filterData(data, search, collectionFilter = []) {
+    const query = search.toLowerCase().trim();
+
+    return data.filter((item) => {
+      const matchesSearch = ['name', 'categories', 'content18'].some((key) =>
+        typeof item[key] === 'string' && item[key].toLowerCase().includes(query)
+      );
+
+      const matchesCollection = collectionFilter.length
+        ? item.categories?.some((cat) =>
+            collectionFilter.some((filtro) =>
+              cat.toLowerCase().includes(filtro.toLowerCase())
+            )
+          )
+        : true;
+
+      return matchesSearch && matchesCollection;
+    });
+  }
+
+
+  function sortData(data, { search, collectionFilter }) {
+    // (solo filtrado; si luego quieres ordenar, agrega la lógica aquí)
+    return filterData(data, search, collectionFilter);
+  }
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -115,7 +137,7 @@ export default function TableSort() {
         const snapshot = await getDocs(collection(db, 'colections'));
         const docs = snapshot.docs.map(doc => doc.data());
         const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
-        setCollections([...new Set(allCollections)]);
+        setCollections({ collections: [...new Set(allCollections)] });
       };
 
       fetchCollections();
@@ -177,10 +199,20 @@ export default function TableSort() {
   };
 
   const handleSearchChange = (event) => {
-    const value = event.currentTarget.value;
-    setSearch(value);
-    // setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value, collectionFilter: selectedCollection }));
+    setSearch(event.currentTarget.value);
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (selectedCollections.length) {
+      params.set('cats', selectedCollections.join(','));
+    } else {
+      params.delete('cats');
+    }
+    navigate({ search: params.toString() }, { replace: true });
+  }, [selectedCollections, location]);   // ← añade ‘location’
+
+
 
   const groupsPerPage = 12;
   const indexOfLastGroup = currentPage * groupsPerPage;
@@ -277,6 +309,8 @@ export default function TableSort() {
     );
   });
 
+  const collectionsExist = collections && collections.collections;
+
   return (
     <>
       <Helmet>
@@ -286,7 +320,7 @@ export default function TableSort() {
         {/* ——— DESCRIPTION ——— */}
         <meta
           name="description"
-          content="Explora y únete a miles de grupos de Telegram y WhatsApp activos en 2025. Conecta con comunidades de tus intereses, encuentra canales, miembros y personas con tus mismos gustos. Publica tu grupo gratis para llegar a más usuarios."
+          content="Grupos de Telegram y WhatsApp activos en 2025. Conecta con comunidades de tus intereses, encuentra canales, miembros y personas con tus mismos gustos. Publica tu grupo gratis para llegar a más usuarios."
         />
 
         {/* ——— KEYWORDS ——— */}
@@ -296,11 +330,11 @@ export default function TableSort() {
         />
 
         {/* ——— CANONICAL ——— */}
-        <link rel="canonical" href="https://joingroups.pro/comunidades" />
+        <link rel="canonical" href="https://joingroups.pro/#/comunidades" />
 
         {/* ——— OPEN GRAPH ——— */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://joingroups.pro/comunidades" />
+        <meta property="og:url" content="https://joingroups.pro/#/comunidades" />
         <meta property="og:title" content="Grupos de Telegram y WhatsApp Activos 2025: Encuentra, Únete o Publica tu Grupo Gratis" />
         <meta property="og:description" content="Explora y únete a miles de grupos de Telegram y WhatsApp activos. Conecta con comunidades de tus intereses, encuentra canales y miembros. Publica tu grupo gratis." />
         <meta property="og:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -308,7 +342,7 @@ export default function TableSort() {
 
         {/* ——— TWITTER CARDS ——— */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://joingroups.pro/comunidades" />
+        <meta name="twitter:url" content="https://joingroups.pro/#/comunidades" />
         <meta name="twitter:title" content="Grupos de Telegram y WhatsApp Activos 2025: Encuentra, Únete o Publica tu Grupo Gratis" />
         <meta name="twitter:description" content="Explora y únete a miles de grupos de Telegram y WhatsApp activos. Conecta con comunidades de tus intereses, encuentra canales y miembros. Publica tu grupo gratis." />
         <meta name="twitter:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -320,8 +354,8 @@ export default function TableSort() {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             "name": "Grupos de Telegram y WhatsApp Activos 2025",
-            "description": "Explora y únete a miles de grupos y canales de Telegram y WhatsApp activos en 2025. Encuentra comunidades de tus intereses, busca miembros, conoce personas y publica tu grupo gratis para llegar a más usuarios.",
-            "url": "https://joingroups.pro/comunidades",
+            "description": "Grupos de Telegram y WhatsApp ACTIVOS en 2025. Encuantra canales de Telegram y WhatsApp en 2025. Encuentra comunidades de tus intereses, busca miembros, conoce personas y publica tu grupo gratis para llegar a más usuarios.",
+            "url": "https://joingroups.pro/#/comunidades",
             "mainEntity": {
               "@type": "ItemList",
               "name": "Categorías de Grupos y Canales",
@@ -332,8 +366,8 @@ export default function TableSort() {
                   "item": {
                     "@type": "Thing",
                     "name": "Grupos de Telegram",
-                    "url": "https://joingroups.pro/comunidades/telegram",
-                    "description": "Encuentra y únete a grupos y canales de Telegram de diversas temáticas. Conecta con miembros y usuarios."
+                    "url": "https://joingroups.pro/#/comunidades/grupos-de-telegram",
+                    "description": "Encuentra Grupos de Telegram de diversas temáticas. Conecta con miembros y usuarios."
                   }
                 },
                 {
@@ -342,8 +376,8 @@ export default function TableSort() {
                   "item": {
                     "@type": "Thing",
                     "name": "Grupos de WhatsApp",
-                    "url": "https://joingroups.pro/comunidades/whatsapp",
-                    "description": "Descubre y únete a grupos de WhatsApp activos por intereses. Busca y conoce personas con tus mismos gustos."
+                    "url": "https://joingroups.pro/#/comunidades/grupos-de-whatsapp",
+                    "description": "Descubre y Unete a Grupos de WhatsApp ACTIVOS por Tematica. Busca y conoce personas con tus mismos gustos."
                   }
                 }
               ]
@@ -355,17 +389,6 @@ export default function TableSort() {
 
 
       <ScrollArea>
-        {selectedCollection && (
-          <Button
-            variant="outline"
-            color="gray"
-            mb="xs"
-            onClick={() => handleCollectionFilter(selectedCollection)}
-          >
-            {t('Quitar filtro')}: {selectedCollection}
-          </Button>
-        )}
-
         <TextInput
           placeholder={t('Buscar por nombre, categoría o contenido...')}
           mb="md"
@@ -374,7 +397,6 @@ export default function TableSort() {
           onChange={handleSearchChange}
         />
 
-        {rows.length > 0 ? (
           <>
             <Group gap='xs' mb="md" justify="center">
               <Button
@@ -411,8 +433,14 @@ export default function TableSort() {
               <Group mt="md" mb="md">
                 <Button
                   onClick={() => {
-                    const newOrden = orden === 'top' ? '' : '?orden=top';
-                    navigate(newOrden);
+                    const params = new URLSearchParams(location.search);
+                    const currentOrden = params.get('orden');
+                    if (currentOrden === 'top') {
+                      params.delete('orden'); // quitar si ya estaba activo
+                    } else {
+                      params.set('orden', 'top');
+                    }
+                    navigate({ search: params.toString() });
                   }}
                   variant={orden === 'top' ? 'filled' : 'light'}
                 >
@@ -421,8 +449,14 @@ export default function TableSort() {
 
                 <Button
                   onClick={() => {
-                    const newOrden = orden === 'nuevos' ? '' : '?orden=nuevos';
-                    navigate(newOrden);
+                    const params = new URLSearchParams(location.search);
+                    const currentOrden = params.get('orden');
+                    if (currentOrden === 'nuevos') {
+                      params.delete('orden');
+                    } else {
+                      params.set('orden', 'nuevos');
+                    }
+                    navigate({ search: params.toString() });
                   }}
                   variant={orden === 'nuevos' ? 'filled' : 'light'}
                 >
@@ -430,40 +464,54 @@ export default function TableSort() {
                 </Button>
 
                 <Button
-                  onClick={() => navigate('')}
+                  onClick={() => {
+                    const params = new URLSearchParams(location.search);
+                    params.delete('orden'); // quitar orden para mostrar "destacados"
+                    navigate({ search: params.toString() });
+                  }}
                   variant={!orden ? 'filled' : 'light'}
                 >
                   Destacados
                 </Button>
               </Group>
 
-              <ScrollArea type="auto" offsetScrollbars scrollbarSize={0}>
-                <Group wrap="nowrap" gap="sm" style={{ padding: '10px' }}>
-                  {collections && collections.collections && Array.isArray(collections.collections) && collections.collections.map((cat, i) => (
-                    <Badge
-                      key={i}
-                      variant="light"
-                      color="violet"
-                      size="lg"
-                      radius="xl"
-                      style={{
-                        padding: '8px 14px',
-                        fontSize: '14px',
-                        textTransform: 'uppercase',
-                        fontWeight: 600,
-                        backgroundColor: '#f3e8ff',
-                        color: '#4a0080', // Color de texto más oscuro para mejor contraste
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => handleCollectionFilter(cat)}
-                    >
-                      {cat}
-                    </Badge>
-                  ))}
-                </Group>
-              </ScrollArea>
 
-
+              <Box
+                style={{
+                  display: 'flex',
+                  overflowX: 'auto',
+                  gap: '10px',
+                  padding: '10px 0',
+                  WebkitOverflowScrolling: 'touch',
+                }}
+              >
+                {collectionsExist &&
+                  collections.collections.map((cat, i) => {
+                    const selected = selectedCollections.includes(cat);
+                    return (
+                      <Badge
+                        key={i}
+                        variant={selected ? 'filled' : 'light'}
+                        color="violet"
+                        size="lg"
+                        radius="xl"
+                        onClick={() => toggleCollection(cat)}
+                        style={{
+                          padding: '10px 16px',
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          backgroundColor: selected ? '#5e2ca5' : '#f3e8ff',
+                          color: selected ? '#ffffff' : '#4a0080',
+                          whiteSpace: 'nowrap',
+                          flexShrink: 0,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {cat}
+                      </Badge>
+                    );
+                  })}
+              </Box>
             </Group>
 
             <Paper
@@ -607,10 +655,17 @@ export default function TableSort() {
             </Text>
             </Paper>
           </>
-        ) : (
-          <Text ta="center" fw={500} c="dimmed" mt="xl">
-            {t('No se encontraron resultados.')}
-          </Text>
+        {rows.length === 0 && (
+          <Box ta="center" mt="xl">
+            <Text fw={500} c="dimmed" mb="sm">
+              {t('No se encontraron resultados para esta categoría.')}
+            </Text>
+            <img
+              src="/sinresultados.png"
+              alt="Sin resultados"
+              style={{ width: '160px', opacity: 0.5 }}
+            />
+          </Box>
         )}
         {/* Botón flotante con cambio de posición */}
         <Button
