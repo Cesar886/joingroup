@@ -341,7 +341,7 @@ export default function Whatsapp() {
               onClick={() => handleCollectionFilter(null)}
               style={{ cursor: 'pointer' }}
             >
-              {t('Todos')}
+              {/* {t('Todos')} */}
             </Badge>
 
             {collections.map((col) => (
@@ -353,7 +353,7 @@ export default function Whatsapp() {
                 onClick={() => handleCollectionFilter(col)}
                 style={{ cursor: 'pointer' }}
               >
-                {col}
+                {/* {col} */}
               </Badge>
             ))}
           </Group>

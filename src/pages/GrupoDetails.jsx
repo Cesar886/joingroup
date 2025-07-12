@@ -86,6 +86,13 @@ export default function GroupDetail() {
 
   const baseLang = i18n.language.split('-')[0];
 
+  const isChromeMobile =
+    /Chrome/.test(navigator.userAgent) &&
+    /Android/.test(navigator.userAgent) &&
+    !/OPR|Edge/.test(navigator.userAgent);
+
+
+
   /* -------------- render -------------- */
   if (loading)   return <Center><Text>{t('Cargando grupo...')}</Text></Center>;
   if (notFound || !group)
@@ -149,14 +156,21 @@ export default function GroupDetail() {
           <Divider my="sm" />
 
           <Button
-            component="a"
-            href={group.link || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
             fullWidth
             variant="filled"
             color="blue"
             disabled={!group.link}
+            onClick={() => {
+              if (isChromeMobile) {
+                window.location.replace(group.link);
+              } else {
+                const a = document.createElement('a');
+                a.href = group.link;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.click();
+              }
+            }}
           >
             {group.link
               ? t(`${(tipo || group?.tipo || 'telegram')[0].toUpperCase() + (tipo || group?.tipo || 'telegram').slice(1)} - ACCEDER AL GRUPO`)
