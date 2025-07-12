@@ -635,6 +635,19 @@ export default function TableSort() {
               </Button>
             </Group>
 
+            {rows.length === 0 && (
+              <Box ta="center" mt="xl">
+                <Text fw={500} c="dimmed" mb="sm">
+                  {t('No se encontraron resultados para esta categoría.')}
+                </Text>
+                <img
+                  src="https://joingroups.pro/meme-Pica.png"
+                  alt="Nada, No hay, No existe"
+                  style={{ width: '160px', opacity: 0.5 }}
+                />
+              </Box>
+            )}
+            
             <Paper
               withBorder
               radius="md"
@@ -662,18 +675,6 @@ export default function TableSort() {
             </Text>
             </Paper>
           </>
-        {rows.length === 0 && (
-          <Box ta="center" mt="xl">
-            <Text fw={500} c="dimmed" mb="sm">
-              {t('No se encontraron resultados para esta categoría.')}
-            </Text>
-            <img
-              src="https://joingroups.pro/meme-Pica.png"
-              alt="Nada, No hay, No existe"
-              style={{ width: '160px', opacity: 0.5 }}
-            />
-          </Box>
-        )}
         {/* Botón flotante con cambio de posición */}
         <Button
           component={Link}
