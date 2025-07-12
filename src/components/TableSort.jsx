@@ -322,12 +322,12 @@ export default function TableSort() {
     <>
       <Helmet>
         {/* ——— TITLE ——— */}
-        <title>Grupos de Telegram y WhatsApp Activos 2025: Encuentra, Únete o Publica tu Grupo Gratis</title>
+        <title>Grupos de Telegram Activos 2025</title>
 
         {/* ——— DESCRIPTION ——— */}
         <meta
           name="description"
-          content="Grupos de Telegram y WhatsApp activos en 2025. Conecta con comunidades de tus intereses, encuentra canales, miembros y personas con tus mismos gustos. Publica tu grupo gratis para llegar a más usuarios."
+          content="Grupos de Telegram activos en 2025. Conecta con comunidades de tus intereses, encuentra canales, miembros y personas con tus mismos gustos. Publica tu grupo gratis para llegar a más usuarios."
         />
 
         {/* ——— KEYWORDS ——— */}
@@ -360,7 +360,7 @@ export default function TableSort() {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            "name": "Grupos de Telegram y WhatsApp Activos 2025",
+            "name": "Grupos de Telegram Activos 2025",
             "description": "Grupos de Telegram y WhatsApp ACTIVOS en 2025. Encuantra canales de Telegram y WhatsApp en 2025. Encuentra comunidades de tus intereses, busca miembros, conoce personas y publica tu grupo gratis para llegar a más usuarios.",
             "url": "https://joingroups.pro/#/comunidades",
             "mainEntity": {
