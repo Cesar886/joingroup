@@ -86,7 +86,7 @@ export default function Telegram() {
   // const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [currentPage, setCurrentPage] = useState(1);
-  const [collections, setCollections] = useState([]);
+  // const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -115,10 +115,10 @@ export default function Telegram() {
       const telegramGroups = groups.filter(g => g.tipo === 'telegram');
 
       const fetchCollections = async () => {
-        const snapshot = await getDocs(collection(db, 'colections'));
-        const docs = snapshot.docs.map(doc => doc.data());
-        const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
-        setCollections([...new Set(allCollections)]);
+        // const snapshot = await getDocs(collection(db, 'colections'));
+        // const docs = snapshot.docs.map(doc => doc.data());
+        // const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
+        // setCollections([...new Set(allCollections)]);
       };
       fetchCollections();
 
@@ -328,7 +328,7 @@ export default function Telegram() {
           onChange={handleSearchChange}
         />
 
-        {collections.length > 0 && (
+        {/* {collections.length > 0 && (
           <Group mb="md" spacing="xs" wrap="wrap">
             <Badge
               key="todos"
@@ -354,7 +354,7 @@ export default function Telegram() {
               </Badge>
             ))}
           </Group>
-        )}
+        )} */}
 
         {rows.length > 0 ? (
           <>
