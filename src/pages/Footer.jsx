@@ -38,7 +38,7 @@ export default function Footer() {
       title: 'Comunidad',
       links: [
         { label: t('Instagram Oficial'), link: 'https://www.instagram.com/daniel110a/' },
-        { label: t('Grupo en Telegram'), link: 'https://t.me/Photosoficialbot' },
+        { label: t('Grupo en Telegram'), link: 'https://t.me/PhotosOfficialbot' },
       ],
     },
   ];
@@ -50,7 +50,19 @@ export default function Footer() {
           <Stack spacing="xs" className={classes.logoWrapper}>
             <Image src="/JoinGroups.png" alt="Logo de JoinGroup" className={classes.logo}/>
             <Text size="sm" c="dimmed" className={classes.description} ta={{ base: 'center', sm: 'left' }}>
-              JoinGroup {t('es tu herramienta para administrar, automatizar y organizar grupos de Telegram de forma eficiente.')}
+            <Link
+              to={i18n.language === 'es' ? 'https://joingroups.pro' : 'https://joingroups.pro'}
+              style={{
+                position: 'absolute',
+                left: '-9999px',
+                width: '1px',
+                height: '1px',
+                overflow: 'hidden',
+              }}
+            >
+              JoinGroups
+            </Link>
+              {t(' es tu herramienta para administrar, automatizar y organizar grupos de Telegram de forma eficiente.')}
             </Text>
           </Stack>
 
