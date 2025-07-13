@@ -52,13 +52,7 @@ export default function Footer() {
             <Text size="sm" c="dimmed" className={classes.description} ta={{ base: 'center', sm: 'left' }}>
             <Link
               to={i18n.language === 'es' ? 'https://joingroups.pro' : 'https://joingroups.pro'}
-              style={{
-                position: 'absolute',
-                left: '-9999px',
-                width: '1px',
-                height: '1px',
-                overflow: 'hidden',
-              }}
+              style={{ color: 'inherit', textDecoration: 'none', fontWeight: 400 }}
             >
               JoinGroups
             </Link>
