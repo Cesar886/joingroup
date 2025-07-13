@@ -255,7 +255,7 @@ export default function Whatsapp() {
     <>
       <Helmet>
         {/* ——— TITLE (≤60 car.) ——— */}
-        <title>Grupos de WhatsApp ACTIVOS 2025 | Únete o Publica el Tuyo</title>
+        <title>Grupos de WhatsApp ACTIVOS 2025 | Publica y Haz Crecer tu Grupo o Canal de Whatsapp</title>
 
         {/* ——— DESCRIPTION (≈150 car.) ——— */}
         <meta
@@ -445,10 +445,10 @@ export default function Whatsapp() {
             {isMobile ? (
               <>
                 <Title order={4} mb="xs">
-                  📣 {t('¡Promociona tu Grupo de WhatsApp en JoinGroups!')}
+                  {t('¡Grupos de Whatsapp!')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
-                  📱 {t('¿Tienes un grupo de WhatsApp?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
+                  {t('¿Tienes un grupo de WhatsApp?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
                 </Text>
               </>
             ) : (

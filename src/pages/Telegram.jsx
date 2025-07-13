@@ -252,7 +252,7 @@ export default function Telegram() {
     <>
       <Helmet>
         {/* ——— TITLE ——— */}
-        <title>Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo</title>
+        <title>Grupos de Telegram Activos 2025 | Las Mejores Comunidades ACTIVAS</title>
 
         {/* ——— DESCRIPTION ——— */}
         <meta
@@ -327,34 +327,6 @@ export default function Telegram() {
           value={search}
           onChange={handleSearchChange}
         />
-
-        {/* {collections.length > 0 && (
-          <Group mb="md" spacing="xs" wrap="wrap">
-            <Badge
-              key="todos"
-              variant={selectedCollection === null ? 'filled' : 'light'}
-              color={selectedCollection === null ? 'blue' : 'gray'}
-              size="md"
-              onClick={() => handleCollectionFilter(null)}
-              style={{ cursor: 'pointer' }}
-            >
-              {t('Todos')}
-            </Badge>
-
-            {collections.map((col) => (
-              <Badge
-                key={col}
-                variant={selectedCollection === col ? 'filled' : 'light'}
-                color={selectedCollection === col ? 'blue' : 'gray'}
-                size="md"
-                onClick={() => handleCollectionFilter(col)}
-                style={{ cursor: 'pointer' }}
-              >
-                {col}
-              </Badge>
-            ))}
-          </Group>
-        )} */}
 
         {rows.length > 0 ? (
           <>
@@ -467,30 +439,27 @@ export default function Telegram() {
               </p>
             </div>
 
-
-
             {isMobile ? (
               <>
                 <Title order={4} mb="xs">
-                  📣 {t('¡Promociona tu Grupo de Telegram en JoinGroups!')}
+                  {t('Mejores Grupos de Telegram')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
-                  📱 {t('¿Tienes un grupo de Telegram?')} <strong>{t('Publícalo gratis')}</strong> {t('y consigue miembros al instante.')}
+                  {t('¿Tienes un grupo de Telegram?')} <strong>{t('Publícalo gratis en JoinGroups')}</strong> {t('y consigue nuevos miembros fácilmente. Descubre cómo crecer con comunidades activas y visibles en toda la web.')}
                 </Text>
               </>
             ) : (
               <>
                 <Title order={3} mb="xs">
-                  📣 {t('¡Promociona tu Grupo de Telegram en JoinGroups!')}
+                  {t('Promociona tu Grupo de Telegram en JoinGroups')}
                 </Title>
                 <Text size="sm" color="dimmed" mb="xs">
-                  📱 {t('¿Tienes un grupo de Telegram y quieres hacerlo crecer?')} <strong>{t('En JoinGroups puedes publicar tu grupo gratis')}</strong> {t('y empezar a recibir nuevos miembros interesados.')}<br />
-                  🔍 {t('Explora una lista actualizada de')} <strong>{t('grupos de Telegram')}</strong> {t('organizados por categoría e intereses.')}{' '}
-                  🤝 {t('Únete a comunidades activas, comparte tu grupo y conéctate con personas afines usando JoinGroups.')}
+                  {t('¿Tienes un grupo o canal en Telegram y quieres hacerlo crecer?')} <strong>{t('En JoinGroups puedes publicarlo gratis')}</strong> {t('y empezar a recibir nuevos miembros interesados.')}{' '}
+                  {t('Explora los mejores grupos de Telegram organizados por temática, intereses y comunidad.')}{' '}
+                  {t('Utiliza nuestro buscador y encuentra canales, consejos y recursos para hacer destacar tu grupo en el mundo Telegram.')}
                 </Text>
               </>
             )}
-
 
             </Paper>
 
