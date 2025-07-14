@@ -30,6 +30,10 @@ export default function GroupForm() {
   const navigate = useNavigate();
   const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
   const [redSocial, setRedSocial] = useState('Telegram');
+  function containsEmoji(text) {
+    return /[\p{Emoji}]/u.test(text);
+  }
+
 
   const form = useForm({
     initialValues: {
@@ -69,6 +73,17 @@ export default function GroupForm() {
         return hasEn || hasEs
           ? null
           : t('You must write a description in English or Spanish (20–320 characters)');
+      },
+      
+      name: (value) => {
+        const trimmed = value.trim();
+        if (!trimmed) return t('El nombre es obligatorio');
+        
+        // Verifica si hay al menos una letra o número
+        const hasText = /[a-zA-Z0-9]/.test(trimmed);
+        if (!hasText) return t('El nombre no puede ser solo emojis');
+
+        return null;
       },
 
       link: (v) => {
@@ -138,6 +153,8 @@ export default function GroupForm() {
       let descEn = form.values.descriptionEn.trim();
 
       const {
+        descriptionEs, 
+        descriptionEn,
         ...cleanValues
       } = form.values;
 
@@ -145,8 +162,8 @@ export default function GroupForm() {
         ...cleanValues,
         tipo: redSocial.toLowerCase(), // ← esto guarda si es telegram o whatsapp
         description: {
-          es: descEs || '',
-          en: descEn || '',
+          es: descriptionEs.trim() || '',
+          en: descriptionEn.trim() || '',
         },
         link: cleanLink,
         destacado: false,
@@ -214,8 +231,6 @@ export default function GroupForm() {
     }
   };
 
-
-
   const DEEPL_PROXY_URL = 'https://daniel-rdz.tech/translate'; // Con Https://daniel-rdz.tech/translate
 
 
@@ -277,8 +292,8 @@ export default function GroupForm() {
    const prefix = redSocial === 'Telegram' ? 'https://t.me/' : '';
 
    const telegramRegex = /^https:\/\/t\.me\/[a-zA-Z0-9_]{5,}$/;
-  const whatsappGroupRegex = /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]{22}$/;
-  const whatsappChannelRegex = /^https:\/\/(wa\.me|whatsapp\.com)\/channel\/[a-zA-Z0-9_]{8,}$/;
+   const whatsappGroupRegex = /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]{22}$/;
+   const whatsappChannelRegex = /^https:\/\/(wa\.me|whatsapp\.com)\/channel\/[a-zA-Z0-9_]{8,}$/;
   
 
 
@@ -410,9 +425,6 @@ export default function GroupForm() {
               }
             </Text>
           )}
-
-
-
 
           <Select
             label="Red social"
