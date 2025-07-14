@@ -29,11 +29,7 @@ export default function GroupForm() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
-  const [redSocial, setRedSocial] = useState('Telegram');
-  function containsEmoji(text) {
-    return /[\p{Emoji}]/u.test(text);
-  }
-
+  const [redSocial, setRedSocial] = useState('Telegram');``
 
   const form = useForm({
     initialValues: {
@@ -41,8 +37,8 @@ export default function GroupForm() {
       link: '',
       email: '',
       emailRepeat: '',
-      descriptionEs: '',   // 🆕
-      descriptionEn: '',   // 🆕
+      descriptionEs: '',
+      descriptionEn: '',
       city: '',
       content18: '',
       categories: [],
