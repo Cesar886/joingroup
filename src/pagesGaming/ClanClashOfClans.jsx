@@ -242,11 +242,11 @@ export default function ClashOfClans() {
       />
 
       {/* ——— CANONICAL ——— */}
-      <link rel="canonical" href="https://joingroups.pro/#/clanes/clanes-de-clash-of-clans" />
+      <link rel="canonical" href="https://joingroups.pro/clanes/clanes-de-clash-of-clans" />
 
       {/* ——— OPEN GRAPH (Para compartir en redes sociales como Facebook ) ——— */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://joingroups.pro/#/clanes/clanes-de-clash-of-clans" />
+      <meta property="og:url" content="https://joingroups.pro/clanes/clanes-de-clash-of-clans" />
       <meta property="og:title" content="Clanes de Clash of Clans Activos 2025: Únete o Publica tu Clan Gratis" />
       <meta property="og:description" content="Encuentra y únete a los mejores clanes de Clash of Clans activos en 2025. Publica tu clan gratis para reclutar nuevos miembros y dominar las guerras de clanes." />
       <meta property="og:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -254,7 +254,7 @@ export default function ClashOfClans() {
 
       {/* ——— TWITTER CARDS (Para compartir en Twitter ) ——— */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content="https://joingroups.pro/clanes/#/clanes-de-clash-of-clans" />
+      <meta name="twitter:url" content="https://joingroups.pro/clanes/clanes-de-clash-of-clans" />
       <meta name="twitter:title" content="Clanes de Clash of Clans Activos 2025: Únete o Publica tu Clan Gratis" />
       <meta name="twitter:description" content="Encuentra y únete a los mejores clanes de Clash of Clans activos en 2025. Publica tu clan gratis para reclutar nuevos miembros y dominar las guerras de clanes." />
       <meta name="twitter:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -267,7 +267,7 @@ export default function ClashOfClans() {
           "@type": "CollectionPage",
           "name": "Clanes de Clash of Clans Activos 2025",
           "description": "Explora y únete a los clanes de Clash of Clans más activos en 2025: estrategia, construcción, guerras de clanes y comunidad. Publica tu clan gratis para reclutar.",
-          "url": "https://joingroups.pro/#/clanes/clanes-de-clash-of-clans",
+          "url": "https://joingroups.pro/clanes/clanes-de-clash-of-clans",
           "mainEntity": {
             "@type": "ItemList",
             "name": "Clanes de Clash of Clans",

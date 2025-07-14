@@ -272,7 +272,7 @@ export default function ClanesGroupForm() {
         />
         <link
           rel="canonical"
-          href="https://joingroups.pro/#/clanes/form"
+          href="https://joingroups.pro/clanes/form"
         />
       </Helmet>
 

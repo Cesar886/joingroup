@@ -299,11 +299,11 @@ export default function Clanes() {
         />
 
         {/* ——— CANONICAL ——— */}
-        <link rel="canonical" href="https://joingroups.pro/#/clanes" />
+        <link rel="canonical" href="https://joingroups.pro/clanes" />
 
         {/* ——— OPEN GRAPH ——— */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://joingroups.pro/#/clanes" />
+        <meta property="og:url" content="https://joingroups.pro/clanes" />
         <meta property="og:title" content="Clanes de Videojuegos Activos 2025: Únete o Publica tu Clan Gratis" />
         <meta property="og:description" content="Encuentra y únete a los mejores clanes de videojuegos activos. Publica tu clan gratis para reclutar miembros y conectar con la comunidad gamer de Clash Royale y Clash of Clans." />
         <meta property="og:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -311,7 +311,7 @@ export default function Clanes() {
 
         {/* ——— TWITTER CARDS ——— */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://joingroups.pro/#/clanes" />
+        <meta name="twitter:url" content="https://joingroups.pro/clanes" />
         <meta name="twitter:title" content="Clanes de Videojuegos Activos 2025: Únete o Publica tu Clan Gratis" />
         <meta name="twitter:description" content="Encuentra y únete a los mejores clanes de videojuegos activos. Publica tu clan gratis para reclutar miembros y conectar con la comunidad gamer de Clash Royale y Clash of Clans." />
         <meta name="twitter:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -324,7 +324,7 @@ export default function Clanes() {
             "@type": "CollectionPage",
             "name": "Clanes de Videojuegos Activos 2025",
             "description": "Explora y únete a los clanes de videojuegos más activos en 2025. Publica tu clan gratis para reclutar jugadores y conectar con comunidades de Clash Royale y Clash of Clans.",
-            "url": "https://joingroups.pro/#/clanes",
+            "url": "https://joingroups.pro/clanes",
             "mainEntity": {
               "@type": "ItemList",
               "name": "Clanes de Clash Royale y Clash of Clans",
@@ -335,7 +335,7 @@ export default function Clanes() {
                   "item": {
                     "@type": "Thing",
                     "name": "Clanes de Clash Royale",
-                    "url": "https://joingroups.pro/#/clanes/clanes-de-clash-royale",
+                    "url": "https://joingroups.pro/clanes/clanes-de-clash-royale",
                     "description": "Encuentra clanes activos de Clash Royale para unirte o publicar el tuyo."
                   }
                 },
@@ -345,7 +345,7 @@ export default function Clanes() {
                   "item": {
                     "@type": "Thing",
                     "name": "Clanes de Clash of Clans",
-                    "url": "https://joingroups.pro/#/clanes/clanes-de-clash-of-clans",
+                    "url": "https://joingroups.pro/clanes/clanes-de-clash-of-clans",
                     "description": "Descubre los mejores clanes de Clash of Clans para guerras y comunidad."
                   }
                 }

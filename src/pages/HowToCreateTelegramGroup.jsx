@@ -19,7 +19,7 @@ export default function HowToCreateTelegramGroupOptimized() {
           name="keywords"
           content="create Telegram group, Telegram community, Telegram group admin, Telegram group settings, Telegram tutorial, Telegram groups, Telegram members, search Telegram groups, Telegram channels, YouTube Telegram, how to create group, manage Telegram group, grow Telegram group, Telegram news, Telegram users"
         />
-        <link rel="canonical" href="https://joingroups.pro/#/comunidades/how-to-create-telegram-group" />
+        <link rel="canonical" href="https://joingroups.pro/comunidades/how-to-create-telegram-group" />
 
         {/* Open Graph */}
         <meta property="og:title" content="How to Create a Telegram Group: A Comprehensive Guide" />
@@ -28,7 +28,7 @@ export default function HowToCreateTelegramGroupOptimized() {
           content="Learn how to create and manage Telegram groups, optimized for SEO with practical tips and embedded YouTube tutorials. Start your community today!"
         />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content="https://joingroups.pro/#/comunidades/how-to-create-telegram-group" />
+        <meta property="og:url" content="https://joingroups.pro/comunidades/how-to-create-telegram-group" />
         <meta property="og:image" content="https://joingroups.pro/og-preview.png" />
 
         {/* Twitter Card */}

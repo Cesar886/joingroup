@@ -337,11 +337,11 @@ export default function TableSort() {
         />
 
         {/* ——— CANONICAL ——— */}
-        <link rel="canonical" href="https://joingroups.pro/#/comunidades" />
+        <link rel="canonical" href="https://joingroups.pro/comunidades" />
 
         {/* ——— OPEN GRAPH ——— */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://joingroups.pro/#/comunidades" />
+        <meta property="og:url" content="https://joingroups.pro/comunidades" />
         <meta property="og:title" content="Grupos de Telegram y WhatsApp Activos 2025: Encuentra, Únete o Publica tu Grupo Gratis" />
         <meta property="og:description" content="Explora y únete a miles de grupos de Telegram y WhatsApp activos. Conecta con comunidades de tus intereses, encuentra canales y miembros. Publica tu grupo gratis." />
         <meta property="og:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -349,7 +349,7 @@ export default function TableSort() {
 
         {/* ——— TWITTER CARDS ——— */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://joingroups.pro/#/comunidades" />
+        <meta name="twitter:url" content="https://joingroups.pro/comunidades" />
         <meta name="twitter:title" content="Grupos de Telegram y WhatsApp Activos 2025: Encuentra, Únete o Publica tu Grupo Gratis" />
         <meta name="twitter:description" content="Explora y únete a miles de grupos de Telegram y WhatsApp activos. Conecta con comunidades de tus intereses, encuentra canales y miembros. Publica tu grupo gratis." />
         <meta name="twitter:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -362,7 +362,7 @@ export default function TableSort() {
             "@type": "CollectionPage",
             "name": "Grupos de Telegram Activos 2025",
             "description": "Grupos de Telegram y WhatsApp ACTIVOS en 2025. Encuantra canales de Telegram y WhatsApp en 2025. Encuentra comunidades de tus intereses, busca miembros, conoce personas y publica tu grupo gratis para llegar a más usuarios.",
-            "url": "https://joingroups.pro/#/comunidades",
+            "url": "https://joingroups.pro/comunidades",
             "mainEntity": {
               "@type": "ItemList",
               "name": "Categorías de Grupos y Canales",
@@ -373,7 +373,7 @@ export default function TableSort() {
                   "item": {
                     "@type": "Thing",
                     "name": "Grupos de Telegram",
-                    "url": "https://joingroups.pro/#/comunidades/grupos-de-telegram",
+                    "url": "https://joingroups.pro/comunidades/grupos-de-telegram",
                     "description": "Encuentra Grupos de Telegram de diversas temáticas. Conecta con miembros y usuarios."
                   }
                 },
@@ -383,7 +383,7 @@ export default function TableSort() {
                   "item": {
                     "@type": "Thing",
                     "name": "Grupos de WhatsApp",
-                    "url": "https://joingroups.pro/#/comunidades/grupos-de-whatsapp",
+                    "url": "https://joingroups.pro/comunidades/grupos-de-whatsapp",
                     "description": "Descubre y Unete a Grupos de WhatsApp ACTIVOS por Tematica. Busca y conoce personas con tus mismos gustos."
                   }
                 }

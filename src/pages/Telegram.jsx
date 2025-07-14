@@ -267,11 +267,11 @@ export default function Telegram() {
         />
 
         {/* ——— CANONICAL ——— */}
-        <link rel="canonical" href="https://joingroups.pro/#/comunidades/grupos-de-telegram" />
+        <link rel="canonical" href="https://joingroups.pro/comunidades/grupos-de-telegram" />
 
         {/* ——— OPEN GRAPH ——— */}
         <meta property="og:type"        content="website" />
-        <meta property="og:url"         content="https://joingroups.pro/#/comunidades/grupos-de-telegram" />
+        <meta property="og:url"         content="https://joingroups.pro/comunidades/grupos-de-telegram" />
         <meta property="og:title"       content="Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo" />
         <meta property="og:description" content="Únete a comunidades activas de Telegram. Grupos +18, anime, estudio, tecnología y más. Publica el tuyo gratis." />
         <meta property="og:image"       content="https://joingroups.pro/JoinGroups.ico" />
@@ -279,7 +279,7 @@ export default function Telegram() {
 
         {/* ——— TWITTER CARDS ——— */}
         <meta name="twitter:card"        content="summary_large_image" />
-        <meta name="twitter:url"         content="https://joingroups.pro/#/comunidades/grupos-de-telegram" />
+        <meta name="twitter:url"         content="https://joingroups.pro/comunidades/grupos-de-telegram" />
         <meta name="twitter:title"       content="Grupos de Telegram Activos 2025 | Únete o Publica el Tuyo" />
         <meta name="twitter:description" content="Únete a comunidades activas de Telegram. Grupos +18, anime, estudio, tecnología y más. Publica el tuyo gratis." />
         <meta name="twitter:image"       content="https://joingroups.pro/JoinGroups.ico" />
@@ -292,15 +292,15 @@ export default function Telegram() {
             "@type": "CollectionPage",
             "name": "Grupos de Telegram Activos 2025",
             "description": "Explora y únete a los grupos de Telegram más activos en 2025: canales, +18, anime, estudio, tecnología y más.",
-            "url": "https://joingroups.pro/#/comunidades/grupos-de-telegram",
+            "url": "https://joingroups.pro/comunidades/grupos-de-telegram",
             "mainEntity": {
               "@type": "ItemList",
               "name": "Categorías de Grupos de Telegram",
               "itemListElement": [
-                { "@type": "SiteNavigationElement", "position": 1, "name": "+18",        "url": "https://joingroups.pro/#/comunidades/grupos-de-telegram/18" },
-                { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",      "url": "https://joingroups.pro/#/comunidades/grupos-de-telegram/anime" },
-                { "@type": "SiteNavigationElement", "position": 3, "name": "Estudio",    "url": "https://joingroups.pro/#/comunidades/grupos-de-telegram/estudio" },
-                { "@type": "SiteNavigationElement", "position": 4, "name": "Tecnología", "url": "https://joingroups.pro/#/comunidades/grupos-de-telegram/tecnologia" }
+                { "@type": "SiteNavigationElement", "position": 1, "name": "+18",        "url": "https://joingroups.pro/comunidades/grupos-de-telegram/18" },
+                { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",      "url": "https://joingroups.pro/comunidades/grupos-de-telegram/anime" },
+                { "@type": "SiteNavigationElement", "position": 3, "name": "Estudio",    "url": "https://joingroups.pro/comunidades/grupos-de-telegram/estudio" },
+                { "@type": "SiteNavigationElement", "position": 4, "name": "Tecnología", "url": "https://joingroups.pro/comunidades/grupos-de-telegram/tecnologia" }
               ]
             }
           }

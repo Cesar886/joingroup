@@ -253,11 +253,11 @@ export default function ClashRoyale() {
         />
 
         {/* ——— CANONICAL ——— */}
-        <link rel="canonical" href="https://joingroups.pro/#/clanes/clanes-de-clash-royale" />
+        <link rel="canonical" href="https://joingroups.pro/clanes/clanes-de-clash-royale" />
 
         {/* ——— OPEN GRAPH (Para compartir en redes sociales como Facebook ) ——— */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://joingroups.pro/#/clanes/clanes-de-clash-royale" />
+        <meta property="og:url" content="https://joingroups.pro/clanes/clanes-de-clash-royale" />
         <meta property="og:title" content="Clanes de Clash Royale Activos 2025: Únete o Publica tu Clan Gratis" />
         <meta property="og:description" content="Encuentra y únete a los mejores clanes de Clash Royale activos en 2025. Publica tu clan gratis para reclutar nuevos miembros y conectar con la comunidad." />
         <meta property="og:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -265,7 +265,7 @@ export default function ClashRoyale() {
 
         {/* ——— TWITTER CARDS (Para compartir en Twitter ) ——— */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://joingroups.pro/#/clanes/clanes-de-clash-royale" />
+        <meta name="twitter:url" content="https://joingroups.pro/clanes/clanes-de-clash-royale" />
         <meta name="twitter:title" content="Clanes de Clash Royale Activos 2025: Únete o Publica tu Clan Gratis" />
         <meta name="twitter:description" content="Encuentra y únete a los mejores clanes de Clash Royale activos en 2025. Publica tu clan gratis para reclutar nuevos miembros y conectar con la comunidad." />
         <meta name="twitter:image" content="https://joingroups.pro/JoinGroups.ico" />
@@ -278,7 +278,7 @@ export default function ClashRoyale() {
             "@type": "CollectionPage",
             "name": "Clanes de Clash Royale Activos 2025",
             "description": "Explora y únete a los clanes de Clash Royale más activos en 2025. Publica tu grupo gratis y conéctate con comunidades activas para ganar batallas y subir de copas.",
-            "url": "https://joingroups.pro/#/clanes/clanes-de-clash-royale",
+            "url": "https://joingroups.pro/clanes/clanes-de-clash-royale",
             "mainEntity": {
               "@type": "ItemList",
               "name": "Clanes de Clash Royale",

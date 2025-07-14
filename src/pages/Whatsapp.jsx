@@ -270,11 +270,11 @@ export default function Whatsapp() {
         />
 
         {/* ——— CANONICAL (evita duplicados) ——— */}
-        <link rel="canonical" href="https://joingroups.pro/#/comunidades/grupos-de-whatsapp" />
+        <link rel="canonical" href="https://joingroups.pro/comunidades/grupos-de-whatsapp" />
 
         {/* ——— OPEN GRAPH (FB / WhatsApp) ——— */}
         <meta property="og:type"        content="website" />
-        <meta property="og:url"         content="https://joingroups.pro/#/comunidades/grupos-de-whatsapp" />
+        <meta property="og:url"         content="https://joingroups.pro/comunidades/grupos-de-whatsapp" />
         <meta property="og:title"       content="Grupos de WhatsApp Activos 2025 | Únete o Publica el Tuyo" />
         <meta property="og:description" content="Únete a los grupos de WhatsApp más activos de 2025: tecnología, estudio, ventas y más. Publica tu enlace gratis y conecta con miles de personas afines." />
         <meta property="og:image"       content="https://joingroups.pro/JoinGroups.ico" />
@@ -282,7 +282,7 @@ export default function Whatsapp() {
 
         {/* ——— TWITTER CARDS ——— */}
         <meta name="twitter:card"        content="summary_large_image" />
-        <meta name="twitter:url"         content="https://joingroups.pro/#/comunidades/grupos-de-whatsapp" />
+        <meta name="twitter:url"         content="https://joingroups.pro/comunidades/grupos-de-whatsapp" />
         <meta name="twitter:title"       content="Grupos de WhatsApp Activos 2025 | Únete o Publica el Tuyo" />
         <meta name="twitter:description" content="Únete a los grupos de WhatsApp más activos de 2025: tecnología, estudio, ventas y más. Publica tu enlace gratis y conecta con miles de personas afines." />
         <meta name="twitter:image"       content="https://joingroups.pro/JoinGroups.ico" />
@@ -295,15 +295,15 @@ export default function Whatsapp() {
             "@type": "CollectionPage",
             "name": "Grupos de WhatsApp Activos 2025",
             "description": "Únete a los grupos de WhatsApp más activos de 2025: tecnología, estudio, ventas y más.",
-            "url": "https://joingroups.pro/#/comunidades/grupos-de-whatsapp",
+            "url": "https://joingroups.pro/comunidades/grupos-de-whatsapp",
             "mainEntity": {
               "@type": "ItemList",
               "name": "Categorías de Grupos de WhatsApp",
               "itemListElement": [
-                { "@type": "SiteNavigationElement", "position": 1, "name": "Tecnología", "url": "https://joingroups.pro/#/comunidades/grupos-de-whatsapp/tecnologia" },
-                { "@type": "SiteNavigationElement", "position": 2, "name": "Estudio",     "url": "https://joingroups.pro/#/comunidades/grupos-de-whatsapp/estudio" },
-                { "@type": "SiteNavigationElement", "position": 3, "name": "+18",        "url": "https://joingroups.pro/#/comunidades/grupos-de-whatsapp/18" },
-                { "@type": "SiteNavigationElement", "position": 4, "name": "Ventas",     "url": "https://joingroups.pro/#/comunidades/grupos-de-whatsapp/ventas" }
+                { "@type": "SiteNavigationElement", "position": 1, "name": "Tecnología", "url": "https://joingroups.pro/comunidades/grupos-de-whatsapp/tecnologia" },
+                { "@type": "SiteNavigationElement", "position": 2, "name": "Estudio",     "url": "https://joingroups.pro/comunidades/grupos-de-whatsapp/estudio" },
+                { "@type": "SiteNavigationElement", "position": 3, "name": "+18",        "url": "https://joingroups.pro/comunidades/grupos-de-whatsapp/18" },
+                { "@type": "SiteNavigationElement", "position": 4, "name": "Ventas",     "url": "https://joingroups.pro/comunidades/grupos-de-whatsapp/ventas" }
               ]
             }
           }
