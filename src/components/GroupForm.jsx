@@ -66,8 +66,6 @@ export default function GroupForm() {
     { value: 'in', label: 'India' },
     { value: 'ru', label: 'Rusia' },
     { value: 'au', label: 'Australia' },
-    { value: 'ae', label: 'Emiratos Árabes Unidos' },
-    { value: 'za', label: 'Sudáfrica' },
   ];
 
   const form = useForm({
