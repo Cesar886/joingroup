@@ -9,8 +9,8 @@ import {
   rem,
 } from '@mantine/core';
 import classes from './Header.module.css';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export function Header() {
   const { t, i18n } = useTranslation();
@@ -92,7 +92,19 @@ export function Header() {
                 size="lg"
                 radius="xl"
                 variant="subtle"
-                onClick={() => {i18n.changeLanguage(nextLang); sessionStorage.setItem('lang', nextLang);}}
+                onClick={() => {
+                  const newLang = nextLang;
+                  const newSubdomain = newLang === 'en' ? 'us' : 'mx';
+                  const currentPath = window.location.pathname + window.location.search;
+
+                  // Cambiar idioma local
+                  i18n.changeLanguage(newLang);
+                  sessionStorage.setItem('lang', newLang);
+
+                  // Redirigir al nuevo subdominio
+                  window.location.href = `https://${newSubdomain}.joingroups.pro${currentPath}`;
+                }}
+
                 style={{ fontSize: rem(24) }}
               >
                 {flagEmoji}
