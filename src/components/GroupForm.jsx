@@ -30,6 +30,45 @@ export default function GroupForm() {
   const navigate = useNavigate();
   const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
   const [redSocial, setRedSocial] = useState('Telegram');``
+  
+  const countries = [
+    { value: 'mx', label: 'México' },
+    { value: 'us', label: 'Estados Unidos' },
+    { value: 'ar', label: 'Argentina' },
+    { value: 'co', label: 'Colombia' },
+    { value: 'es', label: 'España' },
+    { value: 'pe', label: 'Perú' },
+    { value: 'cl', label: 'Chile' },
+    { value: 've', label: 'Venezuela' },
+    { value: 'br', label: 'Brasil' },
+    { value: 'ec', label: 'Ecuador' },
+    { value: 'gt', label: 'Guatemala' },
+    { value: 'bo', label: 'Bolivia' },
+    { value: 'do', label: 'República Dominicana' },
+    { value: 'hn', label: 'Honduras' },
+    { value: 'py', label: 'Paraguay' },
+    { value: 'sv', label: 'El Salvador' },
+    { value: 'ni', label: 'Nicaragua' },
+    { value: 'cr', label: 'Costa Rica' },
+    { value: 'pa', label: 'Panamá' },
+    { value: 'uy', label: 'Uruguay' },
+    { value: 'pr', label: 'Puerto Rico' },
+    { value: 'ca', label: 'Canadá' },
+    { value: 'de', label: 'Alemania' },
+    { value: 'fr', label: 'Francia' },
+    { value: 'it', label: 'Italia' },
+    { value: 'gb', label: 'Reino Unido' },
+    { value: 'nl', label: 'Países Bajos' },
+    { value: 'pt', label: 'Portugal' },
+    { value: 'jp', label: 'Japón' },
+    { value: 'kr', label: 'Corea del Sur' },
+    { value: 'cn', label: 'China' },
+    { value: 'in', label: 'India' },
+    { value: 'ru', label: 'Rusia' },
+    { value: 'au', label: 'Australia' },
+    { value: 'ae', label: 'Emiratos Árabes Unidos' },
+    { value: 'za', label: 'Sudáfrica' },
+  ];
 
   const form = useForm({
     initialValues: {
@@ -465,26 +504,32 @@ export default function GroupForm() {
                 debouncedTranslate();
               }}
               error={form.errors.descriptionEs}
-            />
+          />
 
-            {/* Inglés siempre presente, pero oculto si no es el idioma activo */}
-            <Textarea
-              label="Description (English)"
-              placeholder="⌨ Maximum 320 characters"
-              required={baseLang === 'en'}
-              autosize
-              minRows={3}
-              style={{ display: baseLang === 'en' ? 'block' : 'none' }}
-              value={form.values.descriptionEn}
-              onChange={(e) => {
-                form.setFieldValue('descriptionEn', e.currentTarget.value);
-                debouncedTranslate();
-              }}
-              error={form.errors.descriptionEn}
-            />
-          <TextInput
-            label={t("Tu ciudad (opcional)")}
-            {...form.getInputProps('city')}
+          {/* Inglés siempre presente, pero oculto si no es el idioma activo */}
+          <Textarea
+            label="Description (English)"
+            placeholder="⌨ Maximum 320 characters"
+            required={baseLang === 'en'}
+            autosize
+            minRows={3}
+            style={{ display: baseLang === 'en' ? 'block' : 'none' }}
+            value={form.values.descriptionEn}
+            onChange={(e) => {
+              form.setFieldValue('descriptionEn', e.currentTarget.value);
+              debouncedTranslate();
+            }}
+            error={form.errors.descriptionEn}
+          />
+          
+          <Select
+            label={t("País")}
+            placeholder={t("Selecciona un país")}
+            data={countries}
+            searchable
+            required
+            nothingFound={t('Ningún país coincide')}
+            {...form.getInputProps('country')}
           />
 
           <MultiSelect
