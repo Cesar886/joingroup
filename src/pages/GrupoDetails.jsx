@@ -8,10 +8,13 @@ import { db } from '../firebase';
 import {
   Box, Button, Center, Container, Divider,
   Group, Paper, Stack, Text, Title, Badge,
+  Modal,
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import slugify from '../assets/slugify';     // ⬅️ el mismo helper que usas en TableSort
 import { useTranslation } from 'react-i18next';
+import { useDisclosure } from '@mantine/hooks';
+
 
 
 export default function GroupDetail() {
@@ -20,6 +23,10 @@ export default function GroupDetail() {
   const [group, setGroup]   = useState(null);
   const [loading, setLoading]   = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [reportText, setReportText] = useState('');
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -147,7 +154,7 @@ export default function GroupDetail() {
               variant="light"
               color="red"
               size="xs"
-              onClick={() => sendTelegramMessage('Reporte Enlace Roto')}
+              onClick={open}
             >
               {t('Reportar Enlace roto')}
             </Button>
@@ -177,32 +184,95 @@ export default function GroupDetail() {
               : t('Enlace no disponible')}
 
           </Button>
+          <Modal centered opened={opened} onClose={() => {
+            close();
+            setReportText('');
+            setSent(false);
+          }} title={t('Reportar Enlace roto')}>
+            <Stack>
+              {!sent ? (
+                <>
+                  <Text size="sm">{t('Describe brevemente el problema (mín. 10 y máx. 200 caracteres):')}</Text>
+                  <textarea
+                    maxLength={200}
+                    value={reportText}
+                    onChange={(e) => setReportText(e.target.value)}
+                    placeholder={t('Ej. El enlace lleva a un grupo equivocado o ya no existe.')}
+                    style={{ width: '100%', minHeight: 100, padding: 8, borderRadius: 4, borderColor: '#ccc' }}
+                  />
+                  <Text size="xs" c="dimmed">
+                    {reportText.length} / 200
+                    {reportText.length > 0 && reportText.length < 10 && ` – ${t('Demasiado corto')}`}
+                  </Text>
+
+                  <Group justify="flex-end">
+                    <Button
+                      size="sm"
+                      color="gray"
+                      variant="outline"
+                      onClick={() => {
+                        close();
+                        setReportText('');
+                        setSent(false);
+                      }}
+                    >
+                      {t('Cancelar')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      color="red"
+                      loading={sending}
+                      disabled={reportText.trim().length < 10}
+                      onClick={async () => {
+                        setSending(true);
+                        await sendTelegramMessage('Enlace roto', reportText.trim());
+                        setSending(false);
+                        setReportText('');
+                        setSent(true);
+                      }}
+                    >
+                      {t('Enviar reporte')}
+                    </Button>
+                  </Group>
+                </>
+              ) : (
+                <Center>
+                  <Text ta="center" fw={600} size="lg">
+                    {t('¡Se ha enviado el mensaje y, sera revisado pronto ¡Gracias por tu ayuda!')}
+                  </Text>
+                </Center>
+              )}
+            </Stack>
+          </Modal>
         </Stack>
       </Paper>
     </Container>
   );
 
   /* ------------------ helpers ------------------ */
-  async function sendTelegramMessage(tipo) {
-    const chatId = -1002622285468
-    const token  = "7551745963:AAFiTkb9UehxZMXNINihI8wSdlTMjaM6Lfk"
+  async function sendTelegramMessage(tipo, mensaje = '') {
+    const chatId = -1002622285468;
+    const token  = "7551745963:AAFiTkb9UehxZMXNINihI8wSdlTMjaM6Lfk";
 
-    const url    = window.location.href;
+    const url = window.location.href;
 
-    const text = `🚨 *Nuevo: ${tipo}*\nGrupo: ${group?.name}\nURL: ${url}`;
+    const text = `🚨 *Nuevo reporte: ${tipo}*\n` +
+                `Grupo: ${group?.name}\n` +
+                `URL: ${url}\n` +
+                `📝 Descripción: ${mensaje || 'Sin descripción'}`;
 
     try {
-      const res  = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' }),
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.description);
-      showNotification({ title: t('Reporte enviado'), message: t('¡Gracias!'), color: 'green' });
+      showNotification({ title: t('Reporte enviado'), message: t('¡Gracias por ayudarnos!'), color: 'green' });
     } catch (e) {
       console.error(e);
-      showNotification({ title: t('Error'), message: t('No se pudo enviar.'), color: 'red' });
+      showNotification({ title: t('Error'), message: t('No se pudo enviar el reporte.'), color: 'red' });
     }
   }
 }
