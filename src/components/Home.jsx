@@ -70,6 +70,43 @@ const countries = [
   { value: 'au', label: 'Australia', emoji: '🇦🇺', lang: 'en' },
 ];
 
+const countryMap = {
+  mx: '🇲🇽',
+  us: '🇺🇸',
+  ar: '🇦🇷',
+  co: '🇨🇴',
+  es: '🇪🇸',
+  pe: '🇵🇪',
+  cl: '🇨🇱',
+  ve: '🇻🇪',
+  br: '🇧🇷',
+  ec: '🇪🇨',
+  gt: '🇬🇹',
+  bo: '🇧🇴',
+  do: '🇩🇴',
+  hn: '🇭🇳',
+  py: '🇵🇾',
+  sv: '🇸🇻',
+  ni: '🇳🇮',
+  cr: '🇨🇷',
+  pa: '🇵🇦',
+  uy: '🇺🇾',
+  pr: '🇵🇷',
+  ca: '🇨🇦',
+  de: '🇩🇪',
+  fr: '🇫🇷',
+  it: '🇮🇹',
+  gb: '🇬🇧',
+  nl: '🇳🇱',
+  pt: '🇵🇹',
+  jp: '🇯🇵',
+  kr: '🇰🇷',
+  cn: '🇨🇳',
+  in: '🇮🇳',
+  ru: '🇷🇺',
+  au: '🇦🇺',
+};
+
 
 const featuredButtons = [
   {
@@ -193,9 +230,25 @@ export default function Home() {
           <Table.Tbody>
             <Table.Tr>
               <Table.Td>
-                <Group justify="space-between">
-                  <Text fw={600}>{row.name}</Text>
-                  <img src={iconSrc} alt={row.name} width={24} height={24} />
+                <Group align="center" w="100%">
+                  <Group gap={10} align="center">
+                    {row.city && (
+                      <Text >
+                        {countryMap[row.city]}
+                      </Text>
+                    )}
+                    <Text fw={700}>{row.name}</Text>
+                  </Group>
+
+                  <Box ml="auto">
+                    <img
+                      src={iconSrc}
+                      alt={row.name}
+                      width={24}
+                      height={24}
+                      style={{ borderRadius: 4 }}
+                    />
+                  </Box>
                 </Group>
               </Table.Td>
             </Table.Tr>
