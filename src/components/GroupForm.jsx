@@ -1,5 +1,4 @@
 import HCaptcha from '@hcaptcha/react-hcaptcha';
-import { useNavigate } from 'react-router-dom';
 import {
   TextInput,
   Textarea,
@@ -27,11 +26,10 @@ import { IconBrandWhatsapp } from '@tabler/icons-react';
 export default function GroupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
   const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
   const [redSocial, setRedSocial] = useState('Telegram');``
   
-  const countries = [
+  const cities = [
     { value: 'mx', label: 'México' },
     { value: 'us', label: 'Estados Unidos' },
     { value: 'ar', label: 'Argentina' },
@@ -207,7 +205,8 @@ export default function GroupForm() {
       });
 
       form.reset();
-      navigate(`/comunidades/grupos-de-${redSocial.toLowerCase()}/${slug}`);
+      const subdomain = form.values.city || 'www';
+      window.location.href = `https://${subdomain}.joingroups.pro/comunidades/grupos-de-${redSocial.toLowerCase()}/${slug}`;
 
 
       // 👇 Traducción automática post-envío
@@ -319,12 +318,12 @@ export default function GroupForm() {
       const translated = await translateText(descriptionEn, 'EN', 'ES');
       form.setFieldValue('descriptionEs', translated);
     }
-  }, 900);
+  }, 700);
 
 
    const prefix = redSocial === 'Telegram' ? 'https://t.me/' : '';
 
-   const telegramRegex = /^https:\/\/t\.me\/[a-zA-Z0-9_]{5,}$/;
+   const telegramRegex = /^https:\/\/t\.me\/(?:[a-zA-Z0-9_]{5,}|c\/\d+\/\d+|\+[a-zA-Z0-9_-]{10,})$/;
    const whatsappGroupRegex = /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]{22}$/;
    const whatsappChannelRegex = /^https:\/\/(wa\.me|whatsapp\.com)\/channel\/[a-zA-Z0-9_]{8,}$/;
   
@@ -521,14 +520,15 @@ export default function GroupForm() {
           />
           
           <Select
-            label={t("País")}
-            placeholder={t("Selecciona un país")}
-            data={countries}
+            label={t("Ciudad")}
+            placeholder={t("Selecciona una ciudad")}
+            data={cities} // asegúrate de haberlo definido
             searchable
             required
-            nothingFound={t('Ningún país coincide')}
-            {...form.getInputProps('country')}
-          />
+            nothingFound={t('Ninguna ciudad coincide')}
+            {...form.getInputProps('city')}
+          />    
+
 
           <MultiSelect
             label={t("Categorías")}

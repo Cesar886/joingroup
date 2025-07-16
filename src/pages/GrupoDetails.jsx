@@ -15,6 +15,46 @@ import slugify from '../assets/slugify';     // ⬅️ el mismo helper que usas 
 import { useTranslation } from 'react-i18next';
 import { useDisclosure } from '@mantine/hooks';
 
+// const countryMap = {
+//   mx: 'México',
+//   us: 'Estados Unidos',
+//   ar: 'Argentina',
+//   co: 'Colombia',
+//   es: 'España',
+//   pe: 'Perú',
+//   cl: 'Chile',
+//   ve: 'Venezuela',
+//   br: 'Brasil',
+//   ec: 'Ecuador',
+//   gt: 'Guatemala',
+//   bo: 'Bolivia',
+//   do: 'República Dominicana',
+//   hn: 'Honduras',
+//   py: 'Paraguay',
+//   sv: 'El Salvador',
+//   ni: 'Nicaragua',
+//   cr: 'Costa Rica',
+//   pa: 'Panamá',
+//   uy: 'Uruguay',
+//   pr: 'Puerto Rico',
+//   ca: 'Canadá',
+//   de: 'Alemania',
+//   fr: 'Francia',
+//   it: 'Italia',
+//   gb: 'Reino Unido',
+//   nl: 'Países Bajos',
+//   pt: 'Portugal',
+//   jp: 'Japón',
+//   kr: 'Corea del Sur',
+//   cn: 'China',
+//   in: 'India',
+//   ru: 'Rusia',
+//   au: 'Australia',
+// };
+
+
+
+
 
 
 export default function GroupDetail() {
@@ -53,12 +93,18 @@ export default function GroupDetail() {
 
         if (snap.length === 0) {
           setNotFound(true);
+          // console.log("🚀 ~ fetchGroup ~ visitKey:", visitKey)
           return;
         }
 
         const docSnap = snap[0];
         const docRef  = docSnap.ref;
         const data    = docSnap.data();
+        // console.log("🚀 ~ fetchGroup ~ docSnap:", docSnap)
+        // console.log("🚀 ~ fetchGroup ~ data:", data)
+        // console.log("🚀 ~ fetchGroup ~ docRef:", docRef)
+        // console.log('🔍 Campos del documento:', Object.keys(data));
+
 
         // 3️⃣  Si el documento no traía slug, lo actualizamos aquí mismo
         if (!data.slug) {
@@ -77,7 +123,7 @@ export default function GroupDetail() {
           });
           sessionStorage.setItem(visitKey, 'true');
         }
-
+        // console.log('Firestore group data:', data); // 👈
         setGroup({ id: docSnap.id, ...data, slug: data.slug || slugify(data.name) });
 
       } catch (err) {
@@ -97,6 +143,7 @@ export default function GroupDetail() {
     /Chrome/.test(navigator.userAgent) &&
     /Android/.test(navigator.userAgent) &&
     !/OPR|Edge/.test(navigator.userAgent);
+    
 
 
 
@@ -113,6 +160,36 @@ export default function GroupDetail() {
           <Text size="sm" c="dimmed">
             {t('El grupo tiene')} <strong>{group.visitas || 0} {t('visitas')}</strong>
           </Text>
+
+{/* {group.city && (
+  <Text size="sm" c="dimmed">
+    {countryMap[group.city] || group.city}
+  </Text>
+)}
+{group.city && (
+  <>
+    <Text size="sm" c="dimmed">
+      Ciudad cruda: {group.city}
+    </Text>
+    <Text size="sm" c="dimmed">
+      Ciudad traducida: {countryMap[group.city] || '❌ No mapeada'}
+    </Text>
+  </>
+)} */}
+
+{/* <Text size="sm" c="blue">
+  🧪 Render completo: {JSON.stringify(group)}
+</Text>
+
+<div style={{ backgroundColor: 'yellow', padding: '8px' }}>
+  <Text size="md" c="black">
+    {group.city} – {countryMap[group.city] || '❓ No en mapa'}
+  </Text>
+</div>
+
+ */}
+
+
 
 
           <Divider my="sm" />

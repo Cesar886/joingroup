@@ -146,7 +146,7 @@ export function Header() {
                   variant="subtle"
                   style={{ fontSize: rem(24) }}
                 >
-                  {countries.find((c) => c.value === subdomain)?.emoji ?? '🌐'}
+                  {countries.find((c) => c.value === subdomain)?.emoji ?? '🇲🇽'}
                 </ActionIcon>
               </Menu.Target>
 

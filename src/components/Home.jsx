@@ -355,7 +355,7 @@ export default function Home() {
                 width: '20px',
                 height: '14px',
               }}>
-                {countries.find((c) => c.value === subdomain)?.emoji ?? '🌐'}
+                {countries.find((c) => c.value === subdomain)?.emoji ?? '🇲🇽'}
               </span>
               <span style={{ fontSize: '0.75rem', transform: 'translateY(1px)' }}>▼</span>
             </ActionIcon>
