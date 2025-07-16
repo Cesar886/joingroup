@@ -8,6 +8,7 @@ import {
 } from '@tabler/icons-react';
 import {
   Box,
+  ActionIcon,
   Center,
   Group,
   Paper,
@@ -18,8 +19,10 @@ import {
   TextInput,
   Button,
   UnstyledButton,
+  Menu,
   Title,
   MultiSelect,
+  rem,
 } from '@mantine/core';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -29,6 +32,80 @@ import styles from './TableSort.module.css';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+
+const countryMap = {
+  mx: '🇲🇽',
+  us: '🇺🇸',
+  ar: '🇦🇷',
+  co: '🇨🇴',
+  es: '🇪🇸',
+  pe: '🇵🇪',
+  cl: '🇨🇱',
+  ve: '🇻🇪',
+  br: '🇧🇷',
+  ec: '🇪🇨',
+  gt: '🇬🇹',
+  bo: '🇧🇴',
+  do: '🇩🇴',
+  hn: '🇭🇳',
+  py: '🇵🇾',
+  sv: '🇸🇻',
+  ni: '🇳🇮',
+  cr: '🇨🇷',
+  pa: '🇵🇦',
+  uy: '🇺🇾',
+  pr: '🇵🇷',
+  ca: '🇨🇦',
+  de: '🇩🇪',
+  fr: '🇫🇷',
+  it: '🇮🇹',
+  gb: '🇬🇧',
+  nl: '🇳🇱',
+  pt: '🇵🇹',
+  jp: '🇯🇵',
+  kr: '🇰🇷',
+  cn: '🇨🇳',
+  in: '🇮🇳',
+  ru: '🇷🇺',
+  au: '🇦🇺',
+};
+
+const countries = [
+  { value: 'mx', label: 'México', emoji: '🇲🇽', lang: 'es' },
+  { value: 'us', label: 'Estados Unidos', emoji: '🇺🇸', lang: 'en' },
+  { value: 'ar', label: 'Argentina', emoji: '🇦🇷', lang: 'es' },
+  { value: 'co', label: 'Colombia', emoji: '🇨🇴', lang: 'es' },
+  { value: 'es', label: 'España', emoji: '🇪🇸', lang: 'es' },
+  { value: 'pe', label: 'Perú', emoji: '🇵🇪', lang: 'es' },
+  { value: 'cl', label: 'Chile', emoji: '🇨🇱', lang: 'es' },
+  { value: 've', label: 'Venezuela', emoji: '🇻🇪', lang: 'es' },
+  { value: 'br', label: 'Brasil', emoji: '🇧🇷', lang: 'pt' },
+  { value: 'ec', label: 'Ecuador', emoji: '🇪🇨', lang: 'es' },
+  { value: 'gt', label: 'Guatemala', emoji: '🇬🇹', lang: 'es' },
+  { value: 'bo', label: 'Bolivia', emoji: '🇧🇴', lang: 'es' },
+  { value: 'do', label: 'República Dominicana', emoji: '🇩🇴', lang: 'es' },
+  { value: 'hn', label: 'Honduras', emoji: '🇭🇳', lang: 'es' },
+  { value: 'py', label: 'Paraguay', emoji: '🇵🇾', lang: 'es' },
+  { value: 'sv', label: 'El Salvador', emoji: '🇸🇻', lang: 'es' },
+  { value: 'ni', label: 'Nicaragua', emoji: '🇳🇮', lang: 'es' },
+  { value: 'cr', label: 'Costa Rica', emoji: '🇨🇷', lang: 'es' },
+  { value: 'pa', label: 'Panamá', emoji: '🇵🇦', lang: 'es' },
+  { value: 'uy', label: 'Uruguay', emoji: '🇺🇾', lang: 'es' },
+  { value: 'pr', label: 'Puerto Rico', emoji: '🇵🇷', lang: 'es' },
+  { value: 'ca', label: 'Canadá', emoji: '🇨🇦', lang: 'en' },
+  { value: 'de', label: 'Alemania', emoji: '🇩🇪', lang: 'de' },
+  { value: 'fr', label: 'Francia', emoji: '🇫🇷', lang: 'fr' },
+  { value: 'it', label: 'Italia', emoji: '🇮🇹', lang: 'it' },
+  { value: 'gb', label: 'Reino Unido', emoji: '🇬🇧', lang: 'en' },
+  { value: 'nl', label: 'Países Bajos', emoji: '🇳🇱', lang: 'nl' },
+  { value: 'pt', label: 'Portugal', emoji: '🇵🇹', lang: 'pt' },
+  { value: 'jp', label: 'Japón', emoji: '🇯🇵', lang: 'ja' },
+  { value: 'kr', label: 'Corea del Sur', emoji: '🇰🇷', lang: 'ko' },
+  { value: 'cn', label: 'China', emoji: '🇨🇳', lang: 'zh' },
+  { value: 'in', label: 'India', emoji: '🇮🇳', lang: 'hi' },
+  { value: 'ru', label: 'Rusia', emoji: '🇷🇺', lang: 'ru' },
+  { value: 'au', label: 'Australia', emoji: '🇦🇺', lang: 'en' },
+];
 
 
 function Th({ children, reversed, sorted, onSort }) {
@@ -64,6 +141,8 @@ export default function TableSort() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const orden = searchParams.get('orden');
+  const subdomain = window.location.hostname.includes('.') ? window.location.hostname.split('.')[0] : 'mx';
+
   
   const [buttonPosition, setButtonPosition] = useState('top-left');
   const positionRef = useRef('top-left');
@@ -261,7 +340,17 @@ export default function TableSort() {
             <Table.Tr>
               <Table.Td colSpan={3}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <Text fw={700}>{row.name}</Text>
+          {row.city && (
+            <Text size="sm" >
+              {countryMap[row.city] || row.city}
+            </Text>
+          )}
+          <Text 
+            fw={700}
+            style={{
+              marginLeft: '8px',
+            }}
+          >{row.name}</Text>
           <img
             src={iconSrc}
             alt={row.name}
@@ -593,6 +682,76 @@ export default function TableSort() {
                 {t('Siguiente')} →
               </Button>
             </Group>
+
+            <Box
+              onPointerDownCapture={(e) => e.stopPropagation()}
+              onWheel={(e) => e.stopPropagation()}
+            >
+              <Menu shadow="md" width={200} withinPortal position="bottom-end">
+                <Menu.Target>
+                  <ActionIcon
+                    size="lg"
+                    radius="xl"
+                    variant="subtle"
+                    style={{
+                      fontSize: rem(24),
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <span style={{
+                      fontSize: '16px',
+                      display: 'inline-block',
+                      lineHeight: '1',
+                      borderRadius: '2px',
+                      overflow: 'hidden',
+                      width: '20px',
+                      height: '14px',
+                    }}>
+                      {countries.find((c) => c.value === subdomain)?.emoji ?? '🇲🇽'}
+                    </span>
+                    <span style={{ fontSize: '0.75rem', transform: 'translateY(1px)' }}>▼</span>
+                  </ActionIcon>
+      
+                </Menu.Target>
+      
+                <Menu.Dropdown
+                  style={{
+                    maxHeight: rem(300),
+                    overflowY: 'auto',
+                  }}
+                  onWheel={(e) => e.stopPropagation()}
+                >
+                  {countries.map((country) => (
+                    <Menu.Item
+                      key={country.value}
+                      leftSection={
+                        <span style={{
+                          fontSize: '16px',
+                          display: 'inline-block',
+                          lineHeight: '1',
+                          borderRadius: '2px',
+                          overflow: 'hidden',
+                          width: '20px',
+                          height: '14px',
+                        }}>
+                          {country.emoji}
+                        </span>
+                      }
+                      onClick={() => {
+                        const currentPath = window.location.pathname + window.location.search;
+                        i18n.changeLanguage(country.lang);
+                        window.location.href = `https://${country.value}.joingroups.pro${currentPath}`;
+                      }}
+                    >
+                      {country.label}
+                    </Menu.Item>
+                  ))}
+                </Menu.Dropdown>
+      
+              </Menu>
+            </Box>
 
             {rows.length === 0 && (
               <Box ta="center" mt="xl">

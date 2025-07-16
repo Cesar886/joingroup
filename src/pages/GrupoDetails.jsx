@@ -15,46 +15,42 @@ import slugify from '../assets/slugify';     // ⬅️ el mismo helper que usas 
 import { useTranslation } from 'react-i18next';
 import { useDisclosure } from '@mantine/hooks';
 
-// const countryMap = {
-//   mx: 'México',
-//   us: 'Estados Unidos',
-//   ar: 'Argentina',
-//   co: 'Colombia',
-//   es: 'España',
-//   pe: 'Perú',
-//   cl: 'Chile',
-//   ve: 'Venezuela',
-//   br: 'Brasil',
-//   ec: 'Ecuador',
-//   gt: 'Guatemala',
-//   bo: 'Bolivia',
-//   do: 'República Dominicana',
-//   hn: 'Honduras',
-//   py: 'Paraguay',
-//   sv: 'El Salvador',
-//   ni: 'Nicaragua',
-//   cr: 'Costa Rica',
-//   pa: 'Panamá',
-//   uy: 'Uruguay',
-//   pr: 'Puerto Rico',
-//   ca: 'Canadá',
-//   de: 'Alemania',
-//   fr: 'Francia',
-//   it: 'Italia',
-//   gb: 'Reino Unido',
-//   nl: 'Países Bajos',
-//   pt: 'Portugal',
-//   jp: 'Japón',
-//   kr: 'Corea del Sur',
-//   cn: 'China',
-//   in: 'India',
-//   ru: 'Rusia',
-//   au: 'Australia',
-// };
-
-
-
-
+const countryMap = {
+  mx: '🇲🇽',
+  us: '🇺🇸',
+  ar: '🇦🇷',
+  co: '🇨🇴',
+  es: '🇪🇸',
+  pe: '🇵🇪',
+  cl: '🇨🇱',
+  ve: '🇻🇪',
+  br: '🇧🇷',
+  ec: '🇪🇨',
+  gt: '🇬🇹',
+  bo: '🇧🇴',
+  do: '🇩🇴',
+  hn: '🇭🇳',
+  py: '🇵🇾',
+  sv: '🇸🇻',
+  ni: '🇳🇮',
+  cr: '🇨🇷',
+  pa: '🇵🇦',
+  uy: '🇺🇾',
+  pr: '🇵🇷',
+  ca: '🇨🇦',
+  de: '🇩🇪',
+  fr: '🇫🇷',
+  it: '🇮🇹',
+  gb: '🇬🇧',
+  nl: '🇳🇱',
+  pt: '🇵🇹',
+  jp: '🇯🇵',
+  kr: '🇰🇷',
+  cn: '🇨🇳',
+  in: '🇮🇳',
+  ru: '🇷🇺',
+  au: '🇦🇺',
+};
 
 
 export default function GroupDetail() {
@@ -93,17 +89,12 @@ export default function GroupDetail() {
 
         if (snap.length === 0) {
           setNotFound(true);
-          // console.log("🚀 ~ fetchGroup ~ visitKey:", visitKey)
           return;
         }
 
         const docSnap = snap[0];
         const docRef  = docSnap.ref;
         const data    = docSnap.data();
-        // console.log("🚀 ~ fetchGroup ~ docSnap:", docSnap)
-        // console.log("🚀 ~ fetchGroup ~ data:", data)
-        // console.log("🚀 ~ fetchGroup ~ docRef:", docRef)
-        // console.log('🔍 Campos del documento:', Object.keys(data));
 
 
         // 3️⃣  Si el documento no traía slug, lo actualizamos aquí mismo
@@ -123,7 +114,6 @@ export default function GroupDetail() {
           });
           sessionStorage.setItem(visitKey, 'true');
         }
-        // console.log('Firestore group data:', data); // 👈
         setGroup({ id: docSnap.id, ...data, slug: data.slug || slugify(data.name) });
 
       } catch (err) {
@@ -156,43 +146,22 @@ export default function GroupDetail() {
     <Container size="sm" py="xl">
       <Paper withBorder shadow="sm" radius="md" p="lg">
         <Stack spacing="md">
+          
           <Title order={2}>{group.name}</Title>
-          <Text size="sm" c="dimmed">
-            {t('El grupo tiene')} <strong>{group.visitas || 0} {t('visitas')}</strong>
-          </Text>
 
-{/* {group.city && (
-  <Text size="sm" c="dimmed">
-    {countryMap[group.city] || group.city}
-  </Text>
-)}
-{group.city && (
-  <>
-    <Text size="sm" c="dimmed">
-      Ciudad cruda: {group.city}
-    </Text>
-    <Text size="sm" c="dimmed">
-      Ciudad traducida: {countryMap[group.city] || '❌ No mapeada'}
-    </Text>
-  </>
-)} */}
+          <Group justify="space-between" align="center" w="100%">
+            <Text size="sm" c="dimmed">
+              {t('El grupo tiene')} <strong>{group.visitas || 0} {t('visitas')}</strong>
+            </Text>
 
-{/* <Text size="sm" c="blue">
-  🧪 Render completo: {JSON.stringify(group)}
-</Text>
+            {group.city && (
+              <Text size="xl" style={{ fontSize: '1.5rem' }}>
+                {countryMap[group.city] || group.city}
+              </Text>
+            )}
+          </Group>
 
-<div style={{ backgroundColor: 'yellow', padding: '8px' }}>
-  <Text size="md" c="black">
-    {group.city} – {countryMap[group.city] || '❓ No en mapa'}
-  </Text>
-</div>
-
- */}
-
-
-
-
-          <Divider my="sm" />
+          <Divider/>
 
           <Box>
             <Text fw={600} mb={4}>{t('Descripción:')}</Text>

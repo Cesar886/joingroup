@@ -27,7 +27,42 @@ import slugify from '../assets/slugify';
 import styles from './TableSortTelegram.module.css';
 import { Helmet } from 'react-helmet-async';
 
-
+const countryMap = {
+  mx: '🇲🇽',
+  us: '🇺🇸',
+  ar: '🇦🇷',
+  co: '🇨🇴',
+  es: '🇪🇸',
+  pe: '🇵🇪',
+  cl: '🇨🇱',
+  ve: '🇻🇪',
+  br: '🇧🇷',
+  ec: '🇪🇨',
+  gt: '🇬🇹',
+  bo: '🇧🇴',
+  do: '🇩🇴',
+  hn: '🇭🇳',
+  py: '🇵🇾',
+  sv: '🇸🇻',
+  ni: '🇳🇮',
+  cr: '🇨🇷',
+  pa: '🇵🇦',
+  uy: '🇺🇾',
+  pr: '🇵🇷',
+  ca: '🇨🇦',
+  de: '🇩🇪',
+  fr: '🇫🇷',
+  it: '🇮🇹',
+  gb: '🇬🇧',
+  nl: '🇳🇱',
+  pt: '🇵🇹',
+  jp: '🇯🇵',
+  kr: '🇰🇷',
+  cn: '🇨🇳',
+  in: '🇮🇳',
+  ru: '🇷🇺',
+  au: '🇦🇺',
+};
 
 import { useTranslation } from 'react-i18next';
 
@@ -195,8 +230,17 @@ export default function Telegram() {
             <Table.Tr>
               <Table.Td colSpan={3}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <Text fw={700}>{row.name}</Text>
-          <img
+          {row.city && (
+            <Text size="sm" >
+              {countryMap[row.city] || row.city}
+            </Text>
+          )}
+          <Text 
+            fw={700}
+            style={{
+              marginLeft: '8px',
+            }}
+          >{row.name}</Text>          <img
             src={iconSrc}
             alt={row.name}
             style={{
