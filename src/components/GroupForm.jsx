@@ -529,7 +529,6 @@ export default function GroupForm() {
             {...form.getInputProps('city')}
           />    
 
-
           <MultiSelect
             label={t("Categorías")}
             placeholder={t("Selecciona una o varias categorías, Max 3")}

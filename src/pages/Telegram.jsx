@@ -329,27 +329,37 @@ export default function Telegram() {
         <meta name="twitter:image"       content="https://joingroups.pro/JoinGroups.ico" />
 
         {/* ——— SCHEMA.ORG ——— */}
+
         <script type="application/ld+json">
           {`
-          {
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            "name": "Grupos de Telegram Activos 2025",
-            "description": "Explora y únete a los grupos de Telegram más activos en 2025: canales, +18, anime, estudio, tecnología y más.",
-            "url": "https://joingroups.pro/comunidades/grupos-de-telegram",
-            "mainEntity": {
-              "@type": "ItemList",
-              "name": "Categorías de Grupos de Telegram",
-              "itemListElement": [
-                { "@type": "SiteNavigationElement", "position": 1, "name": "+18",        "url": "https://joingroups.pro/comunidades/grupos-de-telegram/18" },
-                { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",      "url": "https://joingroups.pro/comunidades/grupos-de-telegram/anime" },
-                { "@type": "SiteNavigationElement", "position": 3, "name": "Estudio",    "url": "https://joingroups.pro/comunidades/grupos-de-telegram/estudio" },
-                { "@type": "SiteNavigationElement", "position": 4, "name": "Tecnología", "url": "https://joingroups.pro/comunidades/grupos-de-telegram/tecnologia" }
-              ]
+          [
+            {
+              "@context": "https://schema.org",
+              "@type": "CollectionPage",
+              "name": "Grupos de Telegram Activos 2025",
+              "description": ""Descubre y únete a los grupos de Telegram más activos en 2025: canales de +18, anime, estudio, tecnología, amistad y mucho más. Actualizado constantemente."",
+              "url": "https://joingroups.pro/comunidades/grupos-de-telegram",
+              "mainEntity": {
+                "@type": "ItemList",
+                "name": "Categorías de Grupos de Telegram",
+                "itemListElement": [
+                  { "@type": "SiteNavigationElement", "position": 1, "name": "+18",        "url": "https://joingroups.pro/comunidades/grupos-de-telegram/18" },
+                  { "@type": "SiteNavigationElement", "position": 2, "name": "Anime",      "url": "https://joingroups.pro/comunidades/grupos-de-telegram/anime" },
+                  { "@type": "SiteNavigationElement", "position": 3, "name": "Estudio",    "url": "https://joingroups.pro/comunidades/grupos-de-telegram/estudio" },
+                  { "@type": "SiteNavigationElement", "position": 4, "name": "Tecnología", "url": "https://joingroups.pro/comunidades/grupos-de-telegram/tecnologia" }
+                ]
+              }
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": "Grupos de Telegram Activos 2025",
+              "url": "https://joingroups.pro/comunidades/grupos-de-telegram"
             }
-          }
+          ]
           `}
         </script>
+
       </Helmet>
 
       <ScrollArea>
