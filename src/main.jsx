@@ -1,10 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import MainApp from './MainApp';
-import './pages/i18n';
+import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+import { ModalsProvider } from '@mantine/modals';
+import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <MainApp />
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <ModalsProvider>
+        <Notifications position="top-right" />
+        <App />
+      </ModalsProvider>
+    </MantineProvider>
   </React.StrictMode>
 );

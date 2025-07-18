@@ -357,7 +357,6 @@ export default function Clanes() {
       </Helmet>
 
 
-      <ScrollArea>
         {selectedCollection && (
           <Button
             variant="outline"
@@ -404,6 +403,7 @@ export default function Clanes() {
             ))}
           </Group>
         )}
+      <ScrollArea>
 
         {rows.length > 0 ? (
           <>

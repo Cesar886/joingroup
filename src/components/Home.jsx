@@ -146,7 +146,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
   const [clanes, setClanes] = useState([]);
-  const baseLang = i18n.language.split('-')[0];
+  const baseLang = typeof i18n.language === 'string' ? i18n.language.split('-')[0] : 'es';
   const isMobile = useMediaQuery('(max-width: 768px)');
   const subdomain = window.location.hostname.includes('.') ? window.location.hostname.split('.')[0] : 'mx';
   const currentLang = subdomain === 'us' ? 'en' : 'es';
