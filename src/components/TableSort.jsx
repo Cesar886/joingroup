@@ -411,18 +411,18 @@ export default function TableSort() {
     <>
       <Helmet>
         {/* ——— TITLE ——— */}
-        <title>Grupos de Telegram Activos 2025</title>
+        <title>Comunidades de Telegram por Temas | Explora Categorías Populares 2025</title>
 
         {/* ——— DESCRIPTION ——— */}
         <meta
           name="description"
-          content="Grupos de Telegram activos en 2025. Conecta con comunidades de tus intereses, encuentra canales, miembros y personas con tus mismos gustos. Publica tu grupo gratis para llegar a más usuarios."
+          content="Explora las comunidades más activas en Telegram clasificadas por categorías. Desde anime y tecnología hasta grupos +18. Accede fácil y sin registro."
         />
 
         {/* ——— KEYWORDS ——— */}
         <meta
           name="keywords"
-          content="Grupos de Telegram, Canales de Telegram, Enlaces Telegram, Unirse a Grupos Telegram, Publicar Grupo Telegram, Comunidades Telegram, Grupos de WhatsApp, Canales de WhatsApp, Enlaces WhatsApp, Unirse a Grupos WhatsApp, Publicar Grupo WhatsApp, Comunidades WhatsApp, Grupos Activos, Grupos Gratis, Encontrar Grupos, Buscar Miembros, Conocer Personas, Amistad, Usuarios"
+          content="Comunidades Telegram, Categorías de grupos, Grupos por temas, Telegram anime, Telegram tecnología, Grupos de estudio, Telegram +18, Listado de comunidades, Explorar categorías, Buscar grupos, Unirse a grupos temáticos"
         />
 
         {/* ——— CANONICAL ——— */}
@@ -431,54 +431,64 @@ export default function TableSort() {
         {/* ——— OPEN GRAPH ——— */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://joingroups.pro/comunidades" />
-        <meta property="og:title" content="Grupos de Telegram y WhatsApp Activos 2025: Encuentra, Únete o Publica tu Grupo Gratis" />
-        <meta property="og:description" content="Explora y únete a miles de grupos de Telegram y WhatsApp activos. Conecta con comunidades de tus intereses, encuentra canales y miembros. Publica tu grupo gratis." />
-        <meta property="og:image" content="https://joingroups.pro/JoinGroups.ico" />
+        <meta property="og:title" content="Explora Comunidades de Telegram por Categorías en 2025" />
+        <meta property="og:description" content="Navega por comunidades activas organizadas por temas. Grupos de Telegram clasificados para que encuentres exactamente lo que buscas." />
+        <meta property="og:image" content="https://joingroups.pro/images/telegram-categorias.jpg" />
         <meta property="og:site_name" content="JoinGroups" />
 
         {/* ——— TWITTER CARDS ——— */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://joingroups.pro/comunidades" />
-        <meta name="twitter:title" content="Grupos de Telegram y WhatsApp Activos 2025: Encuentra, Únete o Publica tu Grupo Gratis" />
-        <meta name="twitter:description" content="Explora y únete a miles de grupos de Telegram y WhatsApp activos. Conecta con comunidades de tus intereses, encuentra canales y miembros. Publica tu grupo gratis." />
-        <meta name="twitter:image" content="https://joingroups.pro/JoinGroups.ico" />
+        <meta name="twitter:title" content="Explora Comunidades de Telegram por Categorías en 2025" />
+        <meta name="twitter:description" content="Grupos activos en Telegram divididos por intereses. Entra gratis a comunidades temáticas y conéctate con gente como tú." />
+        <meta name="twitter:image" content="https://joingroups.pro/images/telegram-categorias.jpg" />
 
         {/* ——— SCHEMA.ORG ——— */}
         <script type="application/ld+json">
           {`
-          {
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            "name": "Grupos de Telegram Activos 2025",
-            "description": "Grupos de Telegram y WhatsApp ACTIVOS en 2025. Encuantra canales de Telegram y WhatsApp en 2025. Encuentra comunidades de tus intereses, busca miembros, conoce personas y publica tu grupo gratis para llegar a más usuarios.",
-            "url": "https://joingroups.pro/comunidades",
-            "mainEntity": {
-              "@type": "ItemList",
-              "name": "Categorías de Grupos y Canales",
-              "itemListElement": [
-                {
-                  "@type": "ListItem",
-                  "position": 1,
-                  "item": {
-                    "@type": "Thing",
-                    "name": "Grupos de Telegram",
-                    "url": "https://joingroups.pro/comunidades/grupos-de-telegram",
-                    "description": "Encuentra Grupos de Telegram de diversas temáticas. Conecta con miembros y usuarios."
+            {
+              "@context": "https://schema.org",
+              "@type": "CollectionPage",
+              "name": "Comunidades de Telegram por Categorías",
+              "description": "Descubre cientos de comunidades activas en Telegram organizadas por intereses. Desde anime, tecnología, estudio, hasta +18. Encuentra lo que te gusta.",
+              "url": "https://joingroups.pro/comunidades",
+              "mainEntity": {
+                "@type": "ItemList",
+                "name": "Listado de Categorías Populares",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                      "@type": "Thing",
+                      "name": "Telegram Anime",
+                      "url": "https://joingroups.pro/comunidades/anime",
+                      "description": "Grupos de anime y manga. Discute series, comparte memes y conoce otakus."
+                    }
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item": {
+                      "@type": "Thing",
+                      "name": "Telegram Tecnología",
+                      "url": "https://joingroups.pro/comunidades/tecnologia",
+                      "description": "Grupos de tecnología, software, programación y novedades tech."
+                    }
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "item": {
+                      "@type": "Thing",
+                      "name": "Telegram +18",
+                      "url": "https://joingroups.pro/comunidades/18",
+                      "description": "Comunidades +18 para adultos. Ingreso libre y sin registro."
+                    }
                   }
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 2,
-                  "item": {
-                    "@type": "Thing",
-                    "name": "Grupos de WhatsApp",
-                    "url": "https://joingroups.pro/comunidades/grupos-de-whatsapp",
-                    "description": "Descubre y Unete a Grupos de WhatsApp ACTIVOS por Tematica. Busca y conoce personas con tus mismos gustos."
-                  }
-                }
-              ]
+                ]
+              }
             }
-          }
           `}
         </script>
       </Helmet>
