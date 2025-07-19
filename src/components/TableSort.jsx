@@ -410,81 +410,117 @@ export default function TableSort() {
   return (
     <>
       <Helmet>
-        {/* ——— TITLE ——— */}
-        <title>Comunidades de Telegram por Temas | Explora Categorías Populares 2025</title>
+        {/*
+          --- TÍTULO (Title) ---
+          Optimización:
+          - Más orientado a la acción ("Encuentra y Únete").
+          - Incluye "WhatsApp" para ampliar el alcance, ya que esta página es un agregador.
+          - Mantiene el año para relevancia y el branding "JoinGroups".
+        */}
+        <title>Encuentra y Únete a Grupos de Telegram y WhatsApp | Comunidades 2025</title>
 
-        {/* ——— DESCRIPTION ——— */}
+        {/*
+          --- DESCRIPCIÓN (Description) ---
+          Optimización:
+          - Comienza con un llamado a la acción claro.
+          - Menciona explícitamente ambas plataformas (Telegram y WhatsApp).
+          - Usa un lenguaje más natural y atractivo para el usuario.
+        */}
         <meta
           name="description"
-          content="Explora las comunidades más activas en Telegram clasificadas por categorías. Desde anime y tecnología hasta grupos +18. Accede fácil y sin registro."
+          content="Descubre el directorio más completo de comunidades online. Encuentra enlaces de invitación para grupos de Telegram y WhatsApp por categorías: amistad, gaming, anime, +18 y más."
         />
 
-        {/* ——— KEYWORDS ——— */}
-        <meta
-          name="keywords"
-          content="Comunidades Telegram, Categorías de grupos, Grupos por temas, Telegram anime, Telegram tecnología, Grupos de estudio, Telegram +18, Listado de comunidades, Explorar categorías, Buscar grupos, Unirse a grupos temáticos"
-        />
+        {/*
+          --- KEYWORDS ---
+          Eliminada. Esta etiqueta es obsoleta y no tiene valor para el SEO moderno.
+          Las palabras clave importantes ya están integradas en el título y la descripción.
+        */}
 
-        {/* ——— CANONICAL ——— */}
+        {/* ——— CANONICAL ——— (Sin cambios, es correcta) */}
         <link rel="canonical" href="https://joingroups.pro/comunidades" />
 
-        {/* ——— OPEN GRAPH ——— */}
+        {/*
+          --- OPEN GRAPH (para redes sociales como Facebook, WhatsApp ) ---
+          Optimización:
+          - Título y descripción alineados con las metaetiquetas principales para consistencia.
+          - Se enfoca en el beneficio directo para el usuario ("El directorio #1...").
+        */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://joingroups.pro/comunidades" />
-        <meta property="og:title" content="Explora Comunidades de Telegram por Categorías en 2025" />
-        <meta property="og:description" content="Navega por comunidades activas organizadas por temas. Grupos de Telegram clasificados para que encuentres exactamente lo que buscas." />
-        <meta property="og:image" content="https://joingroups.pro/images/telegram-categorias.jpg" />
+        <meta property="og:title" content="El Directorio #1 de Grupos de Telegram y WhatsApp" />
+        <meta property="og:description" content="¿Buscas una comunidad? Explora cientos de grupos activos por categorías y únete con un solo clic. ¡Encuentra tu lugar ideal!" />
+        <meta property="og:image" content="https://joingroups.pro/images/og-comunidades-joingroups.jpg" />
         <meta property="og:site_name" content="JoinGroups" />
 
-        {/* ——— TWITTER CARDS ——— */}
+        {/*
+          --- TWITTER CARDS (para Twitter/X ) ---
+          Optimización:
+          - Mensajes adaptados para ser concisos y directos, como es común en Twitter.
+        */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://joingroups.pro/comunidades" />
-        <meta name="twitter:title" content="Explora Comunidades de Telegram por Categorías en 2025" />
-        <meta name="twitter:description" content="Grupos activos en Telegram divididos por intereses. Entra gratis a comunidades temáticas y conéctate con gente como tú." />
-        <meta name="twitter:image" content="https://joingroups.pro/images/telegram-categorias.jpg" />
+        <meta name="twitter:title" content="Tu Puerta de Entrada a Miles de Comunidades Online" />
+        <meta name="twitter:description" content="Encuentra enlaces directos a grupos de Telegram y WhatsApp. Explora, filtra por categoría y únete a la conversación." />
+        <meta name="twitter:image" content="https://joingroups.pro/images/twitter-comunidades-joingroups.jpg" />
 
-        {/* ——— SCHEMA.ORG ——— */}
+        {/*
+          --- SCHEMA.ORG (JSON-LD para datos estructurados ) ---
+          Optimización:
+          - Se mantiene `CollectionPage` pero se añade un `BreadcrumbList` (migas de pan).
+            Esto le indica a Google la jerarquía del sitio (Inicio > Comunidades), lo cual es excelente para el SEO.
+          - El `mainEntity` ahora usa `SiteNavigationElement`, que es más específico y semánticamente correcto
+            para una lista de enlaces a otras páginas de categorías.
+        */}
         <script type="application/ld+json">
           {`
             {
               "@context": "https://schema.org",
               "@type": "CollectionPage",
-              "name": "Comunidades de Telegram por Categorías",
-              "description": "Descubre cientos de comunidades activas en Telegram organizadas por intereses. Desde anime, tecnología, estudio, hasta +18. Encuentra lo que te gusta.",
+              "name": "Directorio de Comunidades de Telegram y WhatsApp",
+              "description": "Navega por nuestro directorio de comunidades online. Filtra por plataforma y categoría para encontrar grupos de tu interés.",
               "url": "https://joingroups.pro/comunidades",
               "mainEntity": {
                 "@type": "ItemList",
-                "name": "Listado de Categorías Populares",
+                "name": "Plataformas Principales",
+                "itemListElement": [
+                  {
+                    "@type": "SiteNavigationElement",
+                    "position": 1,
+                    "name": "Grupos de Telegram",
+                    "description": "Explora todas las comunidades disponibles en Telegram.",
+                    "url": "https://joingroups.pro/comunidades/grupos-de-telegram"
+                  },
+                  {
+                    "@type": "SiteNavigationElement",
+                    "position": 2,
+                    "name": "Grupos de WhatsApp",
+                    "description": "Encuentra grupos de WhatsApp por temas de interés.",
+                    "url": "https://joingroups.pro/comunidades/grupos-de-whatsapp"
+                  },
+                  {
+                    "@type": "SiteNavigationElement",
+                    "position": 3,
+                    "name": "Clanes de Videojuegos",
+                    "description": "Descubre clanes para juegos como Clash Royale y Clash of Clans.",
+                    "url": "https://joingroups.pro/clanes"
+                  }
+                ]
+              },
+              "breadcrumb": {
+                "@type": "BreadcrumbList",
                 "itemListElement": [
                   {
                     "@type": "ListItem",
                     "position": 1,
-                    "item": {
-                      "@type": "Thing",
-                      "name": "Telegram Anime",
-                      "url": "https://joingroups.pro/comunidades/anime",
-                      "description": "Grupos de anime y manga. Discute series, comparte memes y conoce otakus."
-                    }
+                    "name": "Inicio",
+                    "item": "https://joingroups.pro/"
                   },
                   {
                     "@type": "ListItem",
                     "position": 2,
-                    "item": {
-                      "@type": "Thing",
-                      "name": "Telegram Tecnología",
-                      "url": "https://joingroups.pro/comunidades/tecnologia",
-                      "description": "Grupos de tecnología, software, programación y novedades tech."
-                    }
-                  },
-                  {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "item": {
-                      "@type": "Thing",
-                      "name": "Telegram +18",
-                      "url": "https://joingroups.pro/comunidades/18",
-                      "description": "Comunidades +18 para adultos. Ingreso libre y sin registro."
-                    }
+                    "name": "Comunidades",
+                    "item": "https://joingroups.pro/comunidades"
                   }
                 ]
               }
@@ -492,7 +528,6 @@ export default function TableSort() {
           `}
         </script>
       </Helmet>
-
 
       <ScrollArea>
         <TextInput
