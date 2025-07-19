@@ -27,6 +27,18 @@ import slugify from '../assets/slugify';
 import styles from './TableSortTelegram.module.css';
 import { Helmet } from 'react-helmet-async';
 
+const getCategoryUrl = (category, currentPath) => {
+  // Detectar si estamos en la página de Telegram o WhatsApp
+  if (currentPath.includes('/grupos-de-telegram')) {
+    return `/comunidades/grupos-de-telegram/${slugify(category)}`;
+  } else if (currentPath.includes('/grupos-de-whatsapp')) {
+    return `/comunidades/grupos-de-whatsapp/${slugify(category)}`;
+  } else {
+    // Si estamos en la página general de comunidades, redirigir a Telegram por defecto
+    return `/comunidades/grupos-de-telegram/${slugify(category)}`;
+  }
+};
+
 const countryMap = {
   mx: '🇲🇽',
   us: '🇺🇸',
@@ -85,19 +97,26 @@ function Th({ children, reversed, sorted, onSort }) {
   );
 }
 
-function filterData(data, search, collectionFilter = null) {
+function filterData(data, search, collectionFilter = []) {
   const query = search.toLowerCase().trim();
+
   return data.filter((item) => {
-    const matchesSearch = ['name', 'categories', 'content18'].some((key) =>
-      item[key]?.toLowerCase().includes(query)
-  );
-  
-  const matchesCollection = collectionFilter
-  ? item.categories?.toLowerCase() === collectionFilter.toLowerCase()
-  : true;
-  
-  return matchesSearch && matchesCollection;
-});
+    const matchesSearch =
+      item.name?.toLowerCase().includes(query) ||
+      item.content18?.toLowerCase().includes(query) ||
+      item.categories?.some(cat => cat.toLowerCase().includes(query));
+
+
+    const matchesCollection = collectionFilter.length
+      ? item.categories?.some((cat) =>
+          collectionFilter.some((filtro) =>
+            cat.toLowerCase().includes(filtro.toLowerCase())
+          )
+        )
+      : true;
+
+    return matchesSearch && matchesCollection;
+  });
 }
 
 function sortData(data, { sortBy, reversed, search, collectionFilter }) {
@@ -121,61 +140,75 @@ export default function Telegram() {
   // const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCollections, setSelectedCollections] = useState([]);  // ✅ único estado
+  const [collections, setCollections] = useState([]);
+  
+  
   // const [collections, setCollections] = useState([]);
-  const [selectedCollection, setSelectedCollection] = useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const orden = searchParams.get('orden');
   
 
-  const handleCollectionFilter = (collection) => {
-    const newValue = collection === selectedCollection ? null : collection;
-    setSelectedCollection(newValue);
-    setSortedData(sortData(data, {
-      // sortBy,
-      // reversed: reverseSortDirection,
-      search,
-      collectionFilter: newValue
-    }));
-    setCurrentPage(1);
-  };
+    useEffect(() => {
+      setSortedData(
+        sortData(data, { search, collectionFilter: selectedCollections })
+      );
+      setCurrentPage(1);               // regresa a página 1 si cambian filtros
+    }, [data, search, selectedCollections]);
 
-  useEffect(() => {
+    useEffect(() => {
+      const searchParams = new URLSearchParams(location.search);
+      // const orden = searchParams.get('orden');
+      const cats = searchParams.get('cats')?.split(',') || [];
+
+      setSelectedCollections(cats);
+    }, [location.search]);
 
 
-    const fetchData = async () => {
-      const snapshot = await getDocs(collection(db, 'groups'));
-      const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    useEffect(() => {
+      const fetchData = async () => {
+        const snapshot = await getDocs(collection(db, 'groups'));
+        const groups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      const telegramGroups = groups.filter(g => g.tipo === 'telegram');
+        const telegramGroups = groups.filter(g => g.tipo === 'telegram');
 
-      const fetchCollections = async () => {
-        // const snapshot = await getDocs(collection(db, 'colections'));
-        // const docs = snapshot.docs.map(doc => doc.data());
-        // const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
-        // setCollections([...new Set(allCollections)]);
+        const fetchCollections = async () => {
+          // const snapshot = await getDocs(collection(db, 'colections'));
+          // const docs = snapshot.docs.map(doc => doc.data());
+          // const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
+          // setCollections([...new Set(allCollections)]);
+        };
+        fetchCollections();
+
+        let ordenados = [...telegramGroups];
+
+        if (orden === 'top' || orden === 'vistos') {
+          ordenados.sort((a, b) => b.visitas - a.visitas);
+        } else if (orden === 'nuevos') {
+          ordenados.sort((a, b) => {
+            const dateA = a.createdAt?.toDate?.() ?? new Date(0);
+            const dateB = b.createdAt?.toDate?.() ?? new Date(0);
+            return dateB - dateA;
+          });
+        }
+
+
+        setData(ordenados);
+        setSortedData(ordenados);
       };
-      fetchCollections();
 
-      let ordenados = [...telegramGroups];
+      fetchData();
+    }, [location.search]);
 
-      if (orden === 'top' || orden === 'vistos') {
-        ordenados.sort((a, b) => b.visitas - a.visitas);
-      } else if (orden === 'nuevos') {
-        ordenados.sort((a, b) => {
-          const dateA = a.createdAt?.toDate?.() ?? new Date(0);
-          const dateB = b.createdAt?.toDate?.() ?? new Date(0);
-          return dateB - dateA;
-        });
-      }
-
-
-      setData(ordenados);
-      setSortedData(ordenados);
+    const fetchCollections = async () => {
+      const snapshot = await getDocs(collection(db, 'colections'));
+      const docs = snapshot.docs.map(doc => doc.data());
+      const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
+      setCollections([...new Set(allCollections)]);
+      // setCollections({ collections: [...new Set(allCollections)] });
     };
-
-    fetchData();
-  }, [location.search]);
+    fetchCollections();
 
 
 
@@ -187,9 +220,7 @@ export default function Telegram() {
   // };
 
   const handleSearchChange = (event) => {
-  const value = event.currentTarget.value;
-    setSearch(value);
-    setSortedData(sortData(data, { search: value, collectionFilter: selectedCollection }));
+    setSearch(event.currentTarget.value);
   };
 
   const groupsPerPage = 12;
@@ -291,6 +322,9 @@ export default function Telegram() {
       </Paper>
     );
   });
+
+  const collectionsExist = Array.isArray(collections) && collections.length > 0;
+
 
   return (
     <>
@@ -404,16 +438,6 @@ export default function Telegram() {
 
 
       <ScrollArea>
-        {selectedCollection && (
-          <Button
-            variant="outline"
-            color="gray"
-            mb="xs"
-            onClick={() => handleCollectionFilter(selectedCollection)}
-          >
-            {t('Quitar filtro')}: {selectedCollection}
-          </Button>
-        )}
 
         <TextInput
           placeholder={t('Buscar por nombre, categoría o contenido...')}
@@ -422,9 +446,9 @@ export default function Telegram() {
           value={search}
           onChange={handleSearchChange}
         />
-
-        {rows.length > 0 ? (
           <>
+          <Group gap='xs' mb="md" justify="center">
+          
             <Group gap='xs' mb="md" justify="center">
               <Button
                 variant="light"
@@ -465,6 +489,51 @@ export default function Telegram() {
                 <Button onClick={() => navigate('')} variant={!orden ? 'filled' : 'light'}>Destacados</Button>
               </Group>
             </Group>
+
+
+            <Box
+              style={{
+                display: 'flex',
+                overflowX: 'auto',
+                gap: '10px',
+                padding: '10px 0',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {collectionsExist &&
+                collections.map((cat, i) => {
+                  const selected = selectedCollections.includes(cat);
+                  return (
+                    <Badge
+                      key={i}
+                      variant={selected ? 'filled' : 'light'}
+                      color="violet"
+                      size="lg"
+                      radius="xl"
+                      onClick={() => {
+                        // Navegar a la página específica de la categoría
+                        const categoryUrl = getCategoryUrl(cat, location.pathname);
+                        navigate(categoryUrl);
+                      }}
+                      style={{
+                        padding: '10px 16px',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        backgroundColor: selected ? '#5e2ca5' : '#f3e8ff',
+                        color: selected ? '#ffffff' : '#4a0080',
+                        whiteSpace: 'nowrap',
+                        flexShrink: 0,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease', // Añadir transición suave
+                      }}
+                    >
+                      {cat}
+                    </Badge>
+
+                  );
+                })}
+            </Box>
+          </Group>
 
             <Paper
               withBorder
@@ -622,11 +691,9 @@ export default function Telegram() {
             </Text>
             </Paper>
           </>
-        ) : (
           <Text ta="center" fw={500} c="dimmed" mt="xl">
             {t('No se encontraron resultados.')}
           </Text>
-        )}
       </ScrollArea>
     </>
   );

@@ -23,6 +23,9 @@ import ClashRoyale from '../pagesGaming/ClanClashRoyale';
 import ClanesGroupForm from '../pagesGaming/ClanesGroupForm';
 import ClashOfClans from '../pagesGaming/ClanClashOfClans';
 
+// Categorias
+import CategoryPage from "../components/CategoryPage";
+
 
 export default function AppRoutes() {
   return (
@@ -33,8 +36,13 @@ export default function AppRoutes() {
       <Route path="/comunidades/form" element={<GroupForm />} />
       <Route path="/comunidades/grupos-de-telegram" element={<Telegram />} />
       <Route path="/comunidades/grupos-de-whatsapp" element={<Whatsapp />} />
+
+      <Route path="/comunidades/grupos-de-telegram/:category" element={<CategoryPage />} />
+      <Route path="/comunidades/grupos-de-whatsapp/:category" element={<CategoryPage />} />     
+
       <Route path="/comunidades/grupos-de-telegram/:id" element={<GroupDetail />} />
       <Route path="/comunidades/grupos-de-whatsapp/:id" element={<GroupDetail />} />
+      
       <Route path="/admin" element={<AdminGroups />} />
 
       <Route path="/clanes" element={<Clanes />} />
@@ -52,9 +60,6 @@ export default function AppRoutes() {
 
       <Route path="/comunidades/how-to-create-telegram-group" element={<HowToCreateTelegramGroup />} />
       <Route path="/comunidades/como-crear-grupo-telegram" element={<InstruccionesCrearGrupoTelegram />} />
-
-
-      {/* Catch-all route for 404 Not Found */}
 
       <Route path="*" element={<NotFoundImage />} />
 

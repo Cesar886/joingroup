@@ -33,6 +33,7 @@ import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 
+
 const countryMap = {
   mx: '🇲🇽',
   us: '🇺🇸',
