@@ -334,7 +334,10 @@ export default function TableSort() {
         shadow="xs"
         mb="sm"
         key={`${row.id}-${slug}-${idx}`}
-        onClick={() => navigate(`/comunidades/grupos-de-${row.tipo}/${slug}`)}
+        onClick={() => {
+          const categoria = row.categories?.[0] || 'otros';
+          navigate(`/comunidades/grupos-de-${row.tipo}/${slugify(categoria)}/${slug}`);
+        }}
       >
         <Table horizontalSpacing="md" withRowBorders={false}>
           <Table.Tbody>

@@ -40,8 +40,8 @@ export default function AppRoutes() {
       <Route path="/comunidades/grupos-de-telegram/:category" element={<CategoryPage />} />
       <Route path="/comunidades/grupos-de-whatsapp/:category" element={<CategoryPage />} />     
 
-      <Route path="/comunidades/grupos-de-telegram/:id" element={<GroupDetail />} />
-      <Route path="/comunidades/grupos-de-whatsapp/:id" element={<GroupDetail />} />
+      <Route path="/comunidades/grupos-de-telegram/:category/:id" element={<GroupDetail />} />
+      <Route path="/comunidades/grupos-de-whatsapp/:category/:id" element={<GroupDetail />} />
       
       <Route path="/admin" element={<AdminGroups />} />
 

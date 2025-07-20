@@ -248,14 +248,19 @@ export default function Telegram() {
     const iconSrc = '/telegramicons.png'
 
     return (
-      <Paper
-        withBorder
-        radius="md"
-        shadow="xs"
-        mb="sm"
-        key={`${row.id}-${slug}-${idx}`}
-        onClick={() => navigate(`/comunidades/grupos-de-telegram/${slug}`)}
-      >
+        <Paper
+          withBorder
+          radius="md"
+          shadow="xs"
+          mb="sm"
+          key={`${row.id}-${slug}-${idx}`}
+          onClick={() => {
+            const mainCategory = row.categories?.[0] || 'otros';
+            const categoryUrl = getCategoryUrl(mainCategory, location.pathname);
+            navigate(`${categoryUrl}/${slug}`);
+          }}
+        >
+
         <Table horizontalSpacing="md" withRowBorders={false}>
           <Table.Tbody>
             <Table.Tr>
@@ -271,7 +276,8 @@ export default function Telegram() {
             style={{
               marginLeft: '8px',
             }}
-          >{row.name}</Text>          <img
+          >{row.name}</Text>         
+           <img
             src={iconSrc}
             alt={row.name}
             style={{
@@ -329,22 +335,10 @@ export default function Telegram() {
   return (
     <>
       <Helmet>
-        {/*
-          --- TÍTULO (Title) ---
-          Optimización:
-          - Se enfoca en la intención de búsqueda principal: "Enlaces a Grupos de Telegram".
-          - Mantiene "Activos" y el año, que generan confianza y relevancia.
-          - Es más conciso y directo.
-        */}
-        <title>Enlaces a Grupos de Telegram Activos 2025 | Directorio de Comunidades</title>
+        
+        <title>Grupos de Telegram Activos 2025 | Comunidades de Telegram</title>
 
-        {/*
-          --- DESCRIPCIÓN (Description) ---
-          Optimización:
-          - Comienza con un llamado a la acción claro ("Encuentra y únete...").
-          - Menciona "enlaces de invitación", una palabra clave de alta intención.
-          - Destaca la variedad de categorías y la opción de publicar un grupo.
-        */}
+      
         <meta
           name="description"
           content="Encuentra y únete a los mejores grupos de Telegram con enlaces de invitación activos en 2025. Explora categorías como anime, gaming, +18, amistad y más. ¡Publica tu grupo gratis!"

@@ -223,7 +223,13 @@ export default function Home() {
         withBorder
         radius="md"
         shadow="xs"
-        onClick={() => navigate(`/${isGroup ? 'comunidades/grupos-de' : 'clanes/clanes-de'}-${row.tipo}/${slug}`)}
+        onClick={() => {
+          const categoria = row.categories?.[0] || 'otros';
+          const basePath = isGroup
+            ? `/comunidades/grupos-de-${row.tipo}/${slugify(categoria)}`
+            : `/clanes/clanes-de-${row.tipo}`;
+          navigate(`${basePath}/${slug}`);
+        }}
         style={{ cursor: 'pointer' }}
       >
         <Table withRowBorders={false}>

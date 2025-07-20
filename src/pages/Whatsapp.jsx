@@ -253,8 +253,12 @@ export default function Whatsapp() {
         shadow="xs"
         mb="sm"
         key={`${row.id}-${slug}-${idx}`}
-        onClick={() => navigate(`/comunidades/grupos-de-whatsapp/${slug}`)}
-      >
+        onClick={() => {
+          const mainCategory = row.categories?.[0] || 'otros';
+          const categoryUrl = getCategoryUrl(mainCategory, location.pathname);
+          navigate(`${categoryUrl}/${slug}`);
+        }}
+        >
         <Table horizontalSpacing="md" withRowBorders={false}>
           <Table.Tbody>
             <Table.Tr>
