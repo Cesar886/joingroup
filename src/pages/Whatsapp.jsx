@@ -25,8 +25,19 @@ import { db } from '../firebase';
 import { useMediaQuery } from '@mantine/hooks';
 import slugify from '../assets/slugify';
 import { useLocation } from 'react-router-dom';
-import styles from './TableSortWhastapp.module.css';
 import { Helmet } from 'react-helmet-async';
+
+const getCategoryUrl = (category, currentPath) => {
+  // Detectar si estamos en la página de Telegram o WhatsApp
+  if (currentPath.includes('/grupos-de-telegram')) {
+    return `/comunidades/grupos-de-telegram/${slugify(category)}`;
+  } else if (currentPath.includes('/grupos-de-whatsapp')) {
+    return `/comunidades/grupos-de-whatsapp/${slugify(category)}`;
+  } else {
+    // Si estamos en la página general de comunidades, redirigir a Telegram por defecto
+    return `/comunidades/grupos-de-telegram/${slugify(category)}`;
+  }
+};
 
 const countryMap = {
   mx: '🇲🇽',
@@ -86,19 +97,26 @@ function Th({ children, reversed, sorted, onSort }) {
   );
 }
 
-function filterData(data, search, collectionFilter = null) {
+function filterData(data, search, collectionFilter = []) {
   const query = search.toLowerCase().trim();
+
   return data.filter((item) => {
-    const matchesSearch = ['name', 'categories', 'content18'].some((key) =>
-      item[key]?.toLowerCase().includes(query)
-  );
-  
-  const matchesCollection = collectionFilter
-  ? item.categories?.toLowerCase() === collectionFilter.toLowerCase()
-  : true;
-  
-  return matchesSearch && matchesCollection;
-});
+    const matchesSearch =
+      item.name?.toLowerCase().includes(query) ||
+      item.content18?.toLowerCase().includes(query) ||
+      item.categories?.some(cat => cat.toLowerCase().includes(query));
+
+
+    const matchesCollection = collectionFilter.length
+      ? item.categories?.some((cat) =>
+          collectionFilter.some((filtro) =>
+            cat.toLowerCase().includes(filtro.toLowerCase())
+          )
+        )
+      : true;
+
+    return matchesSearch && matchesCollection;
+  });
 }
 
 function sortData(data, { sortBy, reversed, search, collectionFilter }) {
@@ -121,25 +139,29 @@ export default function Whatsapp() {
   // const [sortBy, setSortBy] = useState(null);
   // const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const [selectedCollections, setSelectedCollections] = useState([]);  // ✅ único estado
+  const [collections, setCollections] = useState([]);  
   const [currentPage, setCurrentPage] = useState(1);
   // const [collections, setCollections] = useState([]);
-  const [selectedCollection, setSelectedCollection] = useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const orden = searchParams.get('orden');
 
+  useEffect(() => {
+    setSortedData(
+      sortData(data, { search, collectionFilter: selectedCollections })
+    );
+    setCurrentPage(1);               // regresa a página 1 si cambian filtros
+  }, [data, search, selectedCollections]);
 
-  const handleCollectionFilter = (collection) => {
-    const newValue = collection === selectedCollection ? null : collection;
-    setSelectedCollection(newValue);
-    setSortedData(sortData(data, {
-      // sortBy,
-      // reversed: reverseSortDirection,
-      search,
-      collectionFilter: newValue
-    }));
-    setCurrentPage(1);
-  };
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    // const orden = searchParams.get('orden');
+    const cats = searchParams.get('cats')?.split(',') || [];
+
+    setSelectedCollections(cats);
+  }, [location.search]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -179,6 +201,15 @@ export default function Whatsapp() {
     fetchData();
   }, [location.search]);
 
+  const fetchCollections = async () => {
+    const snapshot = await getDocs(collection(db, 'colections'));
+    const docs = snapshot.docs.map(doc => doc.data());
+    const allCollections = docs.flatMap(doc => Array.isArray(doc.colections) ? doc.colections : []);
+    setCollections([...new Set(allCollections)]);
+    // setCollections({ collections: [...new Set(allCollections)] });
+  };
+  fetchCollections();
+
   // const setSorting = (field) => {
   //   const reversed = field === sortBy ? !reverseSortDirection : false;
   //   setReverseSortDirection(reversed);
@@ -187,9 +218,7 @@ export default function Whatsapp() {
   // };
 
   const handleSearchChange = (event) => {
-    const value = event.currentTarget.value;
-    setSearch(value);
-    setSortedData(sortData(data, { search: value, collectionFilter: selectedCollection }));
+    setSearch(event.currentTarget.value);
   };
 
   const groupsPerPage = 12;
@@ -295,6 +324,9 @@ export default function Whatsapp() {
     );
   });
 
+  const collectionsExist = Array.isArray(collections) && collections.length > 0;
+
+
   return (
     <>
       <Helmet>
@@ -356,16 +388,6 @@ export default function Whatsapp() {
       </Helmet>
 
       <ScrollArea>
-        {selectedCollection && (
-          <Button
-            variant="outline"
-            color="gray"
-            mb="xs"
-            onClick={() => handleCollectionFilter(selectedCollection)}
-          >
-            {t('Quitar filtro')}: {selectedCollection}
-          </Button>
-        )}
 
         <TextInput
           placeholder={t('Buscar por nombre, categoría o contenido...')}
@@ -374,9 +396,9 @@ export default function Whatsapp() {
           value={search}
           onChange={handleSearchChange}
         />
-
-        {rows.length > 0 ? (
           <>
+          <Group gap='xs' mb="md" justify="center">
+          
             <Group gap='xs' mb="md" justify="center">
               <Button
                 variant="light"
@@ -401,7 +423,7 @@ export default function Whatsapp() {
                 radius="md"
                 onClick={() => navigate('/comunidades/grupos-de-whatsapp')}
                 leftSection={
-                   <img
+                  <img
                     src="/wapp.webp"
                     alt="Whatsapp"
                     style={{ width: 29, height: 29 }}
@@ -417,6 +439,51 @@ export default function Whatsapp() {
                 <Button onClick={() => navigate('')} variant={!orden ? 'filled' : 'light'}>Destacados</Button>
               </Group>
             </Group>
+
+
+            <Box
+              style={{
+                display: 'flex',
+                overflowX: 'auto',
+                gap: '10px',
+                padding: '10px 0',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {collectionsExist &&
+                collections.map((cat, i) => {
+                  const selected = selectedCollections.includes(cat);
+                  return (
+                    <Badge
+                      key={i}
+                      variant={selected ? 'filled' : 'light'}
+                      color="violet"
+                      size="lg"
+                      radius="xl"
+                      onClick={() => {
+                        // Navegar a la página específica de la categoría
+                        const categoryUrl = getCategoryUrl(cat, location.pathname);
+                        navigate(categoryUrl);
+                      }}
+                      style={{
+                        padding: '10px 16px',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        backgroundColor: selected ? '#5e2ca5' : '#f3e8ff',
+                        color: selected ? '#ffffff' : '#4a0080',
+                        whiteSpace: 'nowrap',
+                        flexShrink: 0,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease', // Añadir transición suave
+                      }}
+                    >
+                      {cat}
+                    </Badge>
+
+                  );
+                })}
+            </Box>
+          </Group>
           
             <Paper
               withBorder
@@ -426,65 +493,7 @@ export default function Whatsapp() {
               p="md"
               style={{ backgroundColor: '#f9f9f9', marginBottom: '20px', paddingBottom: '10px' }}
             >
-            <Title order={2} mb="sm" className={styles.GruposDeTelegram}>
-              Grupos de WhatsApp ⟶ Enlaces Directos para Unirte (Por Temática)
-            </Title>
 
-            <div className={styles.GruposDeTelegram}>
-              <h2>Grupos de WhatsApp: Únete a Comunidades Activas y Conecta con Nuevos Miembros</h2>
-              <p>
-                Los <strong>grupos de WhatsApp</strong> se han convertido en una de las mejores formas de <strong>conocer personas</strong>, compartir intereses y disfrutar <strong>contenido</strong> en tiempo real. Desde entretenimiento y estudio hasta <strong>amistad</strong> o negocios, existen miles de comunidades activas esperando nuevos <strong>usuarios</strong> como tú.
-              </p>
-
-              <h3>Unirte a un Grupo de WhatsApp Nunca Fue Tan Rápido</h3>
-              <p>
-                Hoy en día, <strong>unirse a grupos de WhatsApp</strong> es simple y directo. En <strong>JoinGroups</strong> puedes explorar <strong>grupos verificados</strong> organizados por temáticas, intereses, idioma y cantidad de <strong>miembros</strong>. Ya no necesitas buscar en foros ni en redes sociales; aquí <strong>puedes encontrar</strong> tu comunidad ideal en segundos.
-              </p>
-
-              <h3>Grupos de WhatsApp con Enlaces Activos y Contenido Relevante</h3>
-              <p>
-                Uno de los mayores desafíos es hallar <strong>grupos con enlaces que funcionen</strong>. En JoinGroups reunimos los <strong>mejores grupos de WhatsApp</strong> con acceso directo, sin spam y con <strong>contenido actualizado</strong>. Todos nuestros enlaces son revisados para que accedas a canales activos y reales.
-              </p>
-
-              <h3>Buscar Grupos de WhatsApp por Temática y Categoría</h3>
-              <p>
-                Ya sea que busques <strong>grupos de estudio</strong>, deportes, memes, música, negocios o videojuegos, nuestro sistema de búsqueda y filtros te permite encontrar grupos según tus intereses. Puedes filtrar por tipo de <strong>canal</strong>, país o idioma fácilmente, incluso desde tu dispositivo <strong>Android</strong>.
-              </p>
-
-              <h3>Grupos Públicos de WhatsApp para Todos los Usuarios</h3>
-              <p>
-                Los <strong>grupos públicos de WhatsApp</strong> no requieren invitación personal. Esta característica los hace perfectos para ampliar tus contactos, compartir ideas o hacer <strong>networking</strong>. Ya sea desde tu celular o buscando en <strong>Google</strong>, puedes unirte con un solo clic.
-              </p>
-
-              <h2>Grupos de WhatsApp para Adultos 18+: Comunidades NSFW con Acceso Seguro</h2>
-              <p>
-                También puedes encontrar <strong>grupos de WhatsApp para adultos</strong> enfocados en <strong>contenido NSFW</strong> o relaciones. En JoinGroups estos grupos cuentan con advertencias claras y están marcados apropiadamente para usuarios mayores de edad. El acceso es seguro y verificado.
-              </p>
-
-              <h3>Los Mejores Grupos de WhatsApp, Seleccionados para Ti</h3>
-              <p>
-                Nuestra selección de <strong>mejores grupos de WhatsApp</strong> incluye aquellos con más actividad, mejores temas y mayor número de <strong>usuarios</strong>. Si buscas calidad y participación, aquí encontrarás lo más relevante del momento.
-              </p>
-
-              <p>
-                JoinGroups es la plataforma ideal para <strong>crear, encontrar y compartir grupos</strong>. Nuestro objetivo es ayudarte a conectar con <strong>personas reales</strong> y comunidades activas, sin perder tiempo en canales vacíos.
-              </p>
-
-              <h2>Cómo Hacer Crecer tu Grupo de WhatsApp en 2025</h2>
-              <p>
-                ¿Quieres <strong>hacer crecer tu grupo de WhatsApp</strong>? Te ofrecemos consejos prácticos para <strong>crear</strong> una comunidad activa, atraer nuevos <strong>miembros</strong> y aumentar la participación. Desde la gestión del <strong>contenido</strong> hasta la promoción efectiva, aquí tienes lo que necesitas.
-              </p>
-
-              <h3>Promocionar tu Grupo en Canales Similares</h3>
-              <p>
-                Una técnica clave para ganar <strong>usuarios</strong> es promocionarte en otros <strong>canales y grupos relacionados</strong>. En JoinGroups puedes destacar tu comunidad y llegar a más personas interesadas en tu temática.
-              </p>
-
-              <h3>¿Cómo Encontrar los Mejores Grupos de WhatsApp?</h3>
-              <p>
-                La mejor manera es usar plataformas confiables como JoinGroups. Te mostramos solo <strong>grupos verificados</strong>, organizados por categoría, <strong>número de miembros</strong> e idioma, para que <strong>puedas unirte</strong> sin complicaciones ni riesgos.
-              </p>
-            </div>
 
             {isMobile ? (
               <>
@@ -576,11 +585,9 @@ export default function Whatsapp() {
             </Text>
             </Paper>
           </>
-        ) : (
           <Text ta="center" fw={500} c="dimmed" mt="xl">
             {t('No se encontraron resultados.')}
           </Text>
-        )}
       </ScrollArea>
     </>
   );

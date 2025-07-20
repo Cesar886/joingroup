@@ -14,26 +14,22 @@ import {
 import { showNotification } from '@mantine/notifications';
 import { collection, addDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import React, { useRef, useState, useCallback, useMemo, useEffect } from 'react';
-import slugify from '../assets/slugify';
+import { useRef, useState } from 'react';
+import slugify from '../assets/slugify'
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
 import { Helmet } from 'react-helmet';
 import { IconBrandWhatsapp } from '@tabler/icons-react';
 
+
+
 export default function GroupForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isTranslating, setIsTranslating] = useState(false);
   const { t, i18n } = useTranslation();
-  const baseLang = i18n.language.split('-')[0];
-  const [redSocial, setRedSocial] = useState('Telegram');
-  const [modalOpen, setModalOpen] = useState(false);
-  const captchaRef = useRef();
-  const translationTimeoutRef = useRef(null);
-  const abortControllerRef = useRef(null);
-
-  // Memoizar las ciudades para evitar recreación en cada render
-  const cities = useMemo(() => [
+  const baseLang = i18n.language.split('-')[0]; // "en-US" → "en"
+  const [redSocial, setRedSocial] = useState('Telegram');``
+  
+  const cities = [
     { value: 'mx', label: 'México' },
     { value: 'us', label: 'Estados Unidos' },
     { value: 'ar', label: 'Argentina' },
@@ -68,45 +64,7 @@ export default function GroupForm() {
     { value: 'in', label: 'India' },
     { value: 'ru', label: 'Rusia' },
     { value: 'au', label: 'Australia' },
-  ], []);
-
-  // Memoizar las categorías
-  const categories = useMemo(() => [
-    'Hot',
-    t('NSFW'),
-    'Anime y Manga',
-    t('Películas y Series'),
-    t('Porno'),
-    t('Criptomonedas'),
-    'Xxx',
-    'Hacking',
-    t('Memes y Humor'),
-    '18+',
-    t('Fútbol'),
-    t('Tecnología'),
-    t('Programación'),
-    'Gaming',
-    t('Cursos y Tutoriales'),
-    t('Música y Podcasts'),
-    t('Arte y Diseño'),
-    t('Ciencia y Educación'),
-    t('Negocios y Finanzas'),
-    'Packs',
-    'Trading',
-    t('Ofertas y Descuentos'),
-    t('Emprendimiento'),
-    t('Relaciones y Citas'),
-    'Telegram Bots',
-    t('Stickers'),
-  ], [t]);
-
-  // Memoizar las expresiones regulares
-  const regexPatterns = useMemo(() => ({
-    telegram: /^https:\/\/t\.me\/(?:[a-zA-Z0-9_]{5,}|c\/\d+\/\d+|\+[a-zA-Z0-9_-]{10,})$/,
-    whatsappGroup: /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]{22}$/,
-    whatsappChannel: /^https:\/\/(wa\.me|whatsapp\.com)\/channel\/[a-zA-Z0-9_]{8,}$/,
-    email: /^\S+@\S+\.\S+$/,
-  }), []);
+  ];
 
   const form = useForm({
     initialValues: {
@@ -122,14 +80,16 @@ export default function GroupForm() {
       acceptTerms: false,
     },
     validate: {
-      email: (v) => (regexPatterns.email.test(v) ? null : t('Email inválido')),
+      email:  (v) => (/^\S+@\S+\.\S+$/.test(v) ? null : t('Email inválido')),
       emailRepeat: (v, vals) => v === vals.email ? null : t('Los emails no coinciden'),
       acceptTerms: (v) => v ? null : t('Debes aceptar los términos'),
+
       categories: (value) => {
         if (!Array.isArray(value) || value.length < 1) return t('Selecciona al menos una categoría');
         if (value.length > 3) return t('Máximo 3 categorías');
         return null;
       },
+
       descriptionEs: (v, values) => {
         const hasEs = v.trim().length >= 20 && v.trim().length <= 320;
         const hasEn = values.descriptionEn.trim().length >= 20 && values.descriptionEn.trim().length <= 320;
@@ -137,6 +97,7 @@ export default function GroupForm() {
           ? null
           : t('Debes escribir una descripción en español o en inglés (20–320 caracteres)');
       },
+
       descriptionEn: (v, values) => {
         const hasEn = v.trim().length >= 20 && v.trim().length <= 320;
         const hasEs = values.descriptionEs.trim().length >= 20 && values.descriptionEs.trim().length <= 320;
@@ -144,117 +105,60 @@ export default function GroupForm() {
           ? null
           : t('You must write a description in English or Spanish (20–320 characters)');
       },
+      
       name: (value) => {
         const trimmed = value.trim();
         if (!trimmed) return t('El nombre es obligatorio');
+        
+        // Verifica si hay al menos una letra o número
         const hasText = /[a-zA-Z0-9]/.test(trimmed);
         if (!hasText) return t('El nombre no puede ser solo emojis');
+
         return null;
       },
+
       link: (v) => {
         const val = v.trim();
-        if (redSocial === 'Telegram' && !regexPatterns.telegram.test(val)) {
+
+        if (redSocial === 'Telegram' && !telegramRegex.test(val)) {
           return t('El enlace de Telegram no es válido');
         }
+
         if (redSocial === 'Whatsapp') {
-          if (regexPatterns.whatsappGroup.test(val) || regexPatterns.whatsappChannel.test(val)) {
-            return null;
+          if (whatsappGroupRegex.test(val)) {
+            return null; // válido como grupo
           }
+
+          if (whatsappChannelRegex.test(val)) {
+            return null; // válido como canal
+          }
+
           return t('El enlace de WhatsApp debe ser un grupo o canal válido');
         }
+
         return null;
       }
+
     },
   });
 
-  // Función de traducción optimizada con manejo de errores mejorado
-  const translateText = useCallback(async (text, source, target) => {
-    const DEEPL_PROXY_URL = 'https://daniel-rdz.tech/translate';
-    
-    // Cancelar solicitud anterior si existe
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    
-    abortControllerRef.current = new AbortController();
-    
-    try {
-      const res = await fetch(DEEPL_PROXY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, source, target }),
-        signal: abortControllerRef.current.signal,
-        timeout: 10000, // 10 segundos de timeout
-      });
 
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
+  const captchaRef = useRef();
+  const [modalOpen, setModalOpen] = useState(false);
 
-      const data = await res.json();
-      return data.translated || '';
-    } catch (error) {
-      if (error.name === 'AbortError') {
-        console.log('Traducción cancelada');
-        return '';
-      }
-      console.warn('Error de traducción:', error.message);
-      return '';
-    }
-  }, []);
-
-  // Debounced translation con cleanup mejorado
-  const debouncedTranslate = useCallback(async () => {
-    // Limpiar timeout anterior
-    if (translationTimeoutRef.current) {
-      clearTimeout(translationTimeoutRef.current);
-    }
-
-    translationTimeoutRef.current = setTimeout(async () => {
-      if (isTranslating) return; // Evitar múltiples traducciones simultáneas
-
-      const { descriptionEs, descriptionEn } = form.values;
-
-      try {
-        setIsTranslating(true);
-
-        if (baseLang === 'es' && descriptionEs.trim().length >= 20 && !descriptionEn.trim()) {
-          const translated = await translateText(descriptionEs, 'ES', 'EN');
-          if (translated) {
-            form.setFieldValue('descriptionEn', translated);
-          }
-        }
-
-        if (baseLang === 'en' && descriptionEn.trim().length >= 20 && !descriptionEs.trim()) {
-          const translated = await translateText(descriptionEn, 'EN', 'ES');
-          if (translated) {
-            form.setFieldValue('descriptionEs', translated);
-          }
-        }
-      } catch (error) {
-        console.error('Error en traducción automática:', error);
-      } finally {
-        setIsTranslating(false);
-      }
-    }, 1000); // Aumentado a 1 segundo para reducir llamadas
-  }, [baseLang, form, translateText, isTranslating]);
-
-  // Función de verificación optimizada
-  const handleVerify = useCallback(async () => {
+  const handleVerify = async () => {
+    // setCaptchaValues(token);
     setModalOpen(false);
-    setIsLoading(true);
+    setIsLoading(true); 
 
     try {
       const rawLink = form.values.link.trim();
       const cleanLink = rawLink.endsWith('/') ? rawLink.slice(0, -1) : rawLink;
 
-      // Verificaciones en paralelo para mejor rendimiento
-      const [existingGroups, slugGroups] = await Promise.all([
-        getDocs(query(collection(db, 'groups'), where('link', '==', cleanLink))),
-        getDocs(query(collection(db, 'groups'), where('slug', '==', slugify(form.values.name))))
-      ]);
+      const q = query(collection(db, 'groups'), where('link', '==', cleanLink));
+      const existing = await getDocs(q);
 
-      if (!existingGroups.empty) {
+      if (!existing.empty) {
         showNotification({
           title: t('Enlace duplicado'),
           message: t('Este grupo ya fue publicado antes 📌'),
@@ -263,7 +167,11 @@ export default function GroupForm() {
         return;
       }
 
-      if (!slugGroups.empty) {
+      const slug = slugify(form.values.name);
+      const qSlug = query(collection(db, 'groups'), where('slug', '==', slug));
+      const slugSnap = await getDocs(qSlug);
+
+      if (!slugSnap.empty) {
         showNotification({
           title: t('Nombre duplicado'),
           message: t('Ya existe un grupo con ese nombre 📌'),
@@ -272,12 +180,18 @@ export default function GroupForm() {
         return;
       }
 
-      const slug = slugify(form.values.name);
-      const { descriptionEs, descriptionEn, ...cleanValues } = form.values;
+      let descEs = form.values.descriptionEs.trim();
+      let descEn = form.values.descriptionEn.trim();
+
+      const {
+        descriptionEs, 
+        descriptionEn,
+        ...cleanValues
+      } = form.values;
 
       const docRef = await addDoc(collection(db, 'groups'), {
         ...cleanValues,
-        tipo: redSocial.toLowerCase(),
+        tipo: redSocial.toLowerCase(), // ← esto guarda si es telegram o whatsapp
         description: {
           es: descriptionEs.trim() || '',
           en: descriptionEn.trim() || '',
@@ -287,102 +201,135 @@ export default function GroupForm() {
         visitas: 0,
         createdAt: new Date(),
         slug,
-        translationPending: !descriptionEs.trim() || !descriptionEn.trim(),
+        translationPending: !descEs || !descEn,
       });
-
-      // Traducción post-envío optimizada
-      const needsTranslation = !descriptionEs.trim() || !descriptionEn.trim();
-      if (needsTranslation) {
-        const text = descriptionEs.trim() || descriptionEn.trim();
-        const source = descriptionEs.trim() ? 'ES' : 'EN';
-        const target = descriptionEs.trim() ? 'EN' : 'ES';
-
-        // Traducción asíncrona sin bloquear la navegación
-        translateText(text, source, target)
-          .then(async (translated) => {
-            if (translated && translated.length >= 20) {
-              await updateDoc(docRef, {
-                [`description.${target.toLowerCase()}`]: translated,
-                translationPending: false,
-              });
-            }
-          })
-          .catch(error => console.error('Error en traducción post-envío:', error));
-      }
 
       form.reset();
       const subdomain = form.values.city || 'www';
       window.location.href = `https://${subdomain}.joingroups.pro/comunidades/grupos-de-${redSocial.toLowerCase()}/${slug}`;
 
+
+      // 👇 Traducción automática post-envío
+      if (!descEs || !descEn) {
+        const text = descEs || descEn;
+        const source = descEs ? 'ES' : 'EN';
+        const target = descEs ? 'EN' : 'ES';
+
+        let attempts = 0;
+        let consecutiveFailures = 0;
+        const maxAttempts = 80;
+        const maxConsecutiveFailures = 10;
+        const retryIntervalMs = 5000;
+
+        const intervalId = setInterval(async () => {
+          attempts++;
+
+          try {
+            const translated = await translateText(text, source, target);
+
+            if (translated && translated.length >= 20) {
+              await updateDoc(docRef, {
+                [`description.${target.toLowerCase()}`]: translated,
+                translationPending: false,
+              });
+              console.log(`✅ Traducción exitosa en intento ${attempts}`);
+              clearInterval(intervalId); // ✅ Detenemos
+              return;
+            }
+
+            console.warn(`⚠ Traducción vacía o muy corta. Intento ${attempts}`);
+            consecutiveFailures++;
+          } catch (e) {
+            consecutiveFailures++;
+            console.error(`❌ Fallo al traducir (intento ${attempts}):`, e.message);
+          }
+
+          if (attempts >= maxAttempts || consecutiveFailures >= maxConsecutiveFailures) {
+            console.warn('⛔ Se alcanzó el máximo de intentos o errores consecutivos');
+            clearInterval(intervalId);
+          }
+        }, retryIntervalMs);
+
+      }
     } catch (error) {
-      console.error('Error al guardar:', error);
+      console.error(error);
+      setIsLoading(false); 
       showNotification({
         title: t('Error'),
-        message: t('No se pudo guardar. Intenta nuevamente.'),
+        message: t('No se pudo guardar.'),
         color: 'red',
         position: 'top-right',
       });
-    } finally {
-      setIsLoading(false);
     }
-  }, [form, redSocial, t, translateText]);
+  };
 
-  // Manejador de cambio de enlace optimizado
-  const handleLinkChange = useCallback((event) => {
-    const input = event.currentTarget.value;
-    const prefix = 'https://t.me/';
+  const DEEPL_PROXY_URL = 'https://daniel-rdz.tech/translate'; // Con Https://daniel-rdz.tech/translate
 
-    if (redSocial === 'Telegram') {
-      const typedPrefix = input.slice(0, prefix.length);
-      const rest = input.slice(prefix.length);
-      
-      if (
-        typedPrefix.toLowerCase() !== prefix.toLowerCase() &&
-        prefix.toLowerCase().startsWith(typedPrefix.toLowerCase())
-      ) {
-        form.setFieldValue('link', prefix + rest);
-      } else {
-        form.setFieldValue('link', input);
+
+  async function translateText(text, source, target) {
+    try {
+      const res = await fetch(DEEPL_PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, source, target }),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`HTTP ${res.status}: ${err}`);
       }
-    } else {
-      form.setFieldValue('link', input);
+
+
+      const data = await res.json();
+      return data.translated;  // Aquí está el cambio importante
+    } catch (e) {
+      console.warn('DeepL error:', e.message);
+      showNotification({
+        title: t('Traducción no disponible'),
+        message: t('No se pudo traducir automáticamente. Escribe la traducción manualmente.'),
+        color: 'yellow',
+      });
+      return '';
     }
-  }, [redSocial, form]);
+  }
 
-  // Manejador de envío del formulario
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    const validation = form.validate();
-    if (!validation.hasErrors) {
-      setModalOpen(true);
-    }
-  }, [form]);
 
-  // Cleanup al desmontar el componente
-  useEffect(() => {
-    return () => {
-      if (translationTimeoutRef.current) {
-        clearTimeout(translationTimeoutRef.current);
-      }
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
+  function useDebouncedCallback(callback, delay = 800) {
+    const timeout = useRef(null);
+
+    return (...args) => {
+      clearTimeout(timeout.current);
+      timeout.current = setTimeout(() => callback(...args), delay);
     };
-  }, []);
+  }
+  
 
-  // Determinar el estado del enlace de WhatsApp
-  const whatsappLinkStatus = useMemo(() => {
-    if (redSocial !== 'Whatsapp' || !form.values.link) return null;
-    
-    const link = form.values.link.trim();
-    if (regexPatterns.whatsappGroup.test(link)) {
-      return { valid: true, type: 'group' };
+  const debouncedTranslate = useDebouncedCallback(async () => {
+    const { descriptionEs, descriptionEn } = form.values;
+
+    // Si la UI está en español y falta el inglés…
+    if (baseLang === 'es' && descriptionEs.trim().length >= 20 && !descriptionEn.trim()) {
+      const translated = await translateText(descriptionEs, 'ES', 'EN');
+      form.setFieldValue('descriptionEn', translated);
     }
-    if (regexPatterns.whatsappChannel.test(link)) {
-      return { valid: true, type: 'channel' };
+
+    // Si la UI está en inglés y falta el español…
+    if (baseLang === 'en' && descriptionEn.trim().length >= 20 && !descriptionEs.trim()) {
+      const translated = await translateText(descriptionEn, 'EN', 'ES');
+      form.setFieldValue('descriptionEs', translated);
     }
-    return { valid: false, type: null };
-  }, [redSocial, form.values.link, regexPatterns]);
+  }, 700);
+
+
+   const prefix = redSocial === 'Telegram' ? 'https://t.me/' : '';
+
+   const telegramRegex = /^https:\/\/t\.me\/(?:[a-zA-Z0-9_]{5,}|c\/\d+\/\d+|\+[a-zA-Z0-9_-]{10,})$/;
+   const whatsappGroupRegex = /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]{22}$/;
+   const whatsappChannelRegex = /^https:\/\/(wa\.me|whatsapp\.com)\/channel\/[a-zA-Z0-9_]{8,}$/;
+  
+
+
+
 
   return (
     <>
@@ -391,15 +338,20 @@ export default function GroupForm() {
         <meta name="description" content="Envía tu grupo o canal de Telegram o WhatsApp para ser listado en el directorio verificado JoinGroups. +18, anime, estudio, tecnología y más. ¡Publicar es gratis y fácil!" />
         <link rel="canonical" href="https://joingroups.pro/form" />
         <meta name="robots" content="index, follow" />
+
+        {/* Etiquetas sociales */}
         <meta property="og:title" content="Publica tu Grupo en JoinGroups | Gratis, Fácil y Verificado" />
         <meta property="og:description" content="Comparte tu grupo de Telegram o WhatsApp con miles de usuarios. Únete al directorio de comunidades activas. +18, anime, estudio, tecnología y más." />
         <meta property="og:url" content="https://joingroups.pro/form" />
         <meta property="og:image" content="https://joingroups.pro/og-image-formulario.jpg" />
         <meta property="og:type" content="website" />
+
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Publicar Grupo en Telegram o WhatsApp | Gratis en JoinGroups" />
         <meta name="twitter:description" content="Agrega tu grupo a nuestro directorio verificado. Miles de usuarios activos buscan comunidades como la tuya." />
         <meta name="twitter:image" content="https://joingroups.pro/og-image-formulario.jpg" />
+
+        {/* JSON-LD FAQ estructurado para SEO */}
         <script type="application/ld+json">
           {`
             {
@@ -447,8 +399,16 @@ export default function GroupForm() {
         </Button>
       </Stack>
 
-      <form onSubmit={handleSubmit}>
-        <Stack>
+      <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const validation = form.validate();
+            if (!validation.hasErrors) {
+              setModalOpen(true); // Abre el modal con el captcha real
+            }
+          }}
+        >
+         <Stack>
           <TextInput
             label={t(`Nombre del Grupo de ${redSocial}`)}
             required
@@ -460,20 +420,40 @@ export default function GroupForm() {
             placeholder={redSocial === 'Telegram' ? 'https://t.me/' : ''}
             required
             value={form.values.link}
-            onChange={handleLinkChange}
-            error={form.errors.link}
+            onChange={(event) => {
+              const input = event.currentTarget.value;
+
+              if (redSocial === 'Telegram') {
+                const typedPrefix = input.slice(0, prefix.length);
+                const rest = input.slice(prefix.length);
+                if (
+                  typedPrefix.toLowerCase() !== prefix.toLowerCase() &&
+                  prefix.toLowerCase().startsWith(typedPrefix.toLowerCase())
+                ) {
+                  form.setFieldValue('link', prefix + rest);
+                } else {
+                  form.setFieldValue('link', input);
+                }
+              } else {
+                form.setFieldValue('link', input);
+              }
+            }}
+            {...form.getInputProps('link')}
           />
 
-          {whatsappLinkStatus && (
-            <Text 
-              size="xs" 
-              c={whatsappLinkStatus.valid ? 'green' : 'red'}
-            >
-              {whatsappLinkStatus.valid
-                ? whatsappLinkStatus.type === 'group'
+          {/* ✅ Mueve este bloque JSX AQUÍ */}
+          {redSocial === 'Whatsapp' && form.values.link && (
+            <Text size="xs" c={
+              whatsappGroupRegex.test(form.values.link.trim()) || whatsappChannelRegex.test(form.values.link.trim())
+                ? 'green'
+                : 'red'
+            }>
+              {
+                whatsappGroupRegex.test(form.values.link.trim())
                   ? t('Detectado: grupo de WhatsApp')
-                  : t('Detectado: canal de WhatsApp')
-                : t('Enlace no válido de grupo o canal')
+                  : whatsappChannelRegex.test(form.values.link.trim())
+                  ? t('Detectado: canal de WhatsApp')
+                  : t('Enlace no válido de grupo o canal')
               }
             </Text>
           )}
@@ -486,6 +466,7 @@ export default function GroupForm() {
             onChange={setRedSocial}
             allowDeselect={false}
           />
+
 
           <Select
             label={t("¿ACEPTAS CONTENIDO SEXUAL o PARA ADULTOS?")}
@@ -508,21 +489,21 @@ export default function GroupForm() {
           />
 
           <Textarea
-            label="Descripción (Español)"
-            placeholder="⌨ Máximo 320 caracteres"
-            required={baseLang === 'es'}
-            autosize
-            minRows={3}
-            style={{ display: baseLang === 'es' ? 'block' : 'none' }}
-            value={form.values.descriptionEs}
-            onChange={(e) => {
-              form.setFieldValue('descriptionEs', e.currentTarget.value);
-              debouncedTranslate();
-            }}
-            error={form.errors.descriptionEs}
-            rightSection={isTranslating ? <Text size="xs">Traduciendo...</Text> : null}
+              label="Descripción (Español)"
+              placeholder="⌨ Máximo 320 caracteres"
+              required={baseLang === 'es'}
+              autosize
+              minRows={3}
+              style={{ display: baseLang === 'es' ? 'block' : 'none' }}
+              value={form.values.descriptionEs}
+              onChange={(e) => {
+                form.setFieldValue('descriptionEs', e.currentTarget.value);
+                debouncedTranslate();
+              }}
+              error={form.errors.descriptionEs}
           />
 
+          {/* Inglés siempre presente, pero oculto si no es el idioma activo */}
           <Textarea
             label="Description (English)"
             placeholder="⌨ Maximum 320 characters"
@@ -536,13 +517,12 @@ export default function GroupForm() {
               debouncedTranslate();
             }}
             error={form.errors.descriptionEn}
-            rightSection={isTranslating ? <Text size="xs">Translating...</Text> : null}
           />
           
           <Select
             label={t("Ciudad")}
             placeholder={t("Selecciona una ciudad")}
-            data={cities}
+            data={cities} // asegúrate de haberlo definido
             searchable
             required
             nothingFound={t('Ninguna ciudad coincide')}
@@ -553,12 +533,40 @@ export default function GroupForm() {
             label={t("Categorías")}
             placeholder={t("Selecciona una o varias categorías, Max 3")}
             required
-            data={categories}
+            data={[
+              'Hot',
+              t('NSFW'),
+              'Anime y Manga',
+              t('Películas y Series'),
+              t('Porno'),
+              t('Criptomonedas'),
+              'Xxx',
+              'Hacking',
+              t('Memes y Humor'),
+              '18+',
+              t('Fútbol'),
+              t('Tecnología'),
+              t('Programación'),
+              'Gaming',
+              t('Cursos y Tutoriales'),
+              t('Música y Podcasts'),
+              t('Arte y Diseño'),
+              t('Ciencia y Educación'),
+              t('Negocios y Finanzas'),
+              'Packs',
+              'Trading',
+              t('Ofertas y Descuentos'),
+              t('Emprendimiento'),
+              t('Relaciones y Citas'),
+              'Telegram Bots',
+              t('Stickers'),
+            ]}
             searchable
             clearable
             multiple
             {...form.getInputProps('categories')}
           />
+
 
           <Checkbox
             label={t("He leído y acepto las condiciones de uso y la privacidad")}
@@ -566,13 +574,7 @@ export default function GroupForm() {
             {...form.getInputProps('acceptTerms', { type: 'checkbox' })}
           />
 
-          <Button 
-            type="submit" 
-            mt="md" 
-            loading={isLoading} 
-            loaderProps={{ type: 'dots' }}
-            disabled={isTranslating}
-          >
+          <Button type="submit" mt="md" loading={isLoading} loaderProps={{ type: 'dots' }}>
             {t('Publicar')}
           </Button>
         </Stack>
@@ -593,3 +595,5 @@ export default function GroupForm() {
     </>
   );
 }
+
+
